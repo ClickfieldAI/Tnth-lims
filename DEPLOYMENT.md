@@ -43,13 +43,25 @@ Configure in **Vercel → Project → Settings → Environment Variables**
 
 | Variable | Required | Description |
 |---|---|---|
-| `DATABASE_URL` | ✅ | PostgreSQL connection string. **Use the pooled URL (port 6543, `?pgbouncer=true&connection_limit=1`) on Supabase** |
+| `DATABASE_URL` | ✅ | PostgreSQL connection string. **Use the pooled URL (port 6543, `?pgbouncer=true&connection_limit=10&pool_timeout=20`) on Supabase** — see the warning below |
 | `DIRECT_URL` | ⭕ | Direct (non-pooled) connection, used only when running migrations |
 | `AUTH_SECRET` | ✅ | Secret for signing session JWTs — generate with `openssl rand -base64 32` |
 | `SESSION_TTL_DAYS` | ⭕ | Session lifetime in days (default `7`) |
 | `NEXT_PUBLIC_APP_NAME` | ⭕ | Display name (default `PharmaLIMS`) |
 
 > Never commit real secrets. `.env` is git-ignored; only `.env.example` is tracked.
+
+> ⚠️ **`connection_limit` must be greater than 1.** Dashboard pages fire ~12
+> concurrent Prisma queries via `Promise.all`. With `connection_limit=1` only
+> one can run at a time; the rest queue and hit `P2024` ("Timed out fetching
+> a new connection from the connection pool") once `pool_timeout` elapses —
+> which surfaces as a 500 error immediately after a successful login. Use
+> `connection_limit=10&pool_timeout=20` instead.
+
+> ⚠️ **Don't use `db.<project-ref>.supabase.co` for `DIRECT_URL`.** That host
+> is IPv6-only and unreachable from many local networks and some serverless
+> egress paths (`P1001: Can't reach database server`). Use the pooler host
+> in session mode (port `5432`) instead — see below.
 
 ---
 
@@ -59,9 +71,9 @@ Configure in **Vercel → Project → Settings → Environment Variables**
 
 1. Create a project at [supabase.com](https://supabase.com).
 2. **Project Settings → Database → Connection string → URI**:
-   - *Connection pooling* (port `6543`) → `DATABASE_URL` (runtime)
-   - *Direct connection* (port `5432`) → `DIRECT_URL` (migrations)
-3. Append `?pgbouncer=true&connection_limit=1` to the pooled URL.
+   - *Transaction pooler* (port `6543`) → `DATABASE_URL` (runtime)
+   - *Session pooler* (port `5432`, same pooler host) → `DIRECT_URL` (migrations) — prefer this over the direct `db.<project-ref>.supabase.co` host, which is IPv6-only
+3. Append `?pgbouncer=true&connection_limit=10&pool_timeout=20` to the pooled `DATABASE_URL`.
 
 ### Option B — any PostgreSQL 14+
 
@@ -165,7 +177,7 @@ database and run `npx prisma db push && npm run db:seed`.
 | Symptom | Cause | Fix |
 |---|---|---|
 | Build fails with "Prisma Client did not initialize" | `DATABASE_URL` missing at runtime | Add it in Vercel env settings and redeploy |
-| `P1001: can't reach database` | Direct URL blocked / wrong region | Use the **pooled** URL (6543) for `DATABASE_URL` |
-| Too many connections | Pool not used | Ensure `?pgbouncer=true&connection_limit=1` on Supabase URLs |
+| `P1001: can't reach database` | Direct URL blocked / wrong region, or using the IPv6-only `db.<ref>.supabase.co` host | Use the **pooler** host (port 6543 for `DATABASE_URL`, port 5432 for `DIRECT_URL`) |
+| 500 right after login / `P2024` timeout fetching connection | `connection_limit` too low (e.g. `1`) for the dashboard's concurrent queries | Use `connection_limit=10&pool_timeout=20` on the pooled `DATABASE_URL` |
 | Login always fails | Weak/missing or rotated `AUTH_SECRET` | Set a stable random secret; rotating it signs everyone out |
 | 500 on first load after deploy | Migrations not applied | Run `npx prisma db push` / `prisma migrate deploy` |
