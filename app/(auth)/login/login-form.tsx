@@ -7,12 +7,12 @@ import { loginUser } from "@/actions/auth";
 type Demo = { role: string; email: string; pass: string; desc: string };
 
 const DEMO: Demo[] = [
-  { role: "Admin", email: "admin@pharmalims.io", pass: "Admin@123", desc: "Laboratory Administrator" },
-  { role: "Manager", email: "manager@pharmalims.io", pass: "Manager@123", desc: "Lab Manager" },
-  { role: "QA", email: "qa@pharmalims.io", pass: "Qa@123456", desc: "Quality Assurance Officer" },
-  { role: "Analyst", email: "analyst@pharmalims.io", pass: "Analyst@123", desc: "Chemist / Analyst" },
-  { role: "Micro", email: "micro@pharmalims.io", pass: "Micro@123", desc: "Microbiology Analyst" },
-  { role: "Client", email: "client@pharmalims.io", pass: "Client@123", desc: "Client / Pharma Company" },
+  { role: "Admin", email: "admin@tnth.io", pass: "Admin@123", desc: "Laboratory Administrator" },
+  { role: "Manager", email: "manager@tnth.io", pass: "Manager@123", desc: "Lab Manager" },
+  { role: "QA", email: "qa@tnth.io", pass: "Qa@123456", desc: "Quality Assurance Officer" },
+  { role: "Analyst", email: "analyst@tnth.io", pass: "Analyst@123", desc: "Chemist / Analyst" },
+  { role: "Micro", email: "micro@tnth.io", pass: "Micro@123", desc: "Microbiology Analyst" },
+  { role: "Client", email: "client@tnth.io", pass: "Client@123", desc: "Client Company" },
 ];
 
 export function LoginForm() {
@@ -51,7 +51,7 @@ export function LoginForm() {
           type="email"
           autoComplete="username"
           className="h-10 w-full rounded-md border border-slate-600 bg-slate-900 px-3 text-sm text-slate-100 placeholder:text-slate-500"
-          placeholder="you@pharma-company.com"
+          placeholder="you@tnth.io"
           required
         />
       </div>

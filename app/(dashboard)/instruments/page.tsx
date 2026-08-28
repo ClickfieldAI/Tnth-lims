@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Microscope } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { PageHeader, StatCard } from "@/components/ui/display";
@@ -44,8 +45,12 @@ export default async function InstrumentsPage() {
         <TBody>
           {instruments.map((i) => (
             <Tr key={i.id}>
-              <Td className="font-mono text-[11px] font-semibold">{i.code}</Td>
-              <Td className="max-w-[180px] truncate">{i.name}</Td>
+              <Td className="font-mono text-[11px] font-semibold">
+                <Link href={`/instruments/${i.id}`} className="block">{i.code}</Link>
+              </Td>
+              <Td className="max-w-[180px] truncate">
+                <Link href={`/instruments/${i.id}`} className="block text-indigo-600 hover:underline">{i.name}</Link>
+              </Td>
               <Td><Badge tone="slate">{CATEGORY_LABEL[i.category] ?? i.category}</Badge></Td>
               <Td className="text-xs text-slate-500">{[i.manufacturer, i.model].filter(Boolean).join(" · ") || "—"}</Td>
               <Td><StatusBadge status={i.status} dot /></Td>

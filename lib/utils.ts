@@ -102,6 +102,12 @@ export const TEST_TYPE_LABELS: Record<string, string> = {
   HPLC: "HPLC Analysis",
   GC: "GC Analysis",
   MICROBIOLOGY: "Microbiology",
+  ICPMS: "ICP-MS Elemental Analysis",
+  HPTLC: "HPTLC Fingerprinting",
+  NMR: "NMR Analysis",
+  DSC_TGA: "DSC / TGA Thermal Analysis",
+  SPF: "SPF / Sunscreen Testing",
+  LCMSMS: "LC-MS/MS Trace Analysis",
 };
 
 export function testTypeLabel(type: string): string {

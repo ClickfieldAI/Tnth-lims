@@ -3,8 +3,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "PharmaLIMS",
-    template: "%s · PharmaLIMS",
+    default: "TNTH LIMS",
+    template: "%s · TNTH LIMS",
   },
   description: "Enterprise Pharmaceutical Laboratory Information Management System",
 };

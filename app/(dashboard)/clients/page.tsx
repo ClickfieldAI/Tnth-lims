@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Building2 } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { PageHeader, StatCard } from "@/components/ui/display";
@@ -37,9 +38,13 @@ export default async function ClientsPage() {
         </THead>
         <TBody>
           {clients.map((c) => (
-            <Tr key={c.id}>
-              <Td className="font-mono text-[11px] font-semibold">{c.code}</Td>
-              <Td className="font-medium">{c.name}</Td>
+            <Tr key={c.id} className="hover:bg-slate-50">
+              <Td className="font-mono text-[11px] font-semibold">
+                <Link href={`/clients/${c.id}`} className="block">{c.code}</Link>
+              </Td>
+              <Td className="font-medium">
+                <Link href={`/clients/${c.id}`} className="block text-indigo-600 hover:underline">{c.name}</Link>
+              </Td>
               <Td className="text-xs">
                 {c.contactPerson ?? "—"}
                 <span className="block text-[11px] text-slate-400">{c.email ?? ""}</span>

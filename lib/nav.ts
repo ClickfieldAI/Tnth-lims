@@ -1,6 +1,7 @@
 import type { RoleCode } from "@/lib/roles";
 import {
   LayoutDashboard,
+  LayoutGrid,
   FlaskConical,
   Microscope,
   Ship,
@@ -38,7 +39,10 @@ export interface NavGroup {
 export const NAV: NavGroup[] = [
   {
     group: "Overview",
-    items: [{ label: "Dashboard", href: "/", icon: LayoutDashboard }],
+    items: [
+      { label: "All Services", href: "/", icon: LayoutGrid },
+      { label: "Overview", href: "/overview", icon: LayoutDashboard, roles: ["ADMIN", "MANAGER", "QA"] },
+    ],
   },
   {
     group: "Operations",

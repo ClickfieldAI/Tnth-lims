@@ -22,10 +22,10 @@ export function StatCard({
   tone = "indigo",
 }: { label: string; value: React.ReactNode; sub?: string; trend?: "up" | "down"; icon?: React.ReactNode; tone?: string }) {
   return (
-    <div className="rounded-lg border border-slate-200 bg-white px-5 py-5 shadow-sm">
+    <div className="rounded-xl border border-slate-200/80 bg-white px-5 py-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(15,23,42,0.08)]">
       <div className="flex items-center justify-between">
         <p className="text-[13px] font-medium text-slate-500">{label}</p>
-        {icon ? <span className={cn("flex h-8 w-8 items-center justify-center rounded-md", tones[tone] ?? tones.indigo)}>{icon}</span> : null}
+        {icon ? <span className={cn("flex h-9 w-9 items-center justify-center rounded-lg", tones[tone] ?? tones.indigo)}>{icon}</span> : null}
       </div>
       <p className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">{value}</p>
       <div className="mt-1 flex items-center gap-1.5 text-xs">

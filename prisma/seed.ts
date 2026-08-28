@@ -1,4 +1,4 @@
-// PharmaLIMS seed — creates a realistic enterprise dataset.
+// TNTH LIMS seed — Tamil Nadu Test House contract testing lab demo dataset.
 // Usage: `tsx prisma/seed.ts`
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
@@ -34,28 +34,39 @@ const ROLE_DESC: Record<string, string> = {
   QA: "Quality Assurance Officer",
   ANALYST: "Chemist / Analyst",
   MICRO: "Microbiology Analyst",
-  CLIENT: "Client / Pharma Company User",
+  CLIENT: "Client Company User",
 };
 
 const TEST_NAMES: Record<string, string> = {
-  ASSAY: "Drug Assay",
+  ASSAY: "Assay / Content Analysis",
   DISSOLUTION: "Dissolution",
-  IMPURITY: "Impurity Analysis",
+  IMPURITY: "Trace Impurity / Residue Screen (LC-MS/MS)",
   HPLC: "HPLC Analysis",
-  GC: "GC Analysis",
+  GC: "GCMS-MS Analysis",
   MICROBIOLOGY: "Microbiology",
+  ICPMS: "ICP-MS Elemental / Heavy Metal Analysis",
+  HPTLC: "HPTLC Fingerprinting",
+  NMR: "NMR Structural Analysis",
+  DSC_TGA: "DSC / TGA Thermal Analysis",
+  SPF: "SPF / Sunscreen Efficacy Testing",
 };
 
 const METHODS: Record<string, string> = {
-  ASSAY: "UV-HPLC validated method (GMP-1042)",
+  ASSAY: "HPLC assay, in-house validated method (Shimadzu LC-2040C)",
   DISSOLUTION: "USP <711> dissolution apparatus method",
-  IMPURITY: "HPLC Related-Substances method (GMP-1140)",
-  HPLC: "HPLC sequence RUN-2025-031",
-  GC: "GC residual-solvent method",
+  IMPURITY: "LC-MS/MS trace screen — Shimadzu LCMS-TQ RX triple-quad, MRM method TNTH-LCMS-011",
+  HPLC: "HPLC — UV/PDA/RI/Fluorescence detectors, sequence RUN-2025-031",
+  GC: "GCMS-MS residual-solvent / pesticide-residue screen (Shimadzu GCMS-TQ8050)",
   MICROBIOLOGY: "Total plate count — media PCA 48h",
+  ICPMS: "Agilent 7850 ICP-MS, USEPA 200.8 elemental scan",
+  HPTLC: "HPTLC fingerprinting, full UV range with fluorescence scan (CAMAG Linomat 5)",
+  NMR: "H-1 / P-31 NMR structural confirmation (Bruker 400 MHz)",
+  DSC_TGA: "Thermal analysis — melting point, decomposition, glass transition",
+  SPF: "In vitro SPF & UVA protection factor, water-resistance study",
 };
+
 export async function seedAll() {
-  console.log("Seeding PharmaLIMS…");
+  console.log("Seeding TNTH LIMS…");
 
   // ---- 1. Permissions ----
   const permId: Record<string, string> = {};
@@ -86,12 +97,12 @@ export async function seedAll() {
 
   // ---- 3. Users ----
   const users: [string, string, string, string, string][] = [
-    ["admin@pharmalims.io", "Admin@123", "Aarav", "Mehta", "ADMIN"],
-    ["manager@pharmalims.io", "Manager@123", "Priya", "Sharma", "MANAGER"],
-    ["qa@pharmalims.io", "Qa@123456", "Rohan", "Iyer", "QA"],
-    ["analyst@pharmalims.io", "Analyst@123", "Sneha", "Kulkarni", "ANALYST"],
-    ["micro@pharmalims.io", "Micro@123", "Divya", "Rao", "MICRO"],
-    ["client@pharmalims.io", "Client@123", "Vikram", "Nair", "CLIENT"],
+    ["admin@tnth.io", "Admin@123", "Karthik", "Subramaniam", "ADMIN"],
+    ["manager@tnth.io", "Manager@123", "Meena", "Ramachandran", "MANAGER"],
+    ["qa@tnth.io", "Qa@123456", "Suresh", "Balaji", "QA"],
+    ["analyst@tnth.io", "Analyst@123", "Divya", "Krishnan", "ANALYST"],
+    ["micro@tnth.io", "Micro@123", "Lakshmi", "Narayanan", "MICRO"],
+    ["client@tnth.io", "Client@123", "Ravi", "Chandrasekaran", "CLIENT"],
   ];
   for (const [email, pass, first, last, role] of users) {
     await prisma.user.upsert({
@@ -104,44 +115,73 @@ export async function seedAll() {
   }
 
   const get = (email: string) => prisma.user.findFirst({ where: { email } });
-  const analyst = await get("analyst@pharmalims.io");
-  const micro = await get("micro@pharmalims.io");
-  const admin = await get("admin@pharmalims.io");
-  const qa = await get("qa@pharmalims.io");
-  const manager = await get("manager@pharmalims.io");
-  const clientUser = await get("client@pharmalims.io");
+  const analyst = await get("analyst@tnth.io");
+  const micro = await get("micro@tnth.io");
+  const admin = await get("admin@tnth.io");
+  const qa = await get("qa@tnth.io");
+  const manager = await get("manager@tnth.io");
+  const clientUser = await get("client@tnth.io");
   if (!analyst || !micro || !admin || !qa || !manager || !clientUser)
     throw new Error("Base user creation failed");
 
   await seedBusiness(clientUser.id, analyst.id, micro.id, qa.id, manager.id, admin.id);
 
   await prisma.$disconnect();
-  console.log("PharmaLIMS seed complete.");
+  console.log("TNTH LIMS seed complete.");
 }
 async function seedBusiness(
   clientUserId: string, analystId: string, microId: string,
   qaId: string, managerId: string, adminId: string,
 ) {
-  // ---- Clients ----
+  // ---- Clients (TNTH's contract-testing customers) ----
   const client = await prisma.client.upsert({
     where: { code: "CL-001" }, update: {},
-    create: { code: "CL-001", name: "Zenith Pharma Ltd.", industry: "Pharmaceutical", country: "India", contactPerson: "Anika Nair", email: "clients@zenith.com" },
+    create: { code: "CL-001", name: "Sundar Pharma Formulations", industry: "Pharmaceuticals", city: "Chennai", country: "India", contactPerson: "Ravi Chandrasekaran", email: "quality@sundarpharma.example" },
   });
   await prisma.user.update({ where: { id: clientUserId }, data: { clientId: client.id } });
   const client2 = await prisma.client.upsert({
     where: { code: "CL-002" }, update: {},
-    create: { code: "CL-002", name: "MediCor Generics", country: "India", contactPerson: "Isha Desai" },
+    create: { code: "CL-002", name: "Kaveri Foods & Beverages", industry: "Food Testing", city: "Coimbatore", country: "India", contactPerson: "Anitha Selvam" },
+  });
+  const client3 = await prisma.client.upsert({
+    where: { code: "CL-003" }, update: {},
+    create: { code: "CL-003", name: "Glow Personal Care Pvt Ltd", industry: "Personal Care & Cosmetics", city: "Chennai", country: "India", contactPerson: "Priyanka Raj" },
+  });
+  const client4 = await prisma.client.upsert({
+    where: { code: "CL-004" }, update: {},
+    create: { code: "CL-004", name: "Chennai Metro Water Board", industry: "Water & Environment", city: "Chennai", country: "India", contactPerson: "Manoj Pillai" },
+  });
+  const client5 = await prisma.client.upsert({
+    where: { code: "CL-005" }, update: {},
+    create: { code: "CL-005", name: "Siddha Herbals Ayush", industry: "Ayush Testing", city: "Madurai", country: "India", contactPerson: "Gunasekaran M" },
+  });
+  const client6 = await prisma.client.upsert({
+    where: { code: "CL-006" }, update: {},
+    create: { code: "CL-006", name: "Vridhi Agro Exports", industry: "Agriculture", city: "Salem", country: "India", contactPerson: "Kavitha Muthu" },
+  });
+  const client7 = await prisma.client.upsert({
+    where: { code: "CL-007" }, update: {},
+    create: { code: "CL-007", name: "GenNext Biotech Labs", industry: "Bio Technology", city: "Chennai", country: "India", contactPerson: "Arjun Vetri" },
+  });
+  const client8 = await prisma.client.upsert({
+    where: { code: "CL-008" }, update: {},
+    create: { code: "CL-008", name: "Chennai Polymers & Plastics", industry: "Polymer Testing", city: "Chennai", country: "India", contactPerson: "Naveen Kumar" },
   });
 
-  // ---- Instruments ----
+  // ---- Instruments (TNTH's actual fleet) ----
   const INSTR = [
     ["HPLC-01", "HPLC System A", "HPLC", "Shimadzu", "LC-2040C"],
     ["HPLC-02", "HPLC System B", "HPLC", "Agilent", "1260 Infinity"],
-    ["GC-01", "GC System A", "GC", "Shimadzu", "GC-2030"],
+    ["LCMSMS-01", "LC-MS/MS Triple Quadrupole", "LCMSMS", "Shimadzu", "LCMS-TQ RX"],
+    ["GCMSMS-01", "GCMS-MS System", "GC", "Shimadzu", "GCMS-TQ8050"],
+    ["ICPMS-01", "ICP-MS Elemental Analyzer", "ICPMS", "Agilent", "7850"],
     ["DISS-01", "Dissolution Apparatus", "DISSOLUTION", "Lab India", "DIS-8000"],
     ["MIC-01", "Microbiology Incubator", "MICROBIOLOGY", "ThermoLab", "INC-45"],
     ["STAB-01", "Stability Chamber", "STABILITY_CHAMBER", "Memmert", "C-150"],
-    ["SP-01", "UV-Vis Spectrometer", "SPECTROPHOTOMETER", "PerkinElmer", "LAMBDA 365"],
+    ["HPTLC-01", "HPTLC Fingerprinting System", "HPTLC", "CAMAG", "Linomat 5"],
+    ["NMR-01", "NMR Spectrometer", "NMR", "Bruker", "400 MHz Avance"],
+    ["DSC-01", "DSC/TGA Thermal Analyzer", "DSC_TGA", "Mettler Toledo", "TGA/DSC 3+"],
+    ["SPF-01", "SPF / UVA Tester", "SPF", "Labsphere", "UV-2000S"],
   ];
   const instrId: Record<string, string> = {};
   for (const [code, name, category, mfr, model] of INSTR) {
@@ -153,31 +193,37 @@ async function seedBusiness(
         status: code === "HPLC-01" ? "IN_USE" : "AVAILABLE",
         calibrationFrequency: 365,
         lastCalibrated: ago(50), nextCalibration: ahead(315),
-        calibrationStatus: "VALID", location: "Main Analytical Lab",
+        calibrationStatus: "VALID", location: "TNTH Main Lab, Vanagaram, Chennai",
       },
     });
     instrId[code] = inst.id;
   }
 
   // ---- Products ----
-  const PROD: [string, string, string, string][] = [
-    ["PRD-0001", "Amoxicillin 500 mg Capsules", "500 mg", "Amoxicillin trihydrate"],
-    ["PRD-0002", "Paracetamol 650 mg Tablets", "650 mg", "Paracetamol"],
-    ["PRD-0003", "Cetirizine 10 mg Tablets", "10 mg", "Cetirizine hydrochloride"],
-    ["PRD-0004", "Diclofenac Gel 1.5%", "1.5%", "Diclofenac"],
-    ["PRD-0005", "Vitamin D3 1000 IU Softgels", "1000 IU", "Cholecalciferol"],
+  const PROD: [string, string, string, string, string][] = [
+    ["PRD-0001", "Amoxicillin 500 mg Capsules", "500 mg", "Amoxicillin trihydrate", "CL-001"],
+    ["PRD-0002", "Paracetamol 650 mg Tablets", "650 mg", "Paracetamol", "CL-001"],
+    ["PRD-0003", "Turmeric Powder (spice export lot)", "1 kg pack", "—", "CL-002"],
+    ["PRD-0004", "Sunscreen Cream SPF 50", "100 g tube", "—", "CL-003"],
+    ["PRD-0005", "Vitamin D3 1000 IU Softgels", "1000 IU", "Cholecalciferol", "CL-001"],
+    ["PRD-0006", "Packaged Drinking Water", "20 L jar", "—", "CL-004"],
+    ["PRD-0007", "Herbal Extract — Ashwagandha", "500 g", "Withanolides", "CL-005"],
+    ["PRD-0008", "Basmati Rice — Pesticide Residue", "1 kg pack", "—", "CL-006"],
+    ["PRD-0009", "Recombinant Protein Batch", "50 mg vial", "—", "CL-007"],
+    ["PRD-0010", "PET Resin Pellets", "1 kg pack", "—", "CL-008"],
   ];
   const prodId: Record<string, string> = {};
-  let prodSeq = 1;
-  for (const [code, name, dosage, ing] of PROD) {
+  const clientByCode: Record<string, { id: string }> = {
+    "CL-001": client, "CL-002": client2, "CL-003": client3, "CL-004": client4,
+    "CL-005": client5, "CL-006": client6, "CL-007": client7, "CL-008": client8,
+  };
+  for (const [code, name, dosage, ing, ccode] of PROD) {
     const existing = await prisma.product.findUnique({ where: { code } });
     if (existing) { prodId[code] = existing.id; continue; }
-    const clientOf = code === "PRD-0003" || code === "PRD-0004" ? client2 : client;
     const p = await prisma.product.create({
-      data: { code, name, dosage, activeIngredient: ing, clientId: clientOf.id, description: `${dosage} ${name}` },
+      data: { code, name, dosage, activeIngredient: ing, clientId: clientByCode[ccode].id, description: `${dosage} ${name}` },
     });
     prodId[code] = p.id;
-    prodSeq++;
   }
 
   // ---- Batches ----
@@ -185,8 +231,13 @@ async function seedBusiness(
     ["PRD-0001", `${Y}-AMX-001`, 60, "TESTING", 25],
     ["PRD-0001", `${Y}-AMX-002`, 90, "RELEASED", 20],
     ["PRD-0002", `${Y}-PRC-001`, 40, "TESTING", 30],
-    ["PRD-0003", `${Y}-CET-001`, 55, "RELEASED", 18],
-    ["PRD-0005", `${Y}-D3-001`, 35, "REJECTED", 22],
+    ["PRD-0003", `${Y}-TUR-001`, 200, "RELEASED", 18],
+    ["PRD-0004", `${Y}-SPF-001`, 120, "REJECTED", 22],
+    ["PRD-0006", `${Y}-WTR-001`, 500, "TESTING", 3],
+    ["PRD-0007", `${Y}-ASH-001`, 40, "RELEASED", 12],
+    ["PRD-0008", `${Y}-RIC-001`, 300, "TESTING", 8],
+    ["PRD-0009", `${Y}-BIO-001`, 5, "RELEASED", 15],
+    ["PRD-0010", `${Y}-PET-001`, 250, "TESTING", 5],
   ];
   const batchNum = new Set<string>();
   for (const [pcode, num, qty, status, mfdAgo] of BATCH) {
@@ -202,7 +253,7 @@ async function seedBusiness(
       },
     });
   }
-// ---- Batch index ----
+  // ---- Batch index ----
   const allBatches = await prisma.batch.findMany();
   const batchByNum: Record<string, string> = {};
   for (const b of allBatches) batchByNum[b.batchNumber] = b.id;
@@ -210,14 +261,21 @@ async function seedBusiness(
   // ---- Samples ----
   type SampleDef = { pcode: string; batch?: string; recv: number; status: string; prio: string; ttype: string; amount: number; cond: string; loc: string };
   const SAMPLES: SampleDef[] = [
-    { pcode: "PRD-0001", batch: `${Y}-AMX-01`, recv: 6, status: "TESTING", prio: "RUSH", ttype: "ASSAY", amount: 12, cond: "15-25°C", loc: "A-01" },
-    { pcode: "PRD-0001", batch: `${Y}-AMX-02`, recv: 12, status: "APPROVED", prio: "NORMAL", ttype: "ASSAY", amount: 10, cond: "15-25°C", loc: "A-02" },
-    { pcode: "PRD-0003", batch: `${Y}-CET-001`, recv: 9, status: "REVIEW", prio: "NORMAL", ttype: "DISSOLUTION", amount: 18, cond: "15-25°C", loc: "B-03" },
-    { pcode: "PRD-0002", batch: `${Y}-PRC-001`, recv: 3, status: "REVIEW", prio: "HIGH", ttype: "IMPURITY", amount: 20, cond: "15-25°C", loc: "A-04" },
-    { pcode: "PRD-0005", batch: `${Y}-D3-001`, recv: 15, status: "REJECTED", prio: "NORMAL", ttype: "ASSAY", amount: 8, cond: "15-25°C", loc: "B-01" },
-    { pcode: "PRD-0001", batch: `${Y}-AMX-03`, recv: 1, status: "RECEIVED", prio: "RUSH", ttype: "ASSAY", amount: 16, cond: "15-25°C", loc: "A-05" },
-    { pcode: "PRD-0003", batch: `${Y}-CET-02`, recv: 45, status: "RELEASED", prio: "LOW", ttype: "MICROBIOLOGY", amount: 14, cond: "2-8°C", loc: "C-01" },
-    { pcode: "PRD-0004", batch: `${Y}-DIC-01`, recv: 60, status: "ARCHIVED", prio: "LOW", ttype: "ASSAY", amount: 9, cond: "15-25°C", loc: "C-02" },
+    { pcode: "PRD-0001", batch: `${Y}-AMX-001`, recv: 6, status: "TESTING", prio: "RUSH", ttype: "ASSAY", amount: 12, cond: "15-25°C", loc: "A-01" },
+    { pcode: "PRD-0001", batch: `${Y}-AMX-002`, recv: 12, status: "APPROVED", prio: "NORMAL", ttype: "ASSAY", amount: 10, cond: "15-25°C", loc: "A-02" },
+    { pcode: "PRD-0002", batch: `${Y}-PRC-001`, recv: 9, status: "REVIEW", prio: "NORMAL", ttype: "DISSOLUTION", amount: 18, cond: "15-25°C", loc: "B-03" },
+    { pcode: "PRD-0003", batch: `${Y}-TUR-001`, recv: 3, status: "REVIEW", prio: "HIGH", ttype: "IMPURITY", amount: 20, cond: "15-25°C", loc: "A-04" },
+    { pcode: "PRD-0003", batch: `${Y}-TUR-001`, recv: 4, status: "RELEASED", prio: "NORMAL", ttype: "GC", amount: 15, cond: "15-25°C", loc: "A-06" },
+    { pcode: "PRD-0004", batch: `${Y}-SPF-001`, recv: 15, status: "REJECTED", prio: "NORMAL", ttype: "ASSAY", amount: 8, cond: "15-25°C", loc: "B-01" },
+    { pcode: "PRD-0001", batch: `${Y}-AMX-001`, recv: 1, status: "RECEIVED", prio: "RUSH", ttype: "ASSAY", amount: 16, cond: "15-25°C", loc: "A-05" },
+    { pcode: "PRD-0002", batch: `${Y}-PRC-001`, recv: 45, status: "RELEASED", prio: "LOW", ttype: "MICROBIOLOGY", amount: 14, cond: "2-8°C", loc: "C-01" },
+    { pcode: "PRD-0005", batch: `${Y}-AMX-001`, recv: 60, status: "ARCHIVED", prio: "LOW", ttype: "HPLC", amount: 9, cond: "15-25°C", loc: "C-02" },
+    { pcode: "PRD-0006", batch: `${Y}-WTR-001`, recv: 2, status: "TESTING", prio: "RUSH", ttype: "ICPMS", amount: 2, cond: "2-8°C", loc: "D-01" },
+    { pcode: "PRD-0006", batch: `${Y}-WTR-001`, recv: 2, status: "REVIEW", prio: "NORMAL", ttype: "MICROBIOLOGY", amount: 1, cond: "2-8°C", loc: "D-02" },
+    { pcode: "PRD-0007", batch: `${Y}-ASH-001`, recv: 9, status: "RELEASED", prio: "NORMAL", ttype: "HPTLC", amount: 6, cond: "15-25°C", loc: "E-01" },
+    { pcode: "PRD-0008", batch: `${Y}-RIC-001`, recv: 5, status: "TESTING", prio: "HIGH", ttype: "GC", amount: 20, cond: "15-25°C", loc: "F-01" },
+    { pcode: "PRD-0009", batch: `${Y}-BIO-001`, recv: 10, status: "RELEASED", prio: "NORMAL", ttype: "NMR", amount: 3, cond: "2-8°C", loc: "G-01" },
+    { pcode: "PRD-0010", batch: `${Y}-PET-001`, recv: 4, status: "REVIEW", prio: "NORMAL", ttype: "DSC_TGA", amount: 5, cond: "15-25°C", loc: "H-01" },
   ];
   const sampleSeq = await prisma.sample.count();
   let srun = 0;
@@ -246,7 +304,7 @@ async function seedBusiness(
     }
   }
   console.log("  samples ✓");
-// ---- Test seeding per sample ----
+  // ---- Test seeding per sample ----
   async function seedTestsFor(
     sampleId: string, s: SampleDef, _prodId: string,
     analystId: string, microId: string, qaId: string, managerId: string,
@@ -254,7 +312,10 @@ async function seedBusiness(
   ) {
     const instrumentByType: Record<string, string> = {
       ASSAY: instr["HPLC-01"], DISSOLUTION: instr["DISS-01"],
-      IMPURITY: instr["HPLC-02"], MICROBIOLOGY: instr["MIC-01"],
+      IMPURITY: instr["LCMSMS-01"], MICROBIOLOGY: instr["MIC-01"],
+      HPLC: instr["HPLC-02"], GC: instr["GCMSMS-01"],
+      ICPMS: instr["ICPMS-01"], HPTLC: instr["HPTLC-01"],
+      NMR: instr["NMR-01"], DSC_TGA: instr["DSC-01"], SPF: instr["SPF-01"],
     };
     const instrumentId = instrumentByType[s.ttype];
     const testCount = await prisma.test.count();
@@ -310,16 +371,16 @@ async function seedBusiness(
           timepoints: [
             { t: 15, p: 62 }, { t: 30, p: 84 }, { t: 45, p: 96 }, { t: 60, p: 98 },
           ],
-          observations: "Creamy profile within spec", pass,
+          observations: "Dissolution profile within spec", pass,
         },
       });
     } else if (s.ttype === "IMPURITY") {
       await prisma.impurityResult.create({
         data: {
-          testId: test.id, impurityName: "Related Substance RRT ~1.1",
-          type: "RELATED_SUBSTANCE", specLimit: "≤ 0.15%", specMax: 0.15,
-          observedValue: pass ? 0.08 : 0.28,
-          analyticalMethod: "HPLC-2", instrumentId: instr["HPLC-02"], status: "COMPLETED",
+          testId: test.id, impurityName: "Pesticide Residue Screen (multi-residue)",
+          type: "RELATED_SUBSTANCE", specLimit: "≤ 0.10 ppm", specMax: 0.10,
+          observedValue: pass ? 0.02 : 0.28,
+          analyticalMethod: "LC-MS/MS", instrumentId: instr["LCMSMS-01"], status: "COMPLETED",
         },
       });
     } else if (s.ttype === "MICROBIOLOGY") {
@@ -335,7 +396,7 @@ async function seedBusiness(
     const next = await prisma.test.update({
       where: { id: test.id },
       data: {
-        result: s.ttype === "ASSAY" && status === "REJECTED" ? "FAIL" : status === "APPROVED" ? "PASS" : undefined,
+        result: status === "REJECTED" ? "FAIL" : status === "APPROVED" ? "PASS" : undefined,
         resultStatus: status === "REJECTED" ? "FAIL" : status === "APPROVED" ? "PASS" : undefined,
         reviewedById: status === "APPROVED" || status === "REVIEW" ? managerId : undefined,
         reviewedAt: status === "APPROVED" ? ago(2) : undefined,
@@ -352,12 +413,11 @@ async function seedBusiness(
   function methodFor(type: string) {
     return METHODS[type] ?? "In-house validated method";
   }
-// ---- Stability studies ----
+  // ---- Stability studies ----
   const sCount = await prisma.stabilityStudy.count();
-  const studyCodes = [`${Y}-STD-001`, `${Y}-STD-002`];
   const studies = [
     { product: "PRD-0001", protocol: "LONG_TERM", cond: "25°C / 60% RH", start: 0 },
-    { product: "PRD-0003", protocol: "ACCELERATED", cond: "40°C / 75% RH", start: 45 },
+    { product: "PRD-0002", protocol: "ACCELERATED", cond: "40°C / 75% RH", start: 45 },
   ];
   let si = sCount;
   for (const st of studies) {
@@ -397,9 +457,9 @@ async function seedBusiness(
   const devCodes = [`DEV-${Y}-${pad(devCount + 1, 4)}`, `DEV-${Y}-${pad(devCount + 2, 4)}`];
   const dev1 = await prisma.deviation.create({
     data: {
-      deviationId: devCodes[0], description: "Recovery above upper limit on HPLC-01 during assay run.",
-      category: "ANALYTICAL", impactLevel: "MAJOR", rootCause: "Incorrect diluent pH > calibration range",
-      correctiveAction: "Re-run after buffer pH correction; re-train analyst",
+      deviationId: devCodes[0], description: "Recovery above upper limit on LC-MS/MS during trace pesticide screen.",
+      category: "ANALYTICAL", impactLevel: "MAJOR", rootCause: "Matrix effect not corrected by internal standard",
+      correctiveAction: "Re-run with matrix-matched calibration; re-train analyst",
       status: "INVESTIGATING", reportedById: analystId,
     },
   });
@@ -416,7 +476,7 @@ async function seedBusiness(
 
   const capaCount = await prisma.capa.count();
   const capa = await prisma.capa.create({
-    data: { capaId: `CAPA-${Y}-${pad(capaCount + 1, 4)}`, title: "Buffer pH control procedure review", type: "PREVENTIVE", description: "Prevent recurrence of pH deviation", action: "Update SOP BUF-101 with QR verification", ownerId: qaId, dueDate: ahead(30), status: "IN_PROGRESS" },
+    data: { capaId: `CAPA-${Y}-${pad(capaCount + 1, 4)}`, title: "LC-MS/MS calibration procedure review", type: "PREVENTIVE", description: "Prevent recurrence of matrix-effect deviation", action: "Update SOP LCMS-101 with matrix-matched calibration requirement", ownerId: qaId, dueDate: ahead(30), status: "IN_PROGRESS" },
   });
   void capa;
 
@@ -424,11 +484,11 @@ async function seedBusiness(
   const cc = await prisma.changeControl.create({
     data: {
       ccId: `CC-${Y}-${pad(ccCount + 1, 4)}`,
-      title: "HPLC column change on Instrument M",
+      title: "HPLC column change on Instrument B",
       category: "EQUIPMENT",
       description: "Replace HPLC column with equivalent bonded C18",
       justification: "Degraded column",
-      proposedBy: "Priya Sharma",
+      proposedBy: "Meena Ramachandran",
       impactAnalysis: { risk: "medium", validation: "Partial IQ/OQ required" },
       status: "IMPACT_REVIEW",
     },
@@ -436,13 +496,13 @@ async function seedBusiness(
   void cc;
 
   console.log("  QA records ✓");
-// ---- Documents ----
+  // ---- Documents ----
   const docCount = await prisma.document.count();
   const docs: [string, string, string][] = [
     ["SOP-Sampling", "SOP — Sample Receipt & Logging", "SOP"],
-    ["TMK-1042", "Analytical Method — Drug Assay (UV-HPLC)", "TEST_METHOD"],
+    ["TMK-1042", "Analytical Method — Assay (HPLC)", "TEST_METHOD"],
     ["SOP-INC", "SOP — Incubator Operation & Monitoring", "SOP"],
-    ["VAL-101", "Validation Report — HPLC System", "VALIDATION"],
+    ["VAL-101", "Validation Report — LC-MS/MS System", "VALIDATION"],
     ["COA-TPL", "Certificate of Analysis Template", "COA"],
   ];
   let dn = docCount;
@@ -490,13 +550,13 @@ async function seedBusiness(
     return { ASSAY: "ASSAY", DISSOLUTION: "DISSOLUTION", IMPURITY: "IMPURITY", MICROBIOLOGY: "MICROBIOLOGY", HPLC: "HPLC", GC: "GC" }[type] ?? "TEST";
   }
   console.log("  reports ✓");
-// ---- Invoices ----
+  // ---- Invoices ----
   const invCount = await prisma.invoice.count();
   const samplesForInv = await prisma.sample.findMany({ where: { clientId: client.id }, take: 4 });
   const inv = await prisma.invoice.create({
     data: {
       number: `INV-${Y}-${pad(invCount + 1, 4)}`,
-      amount: samplesForInv.length * 1800, currency: "USD",
+      amount: samplesForInv.length * 1800, currency: "INR",
       status: samplesForInv.some((s) => s.status === "RELEASED") ? "PAID" : "UNPAID",
       issuedAt: ago(3), dueAt: ahead(12),
       clientId: client.id,

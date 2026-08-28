@@ -4,7 +4,16 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import { logAudit } from "@/lib/audit";
-import { nextSampleCode } from "@/lib/ids";
+import { nextSampleCode, pad } from "@/lib/ids";
+import { INDUSTRIES } from "@/lib/industries";
+
+function testLabelFor(code: string): string {
+  for (const industry of INDUSTRIES) {
+    const sub = industry.subcategories.find((s) => s.slug === code);
+    if (sub) return sub.name;
+  }
+  return code;
+}
 
 export interface ActionResult {
   ok: boolean;
@@ -66,6 +75,25 @@ export async function createSample(formData: FormData): Promise<ActionResult> {
       note: `Registered by ${user.firstName} ${user.lastName}`,
     },
   });
+
+  // Auto-create a trackable test request for each selected service so it
+  // immediately shows up in the worksheet / QA review pipeline.
+  const testSeqBase = await prisma.test.count();
+  for (const [idx, code] of requestedTests.entries()) {
+    const requestCode = `TST-${new Date().getFullYear()}-${pad(testSeqBase + idx + 1, 4)}`;
+    await prisma.test.create({
+      data: {
+        requestCode,
+        sampleId: sample.id,
+        type: code,
+        testName: `${testLabelFor(code)} — ${productName}`,
+        method: "Standard operating procedure — pending analyst confirmation",
+        status: "ASSIGNED",
+        priority: String(formData.get("priority") ?? "NORMAL"),
+        dueDate: new Date(Date.now() + 6 * 86400000),
+      },
+    });
+  }
 
   await logAudit(user.id, {
     action: "SAMPLE_CREATED",

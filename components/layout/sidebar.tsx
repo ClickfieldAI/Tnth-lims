@@ -10,20 +10,20 @@ import { cn } from "@/lib/utils";
 export function SidebarContent({ groups }: { groups: NavGroup[] }) {
   const pathname = usePathname();
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex items-center gap-2 px-4 py-4">
-        <div className="flex h-8 w-8 items-center justify-center rounded-md bg-indigo-600 text-sm font-bold text-white">
+    <div className="flex h-full flex-col bg-slate-950">
+      <div className="flex items-center gap-2.5 px-4 py-5">
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 text-sm font-bold text-white shadow-[0_0_0_1px_rgba(255,255,255,0.08)]">
           Φ
         </div>
         <div className="min-w-0">
-          <p className="text-sm font-bold tracking-tight text-slate-900">PharmaLIMS</p>
-          <p className="text-[10.5px] text-slate-500">GMP Testing Laboratory</p>
+          <p className="text-sm font-bold tracking-tight text-white">TNTH LIMS</p>
+          <p className="text-[10.5px] text-slate-400">Multi-Discipline Testing Lab</p>
         </div>
       </div>
       <nav className="mt-1 flex-1 space-y-0.5 overflow-y-auto px-3 py-2">
         {groups.map((g) => (
-          <div key={g.group}>
-            <p className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-400">{g.group}</p>
+          <div key={g.group} className="mb-1">
+            <p className="px-3 py-1.5 text-[10.5px] font-semibold uppercase tracking-wider text-slate-500">{g.group}</p>
             {g.items.map((item) => {
               const active = pathname === item.href;
               const Icon = item.icon;
@@ -32,11 +32,13 @@ export function SidebarContent({ groups }: { groups: NavGroup[] }) {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-2.5 rounded-md px-3 py-2 text-[13px] font-medium transition-colors",
-                    active ? "bg-indigo-600 text-white" : "text-slate-600 hover:bg-slate-100",
+                    "group relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-all",
+                    active
+                      ? "bg-indigo-600 text-white shadow-sm"
+                      : "text-slate-400 hover:bg-white/5 hover:text-slate-100",
                   )}
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className={cn("h-4 w-4 transition-colors", active ? "text-white" : "text-slate-500 group-hover:text-slate-200")} />
                   {item.label}
                 </Link>
               );
@@ -44,7 +46,7 @@ export function SidebarContent({ groups }: { groups: NavGroup[] }) {
           </div>
         ))}
       </nav>
-      <div className="px-4 py-3 text-[10.5px] text-slate-400">v1.0 · ISO 17025 / GMP</div>
+      <div className="border-t border-white/5 px-4 py-3 text-[10.5px] text-slate-500">v1.0 · ISO 17025 / GMP</div>
     </div>
   );
 }
@@ -52,7 +54,7 @@ export function SidebarContent({ groups }: { groups: NavGroup[] }) {
 export function Sidebar({ role }: { role?: RoleCode }) {
   const groups = navForRole(role);
   return (
-    <aside className="sticky top-0 hidden h-screen w-60 border-r border-slate-200 bg-white lg:block">
+    <aside className="sticky top-0 hidden h-screen w-60 lg:block">
       <SidebarContent groups={groups} />
     </aside>
   );
@@ -63,10 +65,10 @@ export function MobileSidebar({ role, onClose }: { role?: RoleCode; onClose: () 
   return (
     <div className="fixed inset-0 z-50 lg:hidden">
       <div className="absolute inset-0 bg-slate-950/60" onClick={onClose} />
-      <div className="absolute left-0 top-0 h-full w-64 border-r bg-white p-0">
+      <div className="absolute left-0 top-0 h-full w-64 p-0 shadow-2xl">
         <button
           onClick={onClose}
-          className="absolute right-2 top-2 rounded-md p-1.5 text-slate-500 hover:bg-slate-100"
+          className="absolute right-2 top-2 rounded-md p-1.5 text-slate-400 hover:bg-white/10"
           aria-label="Close menu"
         >
           <X className="h-4 w-4" />

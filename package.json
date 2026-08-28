@@ -9,6 +9,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "prod": "next build && next start -p 4440",
     "lint": "eslint",
     "postinstall": "prisma generate",
     "db:generate": "prisma generate",
