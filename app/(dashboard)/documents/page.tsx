@@ -30,7 +30,7 @@ export default async function DocumentsPage() {
   return (
     <div className="space-y-5">
       <PageHeader
-        eyebrow="Quality"
+        eyebrow="Business"
         title="Document Management"
         description="Controlled SOPs, test methods, validation packages and certificates with version control and digital approval."
         image="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1000&q=80&auto=format&fit=crop"

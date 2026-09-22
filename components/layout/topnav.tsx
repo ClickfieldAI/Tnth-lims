@@ -110,21 +110,15 @@ export function TopNav({
 function GroupMenu({ group, pathname }: { group: NavGroup; pathname: string }) {
   const hasActive = group.items.some((i) => i.href === pathname);
   return (
-    <div className="group relative flex h-full items-center">
+    <div className="group relative flex h-full items-center py-2.5">
       <button
         className={cn(
-          "relative flex h-full items-center gap-1 px-3 text-[13.5px] font-medium transition-colors duration-200",
-          hasActive ? "text-brand-700" : "text-slate-600 hover:text-slate-900",
+          "flex items-center gap-1 rounded-full px-3.5 py-1.5 text-[13.5px] font-medium transition-colors duration-200",
+          hasActive ? "bg-brand-50 text-brand-700" : "text-slate-600 hover:bg-slate-900/[0.04] hover:text-slate-900",
         )}
       >
         {group.group}
         <ChevronDown className="h-3 w-3 text-slate-400 transition-transform duration-200 group-hover:rotate-180" />
-        <span
-          className={cn(
-            "absolute inset-x-3 bottom-0 h-[2px] rounded-full bg-brand-600 transition-opacity duration-200",
-            hasActive ? "opacity-100" : "opacity-0",
-          )}
-        />
       </button>
       <div className="invisible absolute left-0 top-full z-50 w-56 translate-y-1 rounded-lg border border-[var(--border-soft)] bg-white p-1 opacity-0 shadow-[var(--shadow-md)] transition-all duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
         {group.items.map((item) => {

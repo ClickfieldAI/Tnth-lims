@@ -2,6 +2,7 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
+import { Hero } from "@/components/layout/hero";
 
 const tones: Record<string, string> = {
   indigo: "bg-brand-500/10 text-brand-600",
@@ -36,6 +37,11 @@ export function StatCard({
   );
 }
 
+// PageHeader is a thin alias over the shared `Hero` banner component — every
+// module (Operations, Testing, Quality, Business, Services) renders its
+// category/title/description/image/action through this ONE implementation,
+// so the image is always a full header visual (never a title-side icon) and
+// every module gets layout fixes automatically.
 export function PageHeader({
   title,
   description,
@@ -49,29 +55,7 @@ export function PageHeader({
   eyebrow?: string;
   image?: string;
 }) {
-  return (
-    <div className="flex flex-col gap-4 border-b border-[var(--border-soft)] pb-5 sm:flex-row sm:items-end sm:justify-between">
-      <div className="flex items-start gap-4">
-        {image ? (
-          <div className="relative hidden h-14 w-14 shrink-0 overflow-hidden rounded-lg border border-[var(--border-soft)] sm:block">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={image} alt="" className="h-full w-full object-cover" />
-          </div>
-        ) : null}
-        <div>
-          {eyebrow ? (
-            <p className="mb-1.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.08em] text-brand-600">
-              <span className="h-px w-4 bg-brand-600" />
-              {eyebrow}
-            </p>
-          ) : null}
-          <h1 className="text-[26px] font-bold leading-tight tracking-tight text-[#12151a] sm:text-[30px]">{title}</h1>
-          {description ? <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-slate-500">{description}</p> : null}
-        </div>
-      </div>
-      {actions ? <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div> : null}
-    </div>
-  );
+  return <Hero eyebrow={eyebrow} title={title} subtitle={description} image={image} actions={actions} />;
 }
 
 export function ProgressBar({ value, className, tone = "indigo" }: { value: number; className?: string; tone?: string }) {
