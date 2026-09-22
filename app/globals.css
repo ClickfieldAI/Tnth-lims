@@ -80,3 +80,20 @@ body {
   background: #a2d3a9;
   border-radius: 8px;
 }
+
+/* Branded splash screen (app/loading.tsx, app/error.tsx) */
+@keyframes tnth-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-tnth-fade-in {
+  animation: tnth-fade-in 600ms ease-out both;
+}
+
+@keyframes tnth-dot {
+  0%, 80%, 100% { opacity: 0.25; }
+  40% { opacity: 1; }
+}
+.animate-tnth-dot {
+  animation: tnth-dot 1.2s ease-in-out infinite;
+}
