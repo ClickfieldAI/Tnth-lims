@@ -44,7 +44,7 @@ export default async function IndustrySubcategoriesPage({ params }: { params: Pr
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           {industry.subcategories.map((sub) => (
             <Link key={sub.slug} href={`/industries/${industry.slug}/${sub.slug}`}>
-              <div className="group flex h-full flex-col rounded-xl border border-slate-200/80 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_8px_24px_rgba(79,70,229,0.12)]">
+              <div className="group flex h-full flex-col rounded-md border border-slate-200/80 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_8px_24px_rgba(79,70,229,0.12)]">
                 <div className="flex items-start justify-between gap-2">
                   <h3 className="text-sm font-semibold tracking-tight text-slate-900">{sub.name}</h3>
                   <ArrowUpRight className="h-4 w-4 shrink-0 text-slate-300 transition group-hover:text-brand-500" />

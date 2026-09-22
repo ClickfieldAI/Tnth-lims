@@ -22,16 +22,10 @@ export function StatCard({
   tone = "indigo",
 }: { label: string; value: React.ReactNode; sub?: string; trend?: "up" | "down"; icon?: React.ReactNode; tone?: string }) {
   return (
-    <div className="group relative overflow-hidden rounded-2xl border border-[var(--border-soft)] bg-[var(--surface)] px-5 py-5 shadow-[var(--shadow-xs)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">
-      <div
-        className={cn(
-          "pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100",
-          tones[tone] ?? tones.indigo,
-        )}
-      />
+    <div className="rounded-lg border border-[var(--border-soft)] bg-[var(--surface)] px-5 py-5 shadow-[var(--shadow-xs)] transition-shadow duration-150 hover:shadow-[var(--shadow-sm)]">
       <div className="relative flex items-center justify-between">
         <p className="text-[13px] font-medium text-slate-500">{label}</p>
-        {icon ? <span className={cn("flex h-9 w-9 items-center justify-center rounded-xl", tones[tone] ?? tones.indigo)}>{icon}</span> : null}
+        {icon ? <span className={cn("flex h-9 w-9 items-center justify-center rounded-md", tones[tone] ?? tones.indigo)}>{icon}</span> : null}
       </div>
       <p className="relative mt-2 text-2xl font-semibold tracking-tight text-[#14162b]">{value}</p>
       <div className="relative mt-1 flex items-center gap-1.5 text-xs">

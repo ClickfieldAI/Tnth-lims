@@ -72,7 +72,7 @@ export function LoginForm() {
       {error ? <p className="text-xs font-medium text-rose-600">{error}</p> : null}
       <button
         disabled={pending}
-        className="h-10 w-full rounded-lg brand-gradient text-sm font-semibold text-white shadow-[var(--shadow-glow)] transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-60"
+        className="h-10 w-full rounded-md bg-brand-700 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:opacity-60"
       >
         {pending ? "Signing in…" : "Sign in"}
       </button>

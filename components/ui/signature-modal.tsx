@@ -67,7 +67,7 @@ export function SignatureButton({
       {open ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-[#0c0b1a]/60 backdrop-blur-sm" onClick={close} />
-          <div className="relative w-full max-w-sm rounded-2xl border border-[var(--border-soft)] bg-white p-5 shadow-[var(--shadow-lg)]">
+          <div className="relative w-full max-w-sm rounded-lg border border-[var(--border-soft)] bg-white p-5 shadow-[var(--shadow-lg)]">
             <button
               type="button"
               onClick={close}
@@ -77,7 +77,7 @@ export function SignatureButton({
               <X className="h-4 w-4" />
             </button>
             <div className="flex items-center gap-2.5">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-500/10 text-brand-600">
+              <span className="flex h-9 w-9 items-center justify-center rounded-md bg-brand-500/10 text-brand-600">
                 <ShieldCheck className="h-4 w-4" />
               </span>
               <div>

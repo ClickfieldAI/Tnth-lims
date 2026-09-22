@@ -72,7 +72,7 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ sl
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
-          <div className="rounded-xl border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+          <div className="rounded-md border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
             <div className="border-b border-slate-100 px-5 py-4">
               <h3 className="text-sm font-semibold text-slate-800">Test requests</h3>
               <p className="text-xs text-slate-500">{subcategory.description}</p>
@@ -113,7 +113,7 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ sl
           </div>
 
           <div className="space-y-6">
-            <div className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+            <div className="rounded-md border border-slate-200/80 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
               <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400">Techniques &amp; methods</p>
               <div className="flex flex-wrap gap-2">
                 {subcategory.techniques.map((t) => (
@@ -122,7 +122,7 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ sl
               </div>
             </div>
 
-            <div className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+            <div className="rounded-md border border-slate-200/80 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
               <p className="mb-3 text-[11px] font-semibold uppercase tracking-wide text-slate-400">Other services in {industry.name}</p>
               <div className="flex flex-col gap-1">
                 {industry.subcategories.filter((s) => s.slug !== subcategory.slug).map((s) => (

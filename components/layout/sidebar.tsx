@@ -10,9 +10,9 @@ import { cn } from "@/lib/utils";
 export function SidebarContent({ groups }: { groups: NavGroup[] }) {
   const pathname = usePathname();
   return (
-    <div className="flex h-full flex-col bg-[#14122a]">
+    <div className="flex h-full flex-col bg-[#0f1c26]">
       <div className="flex items-center gap-2.5 px-4 py-5">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl brand-gradient text-sm font-bold text-white shadow-[var(--shadow-glow)]">
+        <div className="flex h-9 w-9 items-center justify-center rounded-md border border-white/10 bg-brand-700 text-sm font-bold text-white">
           Φ
         </div>
         <div className="min-w-0">
@@ -32,9 +32,9 @@ export function SidebarContent({ groups }: { groups: NavGroup[] }) {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "group relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-all",
+                    "group relative flex items-center gap-2.5 rounded-md px-3 py-2 text-[13px] font-medium transition-colors",
                     active
-                      ? "brand-gradient text-white shadow-[var(--shadow-glow)]"
+                      ? "bg-brand-700 text-white"
                       : "text-slate-400 hover:bg-white/[0.06] hover:text-slate-100",
                   )}
                 >
@@ -64,7 +64,7 @@ export function MobileSidebar({ role, onClose }: { role?: RoleCode; onClose: () 
   const groups = navForRole(role);
   return (
     <div className="fixed inset-0 z-50 lg:hidden">
-      <div className="absolute inset-0 bg-[#0c0b1a]/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-[#0d151c]/60 backdrop-blur-sm" onClick={onClose} />
       <div className="absolute left-0 top-0 h-full w-64 p-0 shadow-2xl">
         <button
           onClick={onClose}

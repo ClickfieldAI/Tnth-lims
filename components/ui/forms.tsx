@@ -75,7 +75,7 @@ export function Divider({ className }: { className?: string }) {
 
 export function EmptyState({ icon, title, description, action }: { icon?: React.ReactNode; title: string; description?: string; action?: React.ReactNode }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-slate-300 bg-[var(--surface-muted)] px-6 py-12 text-center">
+    <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-slate-300 bg-[var(--surface-muted)] px-6 py-12 text-center">
       {icon ? <div className="text-slate-400">{icon}</div> : null}
       <h3 className="text-sm font-semibold text-slate-700">{title}</h3>
       {description ? <p className="text-xs text-slate-500 max-w-md">{description}</p> : null}

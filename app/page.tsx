@@ -34,7 +34,7 @@ export default async function HomePage() {
             const Icon = ind.icon;
             return (
               <Link key={ind.slug} href={`/industries/${ind.slug}`}>
-                <div className="group flex h-full flex-col rounded-xl border border-slate-200/80 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_8px_24px_rgba(79,70,229,0.12)]">
+                <div className="group flex h-full flex-col rounded-md border border-slate-200/80 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_8px_24px_rgba(79,70,229,0.12)]">
                   <div className="flex items-start justify-between">
                     <span className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-500/10 text-brand-600">
                       <Icon className="h-5 w-5" />

@@ -13,13 +13,12 @@ export default async function LoginPage() {
   if (user) redirect("/");
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#f8f9fc] px-4">
-      <div className="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-gradient-to-br from-[var(--brand-400)] to-[var(--brand-700)] opacity-20 blur-3xl" />
+    <main className="relative flex min-h-screen items-center justify-center bg-[var(--background)] px-4">
       <div className="relative w-full max-w-md">
-        <div className="rounded-2xl border border-[var(--border-soft)] bg-white/90 p-8 shadow-[var(--shadow-lg)] backdrop-blur">
+        <div className="rounded-lg border border-[var(--border-soft)] bg-white p-8 shadow-[var(--shadow-md)]">
           <div className="mb-6 flex flex-col gap-2">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl brand-gradient text-base font-bold text-white shadow-[var(--shadow-glow)]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-700 text-base font-bold text-white">
                 Φ
               </div>
               <div>
