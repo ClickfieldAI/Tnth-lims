@@ -524,10 +524,13 @@ async function seedBusiness(
   console.log("  documents ✓");
 
   // ---- Reports ----
-  const samplesList = await prisma.sample.findMany({ include: { tests: true }, take: 20 });
+  const samplesList = await prisma.sample.findMany({ include: { tests: true } });
   let rptSeq = await prisma.testReport.count();
   for (const sample of samplesList.filter((x) => x.status === "APPROVED" || x.status === "RELEASED")) {
     for (const t of sample.tests) {
+      // TestReport.testId is unique — a test can only ever have one report.
+      const existingForTest = await prisma.testReport.findUnique({ where: { testId: t.id } });
+      if (existingForTest) continue;
       rptSeq += 1;
       const rc = `RPT-${Y}-${pad(rptSeq, 4)}`;
       const existing = await prisma.testReport.findUnique({ where: { reportCode: rc } });
