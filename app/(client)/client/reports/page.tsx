@@ -44,22 +44,7 @@ export default async function ClientReportsPage() {
               <Td className="text-xs">{formatDate(r.createdAt)}</Td>
               <Td><StatusBadge status={r.status} dot /></Td>
               <Td>
-                <PdfExportButton
-                  report={{
-                    code: r.reportCode,
-                    title: r.title,
-                    sample: r.sample?.sampleCode ?? "—",
-                    product: r.sample?.productName ?? "—",
-                    batch: r.sample?.batchNumber ?? "—",
-                    client: "Client copy",
-                    type: r.type,
-                    status: r.status,
-                    result: r.test?.result ?? null,
-                    resultStatus: r.test?.resultStatus ?? null,
-                    method: r.test?.method ?? null,
-                    created: formatDate(r.createdAt),
-                  }}
-                />
+                {r.sample ? <PdfExportButton sampleId={r.sample.id} reportCode={r.reportCode} /> : null}
               </Td>
             </Tr>
           ))}

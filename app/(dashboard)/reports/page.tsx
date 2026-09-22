@@ -60,22 +60,7 @@ export default async function ReportsPage() {
               <Td>
                 <div className="flex items-center gap-1.5">
                   <ReportActions reportId={r.id} status={r.status} canDecide={canDecide} />
-                  <PdfExportButton
-                    report={{
-                      code: r.reportCode,
-                      title: r.title,
-                      sample: r.sample?.sampleCode ?? "—",
-                      product: r.sample?.productName ?? "—",
-                      batch: r.sample?.batchNumber ?? "—",
-                      client: r.sample?.client.name ?? "—",
-                      type: r.type,
-                      status: r.status,
-                      result: r.test?.result ?? null,
-                      resultStatus: r.test?.resultStatus ?? null,
-                      method: r.test?.method ?? null,
-                      created: formatDate(r.createdAt),
-                    }}
-                  />
+                  {r.sample ? <PdfExportButton sampleId={r.sample.id} reportCode={r.reportCode} /> : null}
                 </div>
               </Td>
             </Tr>

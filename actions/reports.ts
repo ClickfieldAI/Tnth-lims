@@ -3,9 +3,24 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/session";
+import { getCurrentUser } from "@/lib/session";
 import { logAudit } from "@/lib/audit";
 import { signApproval, SignatureError } from "@/lib/esign";
 import type { ActionResult } from "@/actions/samples";
+import { getTnthReportData, type TnthReportData } from "@/lib/tnth-report";
+
+// Used by the client-side PDF export button — the official TNTH report
+// template is per-SAMPLE (it aggregates every test run against that sample
+// into report sections), not per single Test row.
+export async function getReportPdfData(sampleId: string): Promise<TnthReportData | null> {
+  const user = await getCurrentUser();
+  if (!user) return null;
+  if (user.role === "CLIENT") {
+    const sample = await prisma.sample.findUnique({ where: { id: sampleId }, select: { clientId: true } });
+    if (!sample || sample.clientId !== user.clientId) return null;
+  }
+  return getTnthReportData(sampleId);
+}
 
 // QA sign-off that a compiled report is fit to stand as the controlled record.
 export async function approveReport(reportId: string, password: string, comment?: string): Promise<ActionResult> {
