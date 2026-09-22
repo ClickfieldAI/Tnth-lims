@@ -64,6 +64,7 @@ model User {
   approvals    Approval[]
   documentApprovals Document[] @relation("docApprovedBy")
   ownedDocuments Document[] @relation("docOwner")
+  reportApprovals TestReport[] @relation("reportApprovedBy")
   assignedTests  Test[] @relation("testAssignedTo")
   messages       Message[]
   deviations     Deviation[]
@@ -490,6 +491,8 @@ model Document {
   ownerId      String?
   owner        User?     @relation("docOwner", fields: [ownerId], references: [id])
   previousVersionId String?
+  previousVersion Document?  @relation("DocVersions", fields: [previousVersionId], references: [id])
+  revisions    Document[] @relation("DocVersions")
   sampleId     String?
   sample       Sample?   @relation(fields: [sampleId], references: [id])
   reportId     String?
@@ -529,6 +532,7 @@ model TestReport {
   status       String    @default("DRAFT")
   generatedById String?
   approvedById String?
+  approvedBy   User?     @relation("reportApprovedBy", fields: [approvedById], references: [id])
   approvedAt   DateTime?
   digitalSignature String?
   documents    Document[]

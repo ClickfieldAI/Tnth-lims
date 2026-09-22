@@ -6,19 +6,21 @@ import { DataTable, THead, Th, TBody, Tr, Td, TableEmpty } from "@/components/ui
 import { StatusBadge, Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
 import { PdfExportButton } from "./pdf-button";
+import { ReportActions } from "./report-actions";
 
 export const metadata = { title: "Reports" };
 
 export default async function ReportsPage() {
   const user = await getCurrentUser();
   const isClient = user?.role === "CLIENT";
+  const canDecide = user?.role === "ADMIN" || user?.role === "QA" || user?.role === "MANAGER";
 
   const reports = await prisma.testReport.findMany({
     where: isClient && user?.clientId
       ? { sample: { clientId: user.clientId } }
       : undefined,
     orderBy: { createdAt: "desc" },
-    include: { sample: { include: { client: true } }, test: true },
+    include: { sample: { include: { client: true } }, test: true, approvedBy: true },
     take: 100,
   });
 
@@ -38,7 +40,7 @@ export default async function ReportsPage() {
 
       <DataTable>
         <THead>
-          <Th>Report</Th><Th>Title</Th><Th>Sample</Th><Th>Client</Th><Th>Type</Th><Th>Created</Th><Th>Status</Th><Th></Th>
+          <Th>Report</Th><Th>Title</Th><Th>Sample</Th><Th>Client</Th><Th>Type</Th><Th>Created</Th><Th>Status</Th><Th>Signed off</Th><Th></Th>
         </THead>
         <TBody>
           {reports.map((r) => (
@@ -50,27 +52,33 @@ export default async function ReportsPage() {
               <Td><Badge tone="slate">{r.type}</Badge></Td>
               <Td className="text-xs">{formatDate(r.createdAt)}</Td>
               <Td><StatusBadge status={r.status} dot /></Td>
+              <Td className="text-xs text-slate-500">
+                {r.approvedBy ? `${r.approvedBy.firstName} ${r.approvedBy.lastName} · ${formatDate(r.approvedAt)}` : "—"}
+              </Td>
               <Td>
-                <PdfExportButton
-                  report={{
-                    code: r.reportCode,
-                    title: r.title,
-                    sample: r.sample?.sampleCode ?? "—",
-                    product: r.sample?.productName ?? "—",
-                    batch: r.sample?.batchNumber ?? "—",
-                    client: r.sample?.client.name ?? "—",
-                    type: r.type,
-                    status: r.status,
-                    result: r.test?.result ?? null,
-                    resultStatus: r.test?.resultStatus ?? null,
-                    method: r.test?.method ?? null,
-                    created: formatDate(r.createdAt),
-                  }}
-                />
+                <div className="flex items-center gap-1.5">
+                  <ReportActions reportId={r.id} status={r.status} canDecide={canDecide} />
+                  <PdfExportButton
+                    report={{
+                      code: r.reportCode,
+                      title: r.title,
+                      sample: r.sample?.sampleCode ?? "—",
+                      product: r.sample?.productName ?? "—",
+                      batch: r.sample?.batchNumber ?? "—",
+                      client: r.sample?.client.name ?? "—",
+                      type: r.type,
+                      status: r.status,
+                      result: r.test?.result ?? null,
+                      resultStatus: r.test?.resultStatus ?? null,
+                      method: r.test?.method ?? null,
+                      created: formatDate(r.createdAt),
+                    }}
+                  />
+                </div>
               </Td>
             </Tr>
           ))}
-          {!reports.length ? <TableEmpty colSpan={8} message="No reports generated yet." /> : null}
+          {!reports.length ? <TableEmpty colSpan={9} message="No reports generated yet." /> : null}
         </TBody>
       </DataTable>
     </div>
