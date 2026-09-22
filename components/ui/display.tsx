@@ -22,7 +22,7 @@ export function StatCard({
   tone = "indigo",
 }: { label: string; value: React.ReactNode; sub?: string; trend?: "up" | "down"; icon?: React.ReactNode; tone?: string }) {
   return (
-    <div className="rounded-lg border border-[var(--border-soft)] bg-[var(--surface)] px-5 py-5 shadow-[var(--shadow-xs)] transition-shadow duration-150 hover:shadow-[var(--shadow-sm)]">
+    <div className="rounded-xl border border-[var(--border-soft)] bg-[var(--surface)] px-5 py-5 shadow-[var(--shadow-xs)] transition-shadow duration-200 hover:shadow-[var(--shadow-sm)]">
       <div className="relative flex items-center justify-between">
         <p className="text-[13px] font-medium text-slate-500">{label}</p>
         {icon ? <span className={cn("flex h-9 w-9 items-center justify-center rounded-md", tones[tone] ?? tones.indigo)}>{icon}</span> : null}
@@ -60,7 +60,7 @@ export function PageHeader({
                 {eyebrow}
               </p>
             ) : null}
-            <h1 className="text-xl font-bold tracking-tight text-[#1a1d1a] sm:text-2xl">{title}</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-[#1a1d1a] sm:text-[28px]">{title}</h1>
             {description ? <p className="mt-2 text-sm leading-relaxed text-slate-500">{description}</p> : null}
             {actions ? <div className="mt-4 flex flex-wrap items-center gap-2">{actions}</div> : null}
           </div>
@@ -76,8 +76,13 @@ export function PageHeader({
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        {eyebrow ? <p className="mb-1 text-[11px] font-bold uppercase tracking-wider text-brand-600">{eyebrow}</p> : null}
-        <h1 className="text-xl font-bold tracking-tight text-[#1a1d1a]">{title}</h1>
+        {eyebrow ? (
+          <p className="mb-1.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-brand-600">
+            <span className="h-3.5 w-1 rounded-full bg-brand-600" />
+            {eyebrow}
+          </p>
+        ) : null}
+        <h1 className="text-2xl font-bold tracking-tight text-[#1a1d1a] sm:text-[28px]">{title}</h1>
         {description ? <p className="mt-1 text-sm text-slate-500">{description}</p> : null}
       </div>
       {actions ? <div className="flex flex-wrap items-center gap-2">{actions}</div> : null}

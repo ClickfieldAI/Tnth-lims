@@ -112,8 +112,8 @@ function GroupMenu({ group, pathname }: { group: NavGroup; pathname: string }) {
     <div className="group relative">
       <button
         className={cn(
-          "flex items-center gap-1 rounded-md px-3 py-2 text-[13px] font-medium transition-colors",
-          hasActive ? "text-brand-700" : "text-slate-600 hover:bg-slate-900/5 hover:text-slate-900",
+          "flex items-center gap-1 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors duration-200",
+          hasActive ? "bg-brand-50 text-brand-700" : "text-slate-600 hover:bg-slate-900/5 hover:text-slate-900",
         )}
       >
         {group.group}

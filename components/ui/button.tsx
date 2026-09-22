@@ -35,7 +35,7 @@ export function Button({
   return (
     <button
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600/40 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none",
+        "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600/40 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none",
         buttonVariants[variant],
         buttonSizes[size],
         className,
@@ -47,7 +47,7 @@ export function Button({
 
 export function buttonClass(variant: ButtonVariant = "primary", size: ButtonSize = "default", className = "") {
   return cn(
-    "inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors duration-150",
+    "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors duration-200",
     buttonVariants[variant],
     buttonSizes[size],
     className,

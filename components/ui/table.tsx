@@ -47,7 +47,7 @@ export function TableEmpty({ colSpan, message }: { colSpan: number; message?: st
 
 export function DataTable({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={cn("overflow-x-auto rounded-lg border border-[var(--border-soft)] bg-[var(--surface)] shadow-[var(--shadow-xs)]", className)}>
+    <div className={cn("overflow-x-auto rounded-xl border border-[var(--border-soft)] bg-[var(--surface)] shadow-[var(--shadow-xs)]", className)}>
       <Table>{children}</Table>
     </div>
   );
