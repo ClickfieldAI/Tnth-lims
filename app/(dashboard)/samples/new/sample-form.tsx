@@ -116,6 +116,7 @@ export function SampleForm({
         {lockedTest ? (
           <div className="flex items-center gap-2 rounded-md border border-brand-200 bg-brand-50 px-3 py-2 text-xs font-medium text-brand-700">
             <input type="checkbox" name="requestedTests" value={lockedTest.code} checked readOnly className="h-3.5 w-3.5 accent-brand-600" />
+            <input type="hidden" name="serviceLabel" value={lockedTest.label} />
             {lockedTest.label}
           </div>
         ) : (

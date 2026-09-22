@@ -39,7 +39,7 @@ export default async function NewSamplePage({
           <SampleForm
             clients={clients.map((c) => ({ id: c.id, name: c.name }))}
             products={products.map((p) => ({ id: p.id, name: p.name }))}
-            lockedTest={found ? { code: found.sub.slug, label: found.sub.name } : null}
+            lockedTest={found ? { code: found.sub.testType, label: found.sub.name } : null}
           />
         </CardContent>
       </Card>

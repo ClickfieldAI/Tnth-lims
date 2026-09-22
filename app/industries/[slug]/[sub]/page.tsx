@@ -28,7 +28,7 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ sl
   const { industry, sub: subcategory } = found;
 
   const tests = await prisma.test.findMany({
-    where: { type: subcategory.slug },
+    where: { type: subcategory.testType },
     include: { sample: { include: { client: true } }, assignedTo: true },
     orderBy: { createdAt: "desc" },
   });

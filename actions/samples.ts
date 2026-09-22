@@ -78,6 +78,7 @@ export async function createSample(formData: FormData): Promise<ActionResult> {
 
   // Auto-create a trackable test request for each selected service so it
   // immediately shows up in the worksheet / QA review pipeline.
+  const serviceLabel = String(formData.get("serviceLabel") ?? "").trim();
   const testSeqBase = await prisma.test.count();
   for (const [idx, code] of requestedTests.entries()) {
     const requestCode = `TST-${new Date().getFullYear()}-${pad(testSeqBase + idx + 1, 4)}`;
@@ -86,7 +87,7 @@ export async function createSample(formData: FormData): Promise<ActionResult> {
         requestCode,
         sampleId: sample.id,
         type: code,
-        testName: `${testLabelFor(code)} — ${productName}`,
+        testName: `${serviceLabel || testLabelFor(code)} — ${productName}`,
         method: "Standard operating procedure — pending analyst confirmation",
         status: "ASSIGNED",
         priority: String(formData.get("priority") ?? "NORMAL"),
