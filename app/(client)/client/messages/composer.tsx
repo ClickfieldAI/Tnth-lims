@@ -36,12 +36,12 @@ export function MessageComposer() {
             }
           }}
           placeholder="Write a message to the laboratory…"
-          className="h-10 flex-1 rounded-md border border-slate-200 px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/30"
+          className="h-10 flex-1 rounded-md border border-slate-200 px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/30"
         />
         <button
           onClick={send}
           disabled={pending}
-          className="rounded-md bg-indigo-600 px-4 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-60"
+          className="rounded-md bg-brand-600 px-4 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-60"
         >
           Send
         </button>

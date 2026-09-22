@@ -58,7 +58,7 @@ export function ClientSampleForm() {
         <div className="grid gap-2 sm:grid-cols-3">
           {TESTS.map((t) => (
             <label key={t} className="flex items-center gap-2 rounded-md border border-slate-200 px-3 py-2 text-xs capitalize text-slate-700 hover:bg-slate-50">
-              <input type="checkbox" name="requestedTests" value={t} className="h-3.5 w-3.5 accent-indigo-600" />
+              <input type="checkbox" name="requestedTests" value={t} className="h-3.5 w-3.5 accent-brand-600" />
               {t.toLowerCase()}
             </label>
           ))}

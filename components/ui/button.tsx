@@ -4,13 +4,16 @@ import React from "react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = {
-  primary: "bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm",
-  secondary: "bg-white text-slate-700 border border-slate-200 hover:bg-slate-50",
-  outline: "bg-transparent text-indigo-600 border border-indigo-200 hover:bg-indigo-50",
-  ghost: "bg-transparent text-slate-600 hover:bg-slate-100",
-  danger: "bg-red-600 text-white hover:bg-red-700",
-  success: "bg-emerald-600 text-white hover:bg-emerald-700",
-  subtle: "bg-slate-100 text-slate-700 hover:bg-slate-200",
+  primary:
+    "brand-gradient text-white shadow-[var(--shadow-glow)] hover:brightness-110 active:brightness-95",
+  secondary:
+    "bg-white text-[#2b2a45] border border-[var(--border-soft)] shadow-[var(--shadow-xs)] hover:bg-brand-50/60 hover:border-brand-200",
+  outline:
+    "bg-transparent text-brand-600 border border-brand-200 hover:bg-brand-50",
+  ghost: "bg-transparent text-slate-600 hover:bg-slate-900/5",
+  danger: "bg-rose-600 text-white shadow-sm hover:bg-rose-700",
+  success: "bg-emerald-600 text-white shadow-sm hover:bg-emerald-700",
+  subtle: "bg-slate-900/[0.04] text-slate-700 hover:bg-slate-900/[0.08]",
 } as const;
 
 const buttonSizes = {
@@ -32,7 +35,7 @@ export function Button({
   return (
     <button
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/40 disabled:opacity-50 disabled:pointer-events-none",
+        "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/40 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98]",
         buttonVariants[variant],
         buttonSizes[size],
         className,
@@ -44,7 +47,7 @@ export function Button({
 
 export function buttonClass(variant: ButtonVariant = "primary", size: ButtonSize = "default", className = "") {
   return cn(
-    "inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors",
+    "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-150 active:scale-[0.98]",
     buttonVariants[variant],
     buttonSizes[size],
     className,

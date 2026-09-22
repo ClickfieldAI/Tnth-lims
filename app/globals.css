@@ -1,8 +1,29 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a;
+  --background: #f8f9fc;
+  --foreground: #14162b;
+
+  --brand-50: #f2f1ff;
+  --brand-100: #e6e4ff;
+  --brand-200: #d1cdff;
+  --brand-300: #b0a8ff;
+  --brand-400: #8b7bff;
+  --brand-500: #6c4cf5;
+  --brand-600: #5732e0;
+  --brand-700: #4726b8;
+  --brand-800: #3a2093;
+  --brand-900: #2e1c72;
+
+  --surface: #ffffff;
+  --surface-muted: #f5f5fb;
+  --border-soft: rgba(20, 22, 43, 0.08);
+
+  --shadow-xs: 0 1px 2px rgba(20, 15, 60, 0.04);
+  --shadow-sm: 0 1px 3px rgba(20, 15, 60, 0.06), 0 1px 2px rgba(20, 15, 60, 0.04);
+  --shadow-md: 0 8px 24px -8px rgba(30, 20, 90, 0.16), 0 2px 6px rgba(20, 15, 60, 0.04);
+  --shadow-lg: 0 20px 45px -12px rgba(30, 20, 90, 0.22);
+  --shadow-glow: 0 0 0 1px rgba(108, 76, 245, 0.15), 0 8px 20px -6px rgba(108, 76, 245, 0.45);
 }
 
 @theme inline {
@@ -10,25 +31,46 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0b1220;
-    --foreground: #e2e8f0;
-  }
+  --color-brand-50: var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-brand-200: var(--brand-200);
+  --color-brand-300: var(--brand-300);
+  --color-brand-400: var(--brand-400);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+  --color-brand-800: var(--brand-800);
+  --color-brand-900: var(--brand-900);
 }
 
 /* Manual dark-mode toggle (class-based) */
 :root[class~="dark"] {
-  --background: #0b1220;
-  --foreground: #e2e8f0;
+  --background: #0c0b1a;
+  --foreground: #e7e6f5;
+  --surface: #14132a;
+  --surface-muted: #1a1930;
+  --border-soft: rgba(230, 228, 255, 0.08);
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(1200px 480px at 12% -10%, color-mix(in srgb, var(--brand-500) 7%, transparent), transparent),
+    var(--background);
   color: var(--foreground);
   text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.brand-gradient {
+  background-image: linear-gradient(135deg, var(--brand-500), var(--brand-700));
+}
+
+.brand-text-gradient {
+  background-image: linear-gradient(135deg, var(--brand-400), var(--brand-700));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 /* Thin, disciplined scrollbars */
@@ -40,6 +82,6 @@ body {
   width: 8px;
 }
 *::-webkit-scrollbar-thumb {
-  background: #94a3b8;
+  background: #b4aee0;
   border-radius: 8px;
 }

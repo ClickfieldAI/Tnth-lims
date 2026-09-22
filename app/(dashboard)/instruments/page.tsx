@@ -49,7 +49,7 @@ export default async function InstrumentsPage() {
                 <Link href={`/instruments/${i.id}`} className="block">{i.code}</Link>
               </Td>
               <Td className="max-w-[180px] truncate">
-                <Link href={`/instruments/${i.id}`} className="block text-indigo-600 hover:underline">{i.name}</Link>
+                <Link href={`/instruments/${i.id}`} className="block text-brand-600 hover:underline">{i.name}</Link>
               </Td>
               <Td><Badge tone="slate">{CATEGORY_LABEL[i.category] ?? i.category}</Badge></Td>
               <Td className="text-xs text-slate-500">{[i.manufacturer, i.model].filter(Boolean).join(" · ") || "—"}</Td>

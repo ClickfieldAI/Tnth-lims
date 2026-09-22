@@ -19,7 +19,7 @@ export function Shell({
     <div className="flex min-h-screen">
       <Sidebar role={role} />
       {open ? <MobileSidebar role={role} onClose={() => setOpen(false)} /> : null}
-      <div className="flex flex-1 flex-col bg-slate-50/70">
+      <div className="flex flex-1 flex-col bg-transparent">
         <Topbar user={user} onMenu={() => setOpen(true)} />
         <main key="main" className="flex-1 px-5 py-6 max-w-[1500px] mx-auto w-full">
           {children}

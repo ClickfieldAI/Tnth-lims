@@ -32,7 +32,7 @@ export default async function IndustrySubcategoriesPage({ params }: { params: Pr
         </Link>
 
         <div className="mb-8 flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-600">
+          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-brand-500/10 text-brand-600">
             <Icon className="h-6 w-6" />
           </div>
           <div>
@@ -44,15 +44,15 @@ export default async function IndustrySubcategoriesPage({ params }: { params: Pr
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           {industry.subcategories.map((sub) => (
             <Link key={sub.slug} href={`/industries/${industry.slug}/${sub.slug}`}>
-              <div className="group flex h-full flex-col rounded-xl border border-slate-200/80 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-1 hover:border-indigo-300 hover:shadow-[0_8px_24px_rgba(79,70,229,0.12)]">
+              <div className="group flex h-full flex-col rounded-xl border border-slate-200/80 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_8px_24px_rgba(79,70,229,0.12)]">
                 <div className="flex items-start justify-between gap-2">
                   <h3 className="text-sm font-semibold tracking-tight text-slate-900">{sub.name}</h3>
-                  <ArrowUpRight className="h-4 w-4 shrink-0 text-slate-300 transition group-hover:text-indigo-500" />
+                  <ArrowUpRight className="h-4 w-4 shrink-0 text-slate-300 transition group-hover:text-brand-500" />
                 </div>
                 <p className="mt-2 flex-1 line-clamp-2 text-xs leading-relaxed text-slate-500">{sub.description}</p>
                 <div className="mt-4 flex flex-wrap gap-1.5 border-t border-slate-100 pt-3">
                   {sub.techniques.slice(0, 2).map((t) => (
-                    <span key={t} className="rounded-full bg-indigo-50 px-2 py-0.5 text-[10.5px] font-medium text-indigo-700">{t}</span>
+                    <span key={t} className="rounded-full bg-brand-50 px-2 py-0.5 text-[10.5px] font-medium text-brand-700">{t}</span>
                   ))}
                   {sub.techniques.length > 2 ? (
                     <span className="rounded-full bg-slate-50 px-2 py-0.5 text-[10.5px] font-medium text-slate-500">+{sub.techniques.length - 2} more</span>

@@ -110,7 +110,7 @@ function InstrumentSection({ utilization }: { utilization: { instrument: string;
         title="Instrument utilisation"
         subtitle="Number of tests executed per analytical system"
         action={
-          <Link href="/instruments" className="inline-flex items-center gap-1 text-xs font-medium text-indigo-600 hover:underline">
+          <Link href="/instruments" className="inline-flex items-center gap-1 text-xs font-medium text-brand-600 hover:underline">
             Manage instruments <ArrowUpRight className="h-3.5 w-3.5" />
           </Link>
         }
@@ -129,7 +129,7 @@ function RecentActivity({ recentSamples, stability }: { recentSamples: RecentSam
         <CardHeader
           title="Recent sample intake"
           subtitle="Latest registrations in the laboratory"
-          action={<Link href="/samples" className="text-xs font-medium text-indigo-600 hover:underline">View all</Link>}
+          action={<Link href="/samples" className="text-xs font-medium text-brand-600 hover:underline">View all</Link>}
         />
         <div className="divide-y divide-slate-100">
           {recentSamples.map((s) => (

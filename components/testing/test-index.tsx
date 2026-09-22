@@ -51,7 +51,7 @@ export function TestIndex({
           <TBody>
             {rows.map((r) => (
               <Tr key={r.id}>
-                <Td><Link href={`/testing/worksheet/${r.id}`} className="font-medium text-indigo-600 hover:underline">{r.requestCode}</Link></Td>
+                <Td><Link href={`/testing/worksheet/${r.id}`} className="font-medium text-brand-600 hover:underline">{r.requestCode}</Link></Td>
                 <Td><Link href={`/samples/${r.sampleId}`} className="hover:underline">{r.sampleCode}</Link></Td>
                 <Td className="max-w-[200px] truncate">{r.product}</Td>
                 <Td>{r.analyst ?? "—"}</Td>

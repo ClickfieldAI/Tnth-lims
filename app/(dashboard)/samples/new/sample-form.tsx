@@ -114,15 +114,15 @@ export function SampleForm({
       <div className="sm:col-span-2">
         <p className="mb-1.5 text-[13px] font-medium text-slate-700">Requested tests <span className="text-red-500">*</span></p>
         {lockedTest ? (
-          <div className="flex items-center gap-2 rounded-md border border-indigo-200 bg-indigo-50 px-3 py-2 text-xs font-medium text-indigo-700">
-            <input type="checkbox" name="requestedTests" value={lockedTest.code} checked readOnly className="h-3.5 w-3.5 accent-indigo-600" />
+          <div className="flex items-center gap-2 rounded-md border border-brand-200 bg-brand-50 px-3 py-2 text-xs font-medium text-brand-700">
+            <input type="checkbox" name="requestedTests" value={lockedTest.code} checked readOnly className="h-3.5 w-3.5 accent-brand-600" />
             {lockedTest.label}
           </div>
         ) : (
           <div className="grid gap-2 sm:grid-cols-3">
             {TEST_OPTIONS.map((t) => (
               <label key={t.code} className="flex items-center gap-2 rounded-md border border-slate-200 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50">
-                <input type="checkbox" name="requestedTests" value={t.code} className="h-3.5 w-3.5 accent-indigo-600" />
+                <input type="checkbox" name="requestedTests" value={t.code} className="h-3.5 w-3.5 accent-brand-600" />
                 {t.label}
               </label>
             ))}

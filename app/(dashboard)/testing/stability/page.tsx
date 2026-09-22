@@ -54,7 +54,7 @@ export default async function StabilityPage() {
                   const done = i < Math.ceil((s.progress / 100) * s.intervals.length);
                   return (
                     <div key={iv} className="flex flex-1 flex-col items-center gap-1">
-                      <span className={`h-2 w-full rounded-full ${done ? "bg-indigo-500" : "bg-slate-200"}`} />
+                      <span className={`h-2 w-full rounded-full ${done ? "bg-brand-500" : "bg-slate-200"}`} />
                       <span className={`text-[10px] font-medium ${done ? "text-slate-700" : "text-slate-400"}`}>{iv}</span>
                     </div>
                   );

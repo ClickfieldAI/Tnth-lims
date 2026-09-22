@@ -48,7 +48,7 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ sl
 
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-600">
+            <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-brand-500/10 text-brand-600">
               <FlaskConical className="h-5 w-5" />
             </div>
             <div>
@@ -58,7 +58,7 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ sl
           </div>
           <Link
             href={`/samples/new?industry=${industry.slug}&sub=${subcategory.slug}`}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700"
           >
             <Plus className="h-4 w-4" /> Register sample
           </Link>
@@ -93,7 +93,7 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ sl
                   {tests.map((t) => (
                     <tr key={t.id} className="hover:bg-slate-50">
                       <td className="px-5 py-3">
-                        <Link href={`/testing/worksheet/${t.id}`} className="font-medium text-indigo-600 hover:underline">{t.requestCode}</Link>
+                        <Link href={`/testing/worksheet/${t.id}`} className="font-medium text-brand-600 hover:underline">{t.requestCode}</Link>
                       </td>
                       <td className="px-5 py-3">
                         <Link href={`/samples/${t.sampleId}`} className="text-slate-700 hover:underline">{t.sample.sampleCode}</Link>
@@ -117,7 +117,7 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ sl
               <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400">Techniques &amp; methods</p>
               <div className="flex flex-wrap gap-2">
                 {subcategory.techniques.map((t) => (
-                  <span key={t} className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700">{t}</span>
+                  <span key={t} className="rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">{t}</span>
                 ))}
               </div>
             </div>
@@ -129,7 +129,7 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ sl
                   <Link
                     key={s.slug}
                     href={`/industries/${industry.slug}/${s.slug}`}
-                    className="rounded-lg px-2.5 py-2 text-xs font-medium text-slate-600 transition hover:bg-indigo-50 hover:text-indigo-700"
+                    className="rounded-lg px-2.5 py-2 text-xs font-medium text-slate-600 transition hover:bg-brand-50 hover:text-brand-700"
                   >
                     {s.name}
                   </Link>

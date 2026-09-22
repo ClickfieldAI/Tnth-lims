@@ -42,7 +42,7 @@ export function LoginForm() {
   return (
     <form action={onAction} className="grid gap-3">
       <div className="grid gap-2">
-        <label htmlFor="login_email" className="text-xs font-medium text-slate-300">
+        <label htmlFor="login_email" className="text-xs font-medium text-slate-600">
           Work email
         </label>
         <input
@@ -50,13 +50,13 @@ export function LoginForm() {
           name="email"
           type="email"
           autoComplete="username"
-          className="h-10 w-full rounded-md border border-slate-600 bg-slate-900 px-3 text-sm text-slate-100 placeholder:text-slate-500"
+          className="h-10 w-full rounded-lg border border-[var(--border-soft)] bg-white px-3 text-sm text-[#14162b] placeholder:text-slate-400 transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/30 focus-visible:border-brand-300"
           placeholder="you@tnth.io"
           required
         />
       </div>
       <div className="grid gap-2">
-        <label htmlFor="login_password" className="text-xs font-medium text-slate-300">
+        <label htmlFor="login_password" className="text-xs font-medium text-slate-600">
           Password
         </label>
         <input
@@ -64,28 +64,28 @@ export function LoginForm() {
           name="password"
           type="password"
           autoComplete="current-password"
-          className="h-10 w-full rounded-md border border-slate-600 bg-slate-900 px-3 text-sm text-slate-100 placeholder:text-slate-500"
+          className="h-10 w-full rounded-lg border border-[var(--border-soft)] bg-white px-3 text-sm text-[#14162b] placeholder:text-slate-400 transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/30 focus-visible:border-brand-300"
           placeholder="••••••••"
           required
         />
       </div>
-      {error ? <p className="text-xs font-medium text-red-400">{error}</p> : null}
+      {error ? <p className="text-xs font-medium text-rose-600">{error}</p> : null}
       <button
         disabled={pending}
-        className="h-10 w-full rounded-md bg-indigo-600 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60"
+        className="h-10 w-full rounded-lg brand-gradient text-sm font-semibold text-white shadow-[var(--shadow-glow)] transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-60"
       >
         {pending ? "Signing in…" : "Sign in"}
       </button>
 
-      <div className="mt-2 border-t border-slate-700 pt-3">
-        <p className="text-[11px] font-semibold text-slate-400">Demo quick access — click a role to fill credentials</p>
+      <div className="mt-2 border-t border-[var(--border-soft)] pt-3">
+        <p className="text-[11px] font-semibold text-slate-500">Demo quick access — click a role to fill credentials</p>
         <div className="mt-2 flex flex-wrap gap-1.5">
           {DEMO.map((d) => (
             <button
               key={d.email}
               type="button"
               onClick={() => quickFill(d.email, d.pass)}
-              className="rounded-md bg-slate-800 px-2 py-1 text-[11px] text-slate-300 hover:bg-slate-700"
+              className="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-medium text-brand-700 ring-1 ring-inset ring-brand-600/10 hover:bg-brand-100"
               title={`${d.desc} — ${d.email}`}
             >
               {d.role}

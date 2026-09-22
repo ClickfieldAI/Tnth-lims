@@ -25,7 +25,7 @@ export default async function ClientSamplesPage() {
         title="My Samples"
         description="Every sample you have submitted, with live testing status."
         actions={
-          <Link href="/client/samples/new" className="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+          <Link href="/client/samples/new" className="inline-flex items-center gap-2 rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">
             Submit a sample
           </Link>
         }

@@ -60,7 +60,7 @@ export default async function QaReviewPage() {
                 ) : null}</Td>
                 <Td><StatusBadge status={t.status} dot /></Td>
                 <Td>
-                  <Link href={`/testing/worksheet/${t.id}`} className="text-xs font-medium text-indigo-600 hover:underline">Review →</Link>
+                  <Link href={`/testing/worksheet/${t.id}`} className="text-xs font-medium text-brand-600 hover:underline">Review →</Link>
                 </Td>
               </Tr>
             ))}

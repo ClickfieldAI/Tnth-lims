@@ -69,7 +69,7 @@ export default async function CapaPage() {
                     <p className="col-span-2">Action: <span className="text-slate-700">{c.action}</span></p>
                   ) : null}
                   {c.relatedDeviation ? (
-                    <p className="col-span-2">Linked deviation: <span className="font-mono text-[11px] text-indigo-600">{c.relatedDeviation.deviationId}</span></p>
+                    <p className="col-span-2">Linked deviation: <span className="font-mono text-[11px] text-brand-600">{c.relatedDeviation.deviationId}</span></p>
                   ) : null}
                 </div>
               </div>

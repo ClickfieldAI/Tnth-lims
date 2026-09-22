@@ -43,7 +43,7 @@ export default async function ClientsPage() {
                 <Link href={`/clients/${c.id}`} className="block">{c.code}</Link>
               </Td>
               <Td className="font-medium">
-                <Link href={`/clients/${c.id}`} className="block text-indigo-600 hover:underline">{c.name}</Link>
+                <Link href={`/clients/${c.id}`} className="block text-brand-600 hover:underline">{c.name}</Link>
               </Td>
               <Td className="text-xs">
                 {c.contactPerson ?? "—"}

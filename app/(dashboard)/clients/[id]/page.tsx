@@ -83,7 +83,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
           <TBody>
             {client.samples.map((s) => (
               <Tr key={s.id}>
-                <Td><Link href={`/samples/${s.id}`} className="font-medium text-indigo-600 hover:underline">{s.sampleCode}</Link></Td>
+                <Td><Link href={`/samples/${s.id}`} className="font-medium text-brand-600 hover:underline">{s.sampleCode}</Link></Td>
                 <Td>{s.productName ?? "—"}</Td>
                 <Td>{s.tests.length}</Td>
                 <Td className="text-xs">{formatDate(s.receivedDate)}</Td>

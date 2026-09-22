@@ -76,7 +76,7 @@ export default async function InstrumentDetailPage({ params }: { params: Promise
           <TBody>
             {instrument.tests.map((t) => (
               <Tr key={t.id}>
-                <Td><Link href={`/samples/${t.sampleId}`} className="font-medium text-indigo-600 hover:underline">{t.requestCode}</Link></Td>
+                <Td><Link href={`/samples/${t.sampleId}`} className="font-medium text-brand-600 hover:underline">{t.requestCode}</Link></Td>
                 <Td>{t.sample.sampleCode}</Td>
                 <Td>{t.sample.client.name}</Td>
                 <Td>{testTypeLabel(t.type)}</Td>

@@ -111,7 +111,7 @@ function WorkflowTimeline({ stageIdx }: { stageIdx: number }) {
       {FLOW.map((stage, i) => (
         <div key={stage} className="flex flex-1 items-center">
           <div className="flex flex-col items-center gap-1.5">
-            <span className={`flex h-7 w-7 items-center justify-center rounded-full text-[10px] font-bold ${i <= stageIdx ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-400"}`}>
+            <span className={`flex h-7 w-7 items-center justify-center rounded-full text-[10px] font-bold ${i <= stageIdx ? "bg-brand-600 text-white" : "bg-slate-100 text-slate-400"}`}>
               {i + 1}
             </span>
             <span className={`text-center text-[10px] font-medium leading-tight ${i <= stageIdx ? "text-slate-700" : "text-slate-400"}`}>
@@ -119,7 +119,7 @@ function WorkflowTimeline({ stageIdx }: { stageIdx: number }) {
             </span>
           </div>
           {i < FLOW.length - 1 ? (
-            <div className={`mx-1 h-0.5 flex-1 rounded ${i < stageIdx ? "bg-indigo-600" : "bg-slate-200"}`} />
+            <div className={`mx-1 h-0.5 flex-1 rounded ${i < stageIdx ? "bg-brand-600" : "bg-slate-200"}`} />
           ) : null}
         </div>
       ))}
@@ -235,7 +235,7 @@ function CustodyLog({ records }: { records: { id: string; action: string; at: st
       <ol className="relative space-y-4 border-l border-slate-200 pl-5">
         {records.map((c) => (
           <li key={c.id} className="relative">
-            <span className="absolute -left-[26px] top-1 h-3 w-3 rounded-full border-2 border-white bg-indigo-500" />
+            <span className="absolute -left-[26px] top-1 h-3 w-3 rounded-full border-2 border-white bg-brand-500" />
             <p className="text-sm font-medium capitalize text-slate-800">{c.action.toLowerCase()}</p>
             <p className="text-xs text-slate-500">{c.at} · {c.location}</p>
             {c.note ? <p className="mt-0.5 text-xs text-slate-400">{c.note}</p> : null}

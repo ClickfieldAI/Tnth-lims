@@ -7,7 +7,7 @@ export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
   return (
     <div
       className={cn(
-        "rounded-xl border border-slate-200/80 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-shadow duration-200 hover:shadow-[0_2px_10px_rgba(15,23,42,0.06)]",
+        "rounded-2xl border border-[var(--border-soft)] bg-[var(--surface)] shadow-[var(--shadow-xs)] transition-shadow duration-200 hover:shadow-[var(--shadow-sm)]",
         className,
       )}
       {...props}
@@ -24,7 +24,7 @@ export function CardHeader({
   return (
     <div className={cn("flex items-start justify-between gap-4 px-5 py-4", className)}>
       <div className="space-y-1">
-        <h3 className="text-sm font-semibold tracking-tight text-slate-800">{title}</h3>
+        <h3 className="text-sm font-semibold tracking-tight text-[#191830]">{title}</h3>
         {subtitle ? <p className="text-xs text-slate-500">{subtitle}</p> : null}
       </div>
       {action ? <div className="flex items-center gap-2">{action}</div> : null}
@@ -37,5 +37,5 @@ export function CardContent({ className, ...props }: React.HTMLAttributes<HTMLDi
 }
 
 export function CardFooter({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("px-5 py-3 border-t border-slate-200", className)} {...props} />;
+  return <div className={cn("px-5 py-3 border-t border-[var(--border-soft)]", className)} {...props} />;
 }

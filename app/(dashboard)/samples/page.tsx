@@ -42,7 +42,7 @@ export default async function SamplesPage({
           !isClient ? (
             <Link
               href="/samples/new"
-              className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-indigo-600 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-brand-600 px-4 text-sm font-medium text-white shadow-sm hover:bg-brand-700"
             >
               <Plus className="h-4 w-4" /> Register sample
             </Link>
@@ -57,7 +57,7 @@ export default async function SamplesPage({
             <Link
               key={label}
               href={key ? `/samples?status=${key}` : "/samples"}
-              className={`rounded-full border px-3 py-1 text-xs font-medium ${active ? "border-indigo-600 bg-indigo-600 text-white" : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"}`}
+              className={`rounded-full border px-3 py-1 text-xs font-medium ${active ? "border-brand-600 bg-brand-600 text-white" : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"}`}
             >
               {label}
             </Link>
@@ -80,7 +80,7 @@ export default async function SamplesPage({
           {samples.map((s) => (
             <Tr key={s.id}>
               <Td>
-                <Link href={`/samples/${s.id}`} className="font-medium text-indigo-600 hover:underline">
+                <Link href={`/samples/${s.id}`} className="font-medium text-brand-600 hover:underline">
                   {s.sampleCode}
                 </Link>
               </Td>

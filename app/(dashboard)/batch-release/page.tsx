@@ -78,7 +78,7 @@ export default async function BatchReleasePage() {
         <ol className="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-xs text-slate-500">
           {["Testing completed", "Analyst approval", "QA review", "Batch release approval", "COA issued"].map((step, i) => (
             <li key={step} className="flex items-center gap-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white">{i + 1}</span>
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand-600 text-[10px] font-bold text-white">{i + 1}</span>
               {step}
             </li>
           ))}

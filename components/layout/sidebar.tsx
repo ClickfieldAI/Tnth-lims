@@ -10,9 +10,9 @@ import { cn } from "@/lib/utils";
 export function SidebarContent({ groups }: { groups: NavGroup[] }) {
   const pathname = usePathname();
   return (
-    <div className="flex h-full flex-col bg-slate-950">
+    <div className="flex h-full flex-col bg-[#14122a]">
       <div className="flex items-center gap-2.5 px-4 py-5">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 text-sm font-bold text-white shadow-[0_0_0_1px_rgba(255,255,255,0.08)]">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl brand-gradient text-sm font-bold text-white shadow-[var(--shadow-glow)]">
           Φ
         </div>
         <div className="min-w-0">
@@ -34,8 +34,8 @@ export function SidebarContent({ groups }: { groups: NavGroup[] }) {
                   className={cn(
                     "group relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-all",
                     active
-                      ? "bg-indigo-600 text-white shadow-sm"
-                      : "text-slate-400 hover:bg-white/5 hover:text-slate-100",
+                      ? "brand-gradient text-white shadow-[var(--shadow-glow)]"
+                      : "text-slate-400 hover:bg-white/[0.06] hover:text-slate-100",
                   )}
                 >
                   <Icon className={cn("h-4 w-4 transition-colors", active ? "text-white" : "text-slate-500 group-hover:text-slate-200")} />
@@ -46,7 +46,7 @@ export function SidebarContent({ groups }: { groups: NavGroup[] }) {
           </div>
         ))}
       </nav>
-      <div className="border-t border-white/5 px-4 py-3 text-[10.5px] text-slate-500">v1.0 · ISO 17025 / GMP</div>
+      <div className="border-t border-white/[0.06] px-4 py-3 text-[10.5px] text-slate-500">v1.0 · ISO 17025 / GMP</div>
     </div>
   );
 }
@@ -64,7 +64,7 @@ export function MobileSidebar({ role, onClose }: { role?: RoleCode; onClose: () 
   const groups = navForRole(role);
   return (
     <div className="fixed inset-0 z-50 lg:hidden">
-      <div className="absolute inset-0 bg-slate-950/60" onClick={onClose} />
+      <div className="absolute inset-0 bg-[#0c0b1a]/60 backdrop-blur-sm" onClick={onClose} />
       <div className="absolute left-0 top-0 h-full w-64 p-0 shadow-2xl">
         <button
           onClick={onClose}

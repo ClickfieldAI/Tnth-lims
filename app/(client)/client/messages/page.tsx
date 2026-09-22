@@ -27,10 +27,10 @@ export default async function ClientMessagesPage() {
             {messages.map((m) => (
               <div key={m.id} className={`flex ${m.fromClient ? "justify-end" : "justify-start"}`}>
                 <div className={`max-w-[80%] rounded-lg px-3 py-2 text-xs ${
-                  m.fromClient ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-700"
+                  m.fromClient ? "bg-brand-600 text-white" : "bg-slate-100 text-slate-700"
                 }`}>
                   <p>{m.body}</p>
-                  <p className={`mt-1 text-[10px] ${m.fromClient ? "text-indigo-200" : "text-slate-400"}`}>
+                  <p className={`mt-1 text-[10px] ${m.fromClient ? "text-brand-200" : "text-slate-400"}`}>
                     {m.fromClient ? "You" : "Laboratory"}
                   </p>
                 </div>

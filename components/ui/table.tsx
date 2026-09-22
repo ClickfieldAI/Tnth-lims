@@ -10,13 +10,13 @@ export function Table({ children, className }: { children: React.ReactNode; clas
 export function THead({ children }: { children: React.ReactNode }) {
   return (
     <thead>
-      <tr className="border-b border-slate-200 bg-slate-50">{children}</tr>
+      <tr className="border-b border-[var(--border-soft)] bg-[var(--surface-muted)]">{children}</tr>
     </thead>
   );
 }
 
 export function Th({ children, className }: { children?: React.ReactNode; className?: string }) {
-  return <th className={cn("px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500", className)}>{children}</th>;
+  return <th className={cn("px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500", className)}>{children}</th>;
 }
 
 export function TBody({ children }: { children: React.ReactNode }) {
@@ -25,7 +25,7 @@ export function TBody({ children }: { children: React.ReactNode }) {
 
 export function Tr({ children, className, onClick }: { children: React.ReactNode; className?: string; onClick?: () => void }) {
   return (
-    <tr className={cn("border-b border-slate-100 hover:bg-slate-50/60", onClick && "cursor-pointer", className)} onClick={onClick}>
+    <tr className={cn("border-b border-[var(--border-soft)] transition-colors hover:bg-brand-50/40", onClick && "cursor-pointer", className)} onClick={onClick}>
       {children}
     </tr>
   );
@@ -47,7 +47,7 @@ export function TableEmpty({ colSpan, message }: { colSpan: number; message?: st
 
 export function DataTable({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={cn("overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm", className)}>
+    <div className={cn("overflow-x-auto rounded-2xl border border-[var(--border-soft)] bg-[var(--surface)] shadow-[var(--shadow-xs)]", className)}>
       <Table>{children}</Table>
     </div>
   );

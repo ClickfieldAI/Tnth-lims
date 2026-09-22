@@ -31,7 +31,7 @@ export default async function ClientHomePage() {
         title={`Welcome, ${user?.firstName}`}
         description="Track your testing progress, download approved reports and manage invoices."
         actions={
-          <Link href="/client/samples/new" className="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+          <Link href="/client/samples/new" className="inline-flex items-center gap-2 rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">
             <Plus className="h-4 w-4" /> Submit a sample
           </Link>
         }
@@ -47,7 +47,7 @@ export default async function ClientHomePage() {
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader title="Recent samples" subtitle="Latest submissions and their live status"
-            action={<Link href="/client/samples" className="text-xs font-medium text-indigo-600 hover:underline">View all</Link>} />
+            action={<Link href="/client/samples" className="text-xs font-medium text-brand-600 hover:underline">View all</Link>} />
           <div className="divide-y divide-slate-100">
             {samples.map((s) => (
               <Link key={s.id} href="/client/samples" className="flex items-center justify-between px-5 py-3 hover:bg-slate-50">
@@ -68,11 +68,11 @@ export default async function ClientHomePage() {
 
         <Card>
           <CardHeader title="Messages" subtitle="Laboratory communication"
-            action={<Link href="/client/messages" className="text-xs font-medium text-indigo-600 hover:underline"><MessageSquare className="h-3.5 w-3.5" /></Link>} />
+            action={<Link href="/client/messages" className="text-xs font-medium text-brand-600 hover:underline"><MessageSquare className="h-3.5 w-3.5" /></Link>} />
           <div className="divide-y divide-slate-100">
             {messages.map((m) => (
               <div key={m.id} className="px-5 py-3">
-                <p className={`line-clamp-2 text-xs ${m.fromClient ? "text-slate-700" : "font-medium text-indigo-700"}`}>{m.body}</p>
+                <p className={`line-clamp-2 text-xs ${m.fromClient ? "text-slate-700" : "font-medium text-brand-700"}`}>{m.body}</p>
                 <p className="mt-1 text-[10.5px] text-slate-400">{formatDate(m.createdAt)}</p>
               </div>
             ))}

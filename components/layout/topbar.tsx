@@ -33,22 +33,22 @@ export function Topbar({
   const name = [user?.firstName, user?.lastName].filter(Boolean).join(" ") || "User";
 
   return (
-    <header className="sticky top-0 z-40 flex h-16 items-center gap-3 border-b border-slate-200 bg-white/90 backdrop-blur px-4">
-      <button onClick={onMenu} className="rounded-md p-2 text-slate-500 hover:bg-slate-100 lg:hidden" aria-label="Menu">
+    <header className="sticky top-0 z-40 flex h-16 items-center gap-3 border-b border-[var(--border-soft)] bg-white/80 backdrop-blur-md px-4">
+      <button onClick={onMenu} className="rounded-lg p-2 text-slate-500 hover:bg-slate-900/5 lg:hidden" aria-label="Menu">
         <Menu className="h-5 w-5" />
       </button>
       <div className="flex-1" />
       <button
         onClick={toggleTheme}
-        className="rounded-lg p-2 text-slate-500 hover:bg-slate-100"
+        className="rounded-lg p-2 text-slate-500 hover:bg-slate-900/5"
         aria-label="Toggle theme"
       >
         {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
       </button>
-      <button className="rounded-lg p-2 text-slate-500 hover:bg-slate-100" aria-label="Notifications">
+      <button className="rounded-lg p-2 text-slate-500 hover:bg-slate-900/5" aria-label="Notifications">
         <Bell className="h-4 w-4" />
       </button>
-      <div className="flex items-center gap-2 rounded-md border border-slate-200 px-2 py-1">
+      <div className="flex items-center gap-2 rounded-full border border-[var(--border-soft)] bg-white py-1 pl-1 pr-3 shadow-[var(--shadow-xs)]">
         <Avatar initials={initials(user?.firstName, user?.lastName)} name={name} />
         <div className="hidden sm:block text-left">
           <p className="text-xs font-semibold text-slate-800">{name}</p>
