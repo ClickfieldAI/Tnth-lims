@@ -27,7 +27,7 @@ export function StatCard({
         <p className="text-[13px] font-medium text-slate-500">{label}</p>
         {icon ? <span className={cn("flex h-9 w-9 items-center justify-center rounded-md", tones[tone] ?? tones.indigo)}>{icon}</span> : null}
       </div>
-      <p className="relative mt-2 text-2xl font-semibold tracking-tight text-[#14162b]">{value}</p>
+      <p className="relative mt-2 text-2xl font-semibold tracking-tight text-[#1a1d1a]">{value}</p>
       <div className="relative mt-1 flex items-center gap-1.5 text-xs">
         {trend === "up" ? <span className="text-emerald-600">▲</span> : trend === "down" ? <span className="text-red-500">▼</span> : null}
         {sub ? <span className="text-slate-400">{sub}</span> : null}
@@ -40,7 +40,7 @@ export function PageHeader({ title, description, actions }: { title: string; des
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h1 className="text-xl font-bold tracking-tight text-[#14162b]">{title}</h1>
+        <h1 className="text-xl font-bold tracking-tight text-[#1a1d1a]">{title}</h1>
         {description ? <p className="mt-1 text-sm text-slate-500">{description}</p> : null}
       </div>
       {actions ? <div className="flex flex-wrap items-center gap-2">{actions}</div> : null}

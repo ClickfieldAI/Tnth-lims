@@ -50,7 +50,7 @@ export function LoginForm() {
           name="email"
           type="email"
           autoComplete="username"
-          className="h-10 w-full rounded-lg border border-[var(--border-soft)] bg-white px-3 text-sm text-[#14162b] placeholder:text-slate-400 transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/30 focus-visible:border-brand-300"
+          className="h-10 w-full rounded-lg border border-[var(--border-soft)] bg-white px-3 text-sm text-[#1a1d1a] placeholder:text-slate-400 transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/30 focus-visible:border-brand-300"
           placeholder="you@tnth.io"
           required
         />
@@ -64,7 +64,7 @@ export function LoginForm() {
           name="password"
           type="password"
           autoComplete="current-password"
-          className="h-10 w-full rounded-lg border border-[var(--border-soft)] bg-white px-3 text-sm text-[#14162b] placeholder:text-slate-400 transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/30 focus-visible:border-brand-300"
+          className="h-10 w-full rounded-lg border border-[var(--border-soft)] bg-white px-3 text-sm text-[#1a1d1a] placeholder:text-slate-400 transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/30 focus-visible:border-brand-300"
           placeholder="••••••••"
           required
         />

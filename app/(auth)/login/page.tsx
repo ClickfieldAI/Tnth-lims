@@ -22,11 +22,11 @@ export default async function LoginPage() {
                 Φ
               </div>
               <div>
-                <p className="text-base font-bold tracking-tight text-[#14162b]">TNTH LIMS</p>
+                <p className="text-base font-bold tracking-tight text-[#1a1d1a]">TNTH LIMS</p>
                 <p className="text-[11px] text-slate-500">Laboratory Information Management System</p>
               </div>
             </div>
-            <h1 className="mt-3 text-lg font-semibold text-[#14162b]">Sign in to your workspace</h1>
+            <h1 className="mt-3 text-lg font-semibold text-[#1a1d1a]">Sign in to your workspace</h1>
             <p className="text-xs text-slate-500">NABL-accredited multi-discipline contract testing laboratory</p>
           </div>
           <LoginForm />

@@ -81,7 +81,7 @@ export function SignatureButton({
                 <ShieldCheck className="h-4 w-4" />
               </span>
               <div>
-                <p className="text-sm font-semibold text-[#14162b]">Electronic signature required</p>
+                <p className="text-sm font-semibold text-[#1a1d1a]">Electronic signature required</p>
                 <p className="text-xs text-slate-500">Re-enter your password to attest: “{meaning}”</p>
               </div>
             </div>

@@ -7,7 +7,7 @@ const buttonVariants = {
   primary:
     "bg-brand-700 text-white shadow-[var(--shadow-xs)] hover:bg-brand-800 active:bg-brand-900",
   secondary:
-    "bg-white text-[#1c2b38] border border-[var(--border-soft)] shadow-[var(--shadow-xs)] hover:bg-brand-50 hover:border-brand-300",
+    "bg-white text-[#1a1d1a] border border-[var(--border-soft)] shadow-[var(--shadow-xs)] hover:bg-brand-50 hover:border-brand-300",
   outline:
     "bg-transparent text-brand-700 border border-brand-300 hover:bg-brand-50",
   ghost: "bg-transparent text-slate-600 hover:bg-slate-900/5",
