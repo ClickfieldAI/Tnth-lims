@@ -9,6 +9,7 @@ import { Avatar } from "@/components/ui/forms";
 import { initials, cn } from "@/lib/utils";
 import { navForRole, type NavGroup } from "@/lib/nav";
 import type { RoleCode } from "@/lib/roles";
+import { TnthLogo } from "@/components/layout/logo";
 
 export function TopNav({
   role,
@@ -50,9 +51,7 @@ export function TopNav({
         </button>
 
         <Link href="/" className="flex shrink-0 items-center gap-2 pr-4">
-          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-brand-600 text-[13px] font-bold text-white">
-            Φ
-          </div>
+          <TnthLogo className="h-9 w-9" />
           <span className="hidden text-[14px] font-bold tracking-tight text-[#12151a] sm:block">TNTH LIMS</span>
         </Link>
 
@@ -150,7 +149,7 @@ function MobileNav({ groups, pathname, onClose }: { groups: NavGroup[]; pathname
       <div className="absolute left-0 top-0 h-full w-72 overflow-y-auto bg-white p-4 shadow-2xl">
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-brand-600 text-sm font-bold text-white">Φ</div>
+            <TnthLogo className="h-9 w-9" />
             <p className="text-sm font-bold text-[#1a1d1a]">TNTH LIMS</p>
           </div>
           <button onClick={onClose} className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-900/5" aria-label="Close menu">

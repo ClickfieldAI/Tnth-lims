@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/session";
+import { TnthLogo } from "@/components/layout/logo";
 import { LoginForm } from "./login-form";
 
 export const metadata = { title: "Sign in" };
@@ -18,9 +19,7 @@ export default async function LoginPage() {
         <div className="rounded-lg border border-[var(--border-soft)] bg-white p-8 shadow-[var(--shadow-md)]">
           <div className="mb-6 flex flex-col gap-2">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-700 text-base font-bold text-white">
-                Φ
-              </div>
+              <TnthLogo className="h-11 w-11" />
               <div>
                 <p className="text-base font-bold tracking-tight text-[#1a1d1a]">TNTH LIMS</p>
                 <p className="text-[11px] text-slate-500">Laboratory Information Management System</p>

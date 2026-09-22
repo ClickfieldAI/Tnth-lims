@@ -3,6 +3,7 @@ import Link from "next/link";
 import { LogOut } from "lucide-react";
 import { getCurrentUser } from "@/lib/session";
 import { logoutAction } from "@/actions/auth";
+import { TnthLogo } from "@/components/layout/logo";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +17,7 @@ export default async function ClientLayout({ children }: { children: React.React
       <header className="sticky top-0 z-40 border-b border-slate-200 bg-white">
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-5">
           <Link href="/client" className="flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-brand-600 text-sm font-bold text-white">Φ</span>
+            <TnthLogo className="h-9 w-9" />
             <span>
               <span className="block text-sm font-bold tracking-tight text-slate-900">TNTH LIMS</span>
               <span className="block text-[10.5px] text-slate-500">Client Portal</span>
