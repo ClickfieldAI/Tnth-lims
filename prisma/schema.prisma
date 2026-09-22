@@ -65,6 +65,7 @@ model User {
   documentApprovals Document[] @relation("docApprovedBy")
   ownedDocuments Document[] @relation("docOwner")
   reportApprovals TestReport[] @relation("reportApprovedBy")
+  testApprovals Test[] @relation("testApprovedBy")
   assignedTests  Test[] @relation("testAssignedTo")
   messages       Message[]
   deviations     Deviation[]
@@ -248,6 +249,7 @@ model Test {
   reviewedById  String?
   reviewedAt    DateTime?
   approvedById  String?
+  approvedBy    User?   @relation("testApprovedBy", fields: [approvedById], references: [id])
   approvedAt    DateTime?
   assayResult   AssayResult?
   dissolution   DissolutionResult?

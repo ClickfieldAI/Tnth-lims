@@ -20,6 +20,7 @@ export default async function WorksheetPage({ params }: { params: Promise<{ id: 
     include: {
       sample: { include: { client: true } },
       assignedTo: true,
+      approvedBy: true,
       instrument: true,
       assayResult: true,
       dissolution: true,
@@ -100,7 +101,7 @@ export default async function WorksheetPage({ params }: { params: Promise<{ id: 
             <CardHeader title="Approval trail" />
             <CardContent className="text-xs text-slate-500">
               {test.approvedAt ? (
-                <>Approved {formatDateTime(test.approvedAt)} by {test.approvedById ?? "—"}</>
+                <>Approved {formatDateTime(test.approvedAt)} by {test.approvedBy ? `${test.approvedBy.firstName} ${test.approvedBy.lastName}` : "—"}</>
               ) : (
                 <>Awaiting QA review.</>
               )}
