@@ -39,8 +39,8 @@ export function TopNav({
   const name = [user?.firstName, user?.lastName].filter(Boolean).join(" ") || "User";
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--border-soft)] bg-white/90 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-[1600px] items-center gap-2 px-4 sm:px-5">
+    <header className="sticky top-0 z-40 border-b border-[var(--border-soft)] bg-white">
+      <div className="mx-auto flex h-14 max-w-[1600px] items-center gap-1 px-4 sm:px-6">
         <button
           onClick={() => setMobileOpen(true)}
           className="rounded-lg p-2 text-slate-500 hover:bg-slate-900/5 lg:hidden"
@@ -49,17 +49,16 @@ export function TopNav({
           <Menu className="h-5 w-5" />
         </button>
 
-        <Link href="/" className="flex shrink-0 items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-brand-600 text-sm font-bold text-white">
+        <Link href="/" className="flex shrink-0 items-center gap-2 pr-4">
+          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-brand-600 text-[13px] font-bold text-white">
             Φ
           </div>
-          <div className="hidden leading-tight sm:block">
-            <p className="text-sm font-bold tracking-tight text-[#1a1d1a]">TNTH LIMS</p>
-            <p className="text-[10.5px] text-slate-500">Multi-Discipline Testing Lab</p>
-          </div>
+          <span className="hidden text-[14px] font-bold tracking-tight text-[#12151a] sm:block">TNTH LIMS</span>
         </Link>
 
-        <nav className="ml-2 hidden items-center gap-0.5 lg:flex">
+        <div className="hidden h-5 w-px bg-[var(--border-soft)] lg:block" />
+
+        <nav className="hidden h-14 items-stretch lg:flex">
           {groups.map((g) => (
             <GroupMenu key={g.group} group={g} pathname={pathname} />
           ))}
@@ -68,37 +67,39 @@ export function TopNav({
         <div className="flex-1" />
 
         <div className="hidden items-center md:flex">
-          <div className="flex h-9 w-64 items-center gap-2 rounded-lg border border-[var(--border-soft)] bg-slate-900/[0.03] px-3 text-slate-400">
+          <div className="flex h-8 w-56 items-center gap-2 rounded-md border border-[var(--border-soft)] bg-slate-900/[0.025] px-2.5 text-slate-400 transition-colors focus-within:border-brand-300">
             <Search className="h-3.5 w-3.5 shrink-0" />
-            <span className="truncate text-xs">Search samples, tests, clients…</span>
+            <span className="truncate text-[12.5px]">Search…</span>
           </div>
         </div>
 
-        <button
-          onClick={toggleTheme}
-          className="rounded-lg p-2 text-slate-500 hover:bg-slate-900/5"
-          aria-label="Toggle theme"
-        >
-          {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-        </button>
-        <button className="rounded-lg p-2 text-slate-500 hover:bg-slate-900/5" aria-label="Notifications">
-          <Bell className="h-4 w-4" />
-        </button>
+        <div className="ml-1 flex items-center gap-0.5">
+          <button
+            onClick={toggleTheme}
+            className="rounded-md p-2 text-slate-400 transition-colors hover:bg-slate-900/5 hover:text-slate-600"
+            aria-label="Toggle theme"
+          >
+            {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
+          <button className="rounded-md p-2 text-slate-400 transition-colors hover:bg-slate-900/5 hover:text-slate-600" aria-label="Notifications">
+            <Bell className="h-4 w-4" />
+          </button>
+        </div>
 
-        <div className="flex items-center gap-2 rounded-full border border-[var(--border-soft)] bg-white py-1 pl-1 pr-3 shadow-[var(--shadow-xs)]">
+        <div className="ml-2 flex items-center gap-2 border-l border-[var(--border-soft)] pl-3">
           <Avatar initials={initials(user?.firstName, user?.lastName)} name={name} />
           <div className="hidden text-left sm:block">
-            <p className="text-xs font-semibold text-slate-800">{name}</p>
-            <p className="text-[10.5px] capitalize text-slate-500">{user?.role?.toLowerCase()}</p>
+            <p className="text-[12.5px] font-semibold leading-tight text-slate-800">{name}</p>
+            <p className="text-[11px] capitalize leading-tight text-slate-400">{user?.role?.toLowerCase()}</p>
           </div>
+          <button
+            onClick={logout}
+            className="ml-1 rounded-md p-1.5 text-slate-400 transition-colors hover:bg-rose-50 hover:text-red-600"
+            aria-label="Sign out"
+          >
+            <LogOut className="h-4 w-4" />
+          </button>
         </div>
-        <button
-          onClick={logout}
-          className="rounded-lg p-2 text-slate-500 hover:bg-rose-50 hover:text-red-600"
-          aria-label="Sign out"
-        >
-          <LogOut className="h-4 w-4" />
-        </button>
       </div>
 
       {mobileOpen ? <MobileNav groups={groups} pathname={pathname} onClose={() => setMobileOpen(false)} /> : null}
@@ -109,17 +110,23 @@ export function TopNav({
 function GroupMenu({ group, pathname }: { group: NavGroup; pathname: string }) {
   const hasActive = group.items.some((i) => i.href === pathname);
   return (
-    <div className="group relative">
+    <div className="group relative flex h-full items-center">
       <button
         className={cn(
-          "flex items-center gap-1 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors duration-200",
-          hasActive ? "bg-brand-50 text-brand-700" : "text-slate-600 hover:bg-slate-900/5 hover:text-slate-900",
+          "relative flex h-full items-center gap-1 px-3 text-[13.5px] font-medium transition-colors duration-200",
+          hasActive ? "text-brand-700" : "text-slate-600 hover:text-slate-900",
         )}
       >
         {group.group}
-        <ChevronDown className="h-3.5 w-3.5 text-slate-400 transition-transform group-hover:rotate-180" />
+        <ChevronDown className="h-3 w-3 text-slate-400 transition-transform duration-200 group-hover:rotate-180" />
+        <span
+          className={cn(
+            "absolute inset-x-3 bottom-0 h-[2px] rounded-full bg-brand-600 transition-opacity duration-200",
+            hasActive ? "opacity-100" : "opacity-0",
+          )}
+        />
       </button>
-      <div className="invisible absolute left-0 top-full z-50 w-60 translate-y-1 rounded-xl border border-[var(--border-soft)] bg-white p-1.5 opacity-0 shadow-[var(--shadow-lg)] transition-all duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+      <div className="invisible absolute left-0 top-full z-50 w-56 translate-y-1 rounded-lg border border-[var(--border-soft)] bg-white p-1 opacity-0 shadow-[var(--shadow-md)] transition-all duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
         {group.items.map((item) => {
           const Icon = item.icon;
           const active = pathname === item.href;
@@ -128,7 +135,7 @@ function GroupMenu({ group, pathname }: { group: NavGroup; pathname: string }) {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors",
+                "flex items-center gap-2.5 rounded-md px-2.5 py-2 text-[13px] font-medium transition-colors",
                 active ? "bg-brand-50 text-brand-700" : "text-slate-600 hover:bg-slate-900/5 hover:text-slate-900",
               )}
             >
