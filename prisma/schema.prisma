@@ -537,15 +537,20 @@ model TestReport {
 }
 // ---------------- APPROVALS / AUDIT / MESSAGES ----------------
 model Approval {
-  id            String   @id @default(cuid())
-  referenceType String
-  referenceId   String
-  approverId    String
-  approver      User     @relation(fields: [approverId], references: [id])
-  action        String   @default("APPROVE")
-  comment       String?
-  at            DateTime @default(now())
-  createdAt     DateTime @default(now())
+  id             String   @id @default(cuid())
+  referenceType  String
+  referenceId    String
+  approverId     String
+  approver       User     @relation(fields: [approverId], references: [id])
+  action         String   @default("APPROVE")
+  comment        String?
+  // 21 CFR Part 11-style e-signature evidence: password re-verified at sign
+  // time (not just an active session) and a snapshot of the record state
+  // being attested to, so a later edit can't silently inherit an old signature.
+  meaning        String   @default("Approved")
+  recordSnapshot Json?
+  at             DateTime @default(now())
+  createdAt      DateTime @default(now())
 
   @@index([referenceId])
 }

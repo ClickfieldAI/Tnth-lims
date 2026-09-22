@@ -5,6 +5,7 @@ import { PageHeader, StatCard } from "@/components/ui/display";
 import { DataTable, THead, Th, TBody, Tr, Td, TableEmpty } from "@/components/ui/table";
 import { StatusBadge } from "@/components/ui/badge";
 import { formatDate, formatNumber } from "@/lib/utils";
+import { DispositionActions } from "./disposition-actions";
 
 export const metadata = { title: "Batch Release" };
 
@@ -14,6 +15,7 @@ const STATUS_KEY: Record<string, string> = {
 
 export default async function BatchReleasePage() {
   const user = await getCurrentUser();
+  const canDecide = user?.role === "ADMIN" || user?.role === "QA";
   const batches = await prisma.batch.findMany({
     orderBy: { createdAt: "desc" },
     include: {
@@ -45,12 +47,14 @@ export default async function BatchReleasePage() {
       <DataTable>
         <THead>
           <Th>Batch</Th><Th>Product</Th><Th>Mfg date</Th><Th>Expiry</Th><Th>Samples / tests</Th><Th>All approved?</Th><Th>Released</Th><Th>Status</Th>
+          {canDecide ? <Th>Disposition</Th> : null}
         </THead>
         <TBody>
           {batches.map((b) => {
             const allTests = b.samples.flatMap((s) => s.tests);
             const approvedTests = allTests.filter((t) => t.status === "APPROVED").length;
             const complete = allTests.length > 0 && approvedTests === allTests.length;
+            const decided = b.releaseStatus === "RELEASED" || b.releaseStatus === "REJECTED";
             return (
               <Tr key={b.id}>
                 <Td className="font-mono text-[11px] font-semibold">{b.batchNumber}</Td>
@@ -66,10 +70,19 @@ export default async function BatchReleasePage() {
                 </Td>
                 <Td className="text-xs">{formatDate(b.releasedAt)}</Td>
                 <Td><StatusBadge status={STATUS_KEY[b.releaseStatus] ?? b.releaseStatus} dot /></Td>
+                {canDecide ? (
+                  <Td>
+                    {decided ? (
+                      <span className="text-[11px] text-slate-400">Signed off</span>
+                    ) : (
+                      <DispositionActions batchId={b.id} complete={complete} />
+                    )}
+                  </Td>
+                ) : null}
               </Tr>
             );
           })}
-          {!batches.length ? <TableEmpty colSpan={8} message="No batches registered." /> : null}
+          {!batches.length ? <TableEmpty colSpan={canDecide ? 9 : 8} message="No batches registered." /> : null}
         </TBody>
       </DataTable>
 

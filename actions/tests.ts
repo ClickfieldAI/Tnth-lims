@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import { logAudit } from "@/lib/audit";
+import { signApproval, SignatureError } from "@/lib/esign";
 import type { ActionResult } from "@/actions/samples";
 import { nextReportCode } from "@/lib/ids";
 
@@ -80,11 +81,30 @@ export async function submitTestResult(formData: FormData): Promise<ActionResult
   return { ok: true };
 }
 
-// Lab manager / QA review & approve.
-export async function reviewTest(testId: string, action: "APPROVE" | "REJECT", comment?: string): Promise<ActionResult> {
+// Lab manager / QA review & approve. Requires e-signature (password re-entry).
+export async function reviewTest(
+  testId: string,
+  action: "APPROVE" | "REJECT",
+  password: string,
+  comment?: string,
+): Promise<ActionResult> {
   const user = await requireUser();
   const test = await prisma.test.findUnique({ where: { id: testId }, include: { sample: true } });
   if (!test) return { ok: false, error: "Test not found." };
+
+  try {
+    await signApproval(user, password, {
+      referenceType: "TEST",
+      referenceId: testId,
+      action,
+      meaning: action === "APPROVE" ? "Reviewed and approved test result" : "Reviewed and returned test result",
+      comment,
+      recordSnapshot: { result: test.result, resultStatus: test.resultStatus, worksheetData: test.worksheetData },
+    });
+  } catch (e) {
+    if (e instanceof SignatureError) return { ok: false, error: e.message };
+    throw e;
+  }
 
   if (action === "APPROVE") {
     await prisma.test.update({
@@ -118,14 +138,6 @@ export async function reviewTest(testId: string, action: "APPROVE" | "REJECT", c
       data: { status: "TESTING", approvedById: null, approvedAt: null },
     });
   }
-
-  await prisma.approval.create({
-    data: {
-      referenceType: "TEST", referenceId: testId,
-      approverId: user.id, action,
-      comment: comment || null,
-    },
-  });
 
   await logAudit(user.id, {
     action: action === "APPROVE" ? "TEST_APPROVED" : "TEST_RETURNED",

@@ -6,6 +6,7 @@ import { DataTable, THead, Th, TBody, Tr, Td, TableEmpty } from "@/components/ui
 import { Badge, StatusBadge } from "@/components/ui/badge";
 import { formatDateTime } from "@/lib/utils";
 import { NewDeviationButton } from "./new-deviation";
+import { DeviationActions } from "./deviation-actions";
 
 export const metadata = { title: "Deviations" };
 
@@ -37,7 +38,7 @@ export default async function DeviationsPage() {
 
       <DataTable>
         <THead>
-          <Th>Deviation</Th><Th>Description</Th><Th>Category</Th><Th>Impact</Th><Th>Root cause</Th><Th>Raised</Th><Th>Status</Th>
+          <Th>Deviation</Th><Th>Description</Th><Th>Category</Th><Th>Impact</Th><Th>Root cause</Th><Th>Raised</Th><Th>Status</Th><Th>Action</Th>
         </THead>
         <TBody>
           {deviations.map((d) => (
@@ -49,9 +50,10 @@ export default async function DeviationsPage() {
               <Td className="max-w-[180px] truncate text-xs text-slate-500">{d.rootCause ?? "Under investigation"}</Td>
               <Td className="text-xs">{formatDateTime(d.createdAt)}</Td>
               <Td><StatusBadge status={d.status === "INVESTIGATING" ? "REVIEW" : d.status} dot /></Td>
+              <Td><DeviationActions devId={d.id} status={d.status} /></Td>
             </Tr>
           ))}
-          {!deviations.length ? <TableEmpty colSpan={7} message="No deviations recorded." /> : null}
+          {!deviations.length ? <TableEmpty colSpan={8} message="No deviations recorded." /> : null}
         </TBody>
       </DataTable>
 

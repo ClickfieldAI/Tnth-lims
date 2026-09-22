@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireUser, requireRole } from "@/lib/session";
 import { logAudit } from "@/lib/audit";
+import { signApproval, SignatureError } from "@/lib/esign";
 import type { ActionResult } from "@/actions/samples";
 import { nextDeviationCode, nextCapaCode, nextChangeControlCode } from "@/lib/ids";
 
@@ -33,8 +34,33 @@ export async function createDeviation(formData: FormData): Promise<ActionResult>
   return { ok: true };
 }
 
-export async function updateDeviationStatus(devId: string, status: string, rootCause?: string): Promise<ActionResult> {
+export async function updateDeviationStatus(
+  devId: string,
+  status: string,
+  rootCause?: string,
+  password?: string,
+): Promise<ActionResult> {
   const user = await requireUser();
+
+  if (status === "CLOSED") {
+    if (!password) return { ok: false, error: "Password is required to close a deviation." };
+    const dev = await prisma.deviation.findUnique({ where: { id: devId } });
+    if (!dev) return { ok: false, error: "Deviation not found." };
+    try {
+      await signApproval(user, password, {
+        referenceType: "DEVIATION",
+        referenceId: devId,
+        action: "CLOSE",
+        meaning: "I have reviewed the investigation and root cause, and close this deviation",
+        comment: rootCause,
+        recordSnapshot: { deviationId: dev.deviationId, rootCause: rootCause ?? dev.rootCause },
+      });
+    } catch (e) {
+      if (e instanceof SignatureError) return { ok: false, error: e.message };
+      throw e;
+    }
+  }
+
   await prisma.deviation.update({
     where: { id: devId },
     data: {
@@ -83,13 +109,37 @@ export async function createCapa(formData: FormData): Promise<ActionResult> {
   return { ok: true };
 }
 
-export async function updateCapaStatus(capaId: string, status: string): Promise<ActionResult> {
+export async function updateCapaStatus(capaId: string, status: string, password?: string, comment?: string): Promise<ActionResult> {
   const user = await requireUser();
+  const isClosing = status === "CLOSED" || status === "VERIFIED";
+
+  if (isClosing) {
+    if (!password) return { ok: false, error: "Password is required to close/verify a CAPA." };
+    const capa = await prisma.capa.findUnique({ where: { id: capaId } });
+    if (!capa) return { ok: false, error: "CAPA not found." };
+    try {
+      await signApproval(user, password, {
+        referenceType: "CAPA",
+        referenceId: capaId,
+        action: status,
+        meaning:
+          status === "VERIFIED"
+            ? "I have verified the effectiveness of this CAPA"
+            : "I am closing this CAPA",
+        comment,
+        recordSnapshot: { capaId: capa.capaId, title: capa.title, action: capa.action },
+      });
+    } catch (e) {
+      if (e instanceof SignatureError) return { ok: false, error: e.message };
+      throw e;
+    }
+  }
+
   await prisma.capa.update({
     where: { id: capaId },
     data: {
       status,
-      ...(status === "CLOSED" || status === "VERIFIED" ? { closedAt: new Date(), closedById: user.id } : {}),
+      ...(isClosing ? { closedAt: new Date(), closedById: user.id } : {}),
     },
   });
   await logAudit(user.id, {
@@ -128,8 +178,30 @@ export async function createChangeControl(formData: FormData): Promise<ActionRes
   return { ok: true };
 }
 
-export async function decideChangeControl(ccId: string, decision: "APPROVED" | "REJECTED" | "IMPLEMENTED"): Promise<ActionResult> {
+export async function decideChangeControl(
+  ccId: string,
+  decision: "APPROVED" | "REJECTED" | "IMPLEMENTED",
+  password: string,
+  comment?: string,
+): Promise<ActionResult> {
   const user = await requireRole("ADMIN", "QA");
+  const cc = await prisma.changeControl.findUnique({ where: { id: ccId } });
+  if (!cc) return { ok: false, error: "Change control not found." };
+
+  try {
+    await signApproval(user, password, {
+      referenceType: "CHANGE_CONTROL",
+      referenceId: ccId,
+      action: decision,
+      meaning: `I decide this change control: ${decision}`,
+      comment,
+      recordSnapshot: { ccId: cc.ccId, title: cc.title },
+    });
+  } catch (e) {
+    if (e instanceof SignatureError) return { ok: false, error: e.message };
+    throw e;
+  }
+
   await prisma.changeControl.update({
     where: { id: ccId },
     data: {

@@ -5,6 +5,7 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { Badge, StatusBadge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
 import { NewCapaButton } from "./new-capa";
+import { CapaActions } from "./capa-actions";
 
 export const metadata = { title: "CAPA" };
 
@@ -72,6 +73,7 @@ export default async function CapaPage() {
                     <p className="col-span-2">Linked deviation: <span className="font-mono text-[11px] text-brand-600">{c.relatedDeviation.deviationId}</span></p>
                   ) : null}
                 </div>
+                <CapaActions capaId={c.id} status={c.status} />
               </div>
             </Card>
           );

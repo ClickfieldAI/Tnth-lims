@@ -7,6 +7,7 @@ import { Field, Input, Textarea, Select } from "@/components/ui/forms";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { SignatureButton } from "@/components/ui/signature-modal";
 
 type DissolutionTp = { t?: number; p?: number; time?: number; dissolvedPercent?: number };
 
@@ -153,24 +154,28 @@ function TypeSpecificFields({
 
 export function ReviewActions({ testId }: { testId: string }) {
   const router = useRouter();
-  const [pending, startTransition] = useTransition();
-  const [comment, setComment] = useState("");
 
-  function act(action: "APPROVE" | "REJECT") {
-    startTransition(async () => {
-      await reviewTest(testId, action, comment);
-      router.refresh();
-    });
+  async function sign(action: "APPROVE" | "REJECT", payload: { password: string; comment: string }) {
+    const res = await reviewTest(testId, action, payload.password, payload.comment);
+    if (res.ok) router.refresh();
+    return res;
   }
 
   return (
-    <div className="space-y-3">
-      <Textarea value={comment} onChange={(e) => setComment(e.target.value)}
-        placeholder="Review comment (optional for approval)" />
-      <div className="flex gap-2">
-        <Button variant="success" onClick={() => act("APPROVE")} disabled={pending}>Approve & generate report</Button>
-        <Button variant="danger" onClick={() => act("REJECT")} disabled={pending}>Return to analyst</Button>
-      </div>
+    <div className="flex gap-2">
+      <SignatureButton
+        label="Approve & generate report"
+        meaning="I have reviewed this test result and approve it for reporting"
+        variant="success"
+        onSign={(p) => sign("APPROVE", p)}
+      />
+      <SignatureButton
+        label="Return to analyst"
+        meaning="I am returning this test result to the analyst"
+        variant="danger"
+        requireComment
+        onSign={(p) => sign("REJECT", p)}
+      />
     </div>
   );
 }

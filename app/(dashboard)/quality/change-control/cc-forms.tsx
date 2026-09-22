@@ -6,6 +6,7 @@ import { Plus } from "lucide-react";
 import { createChangeControl, decideChangeControl } from "@/actions/quality";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Select, Textarea } from "@/components/ui/forms";
+import { SignatureButton } from "@/components/ui/signature-modal";
 
 export function NewChangeControlButton() {
   const router = useRouter();
@@ -66,19 +67,30 @@ export function NewChangeControlButton() {
 
 export function DecideButtons({ ccId }: { ccId: string }) {
   const router = useRouter();
-  const [pending, startTransition] = useTransition();
 
-  function decide(decision: "APPROVED" | "REJECTED") {
-    startTransition(async () => {
-      await decideChangeControl(ccId, decision);
-      router.refresh();
-    });
+  async function sign(decision: "APPROVED" | "REJECTED", payload: { password: string; comment: string }) {
+    const res = await decideChangeControl(ccId, decision, payload.password, payload.comment);
+    if (res.ok) router.refresh();
+    return res;
   }
 
   return (
     <div className="flex gap-2">
-      <Button size="sm" variant="success" disabled={pending} onClick={() => decide("APPROVED")}>Approve</Button>
-      <Button size="sm" variant="danger" disabled={pending} onClick={() => decide("REJECTED")}>Reject</Button>
+      <SignatureButton
+        label="Approve"
+        size="sm"
+        variant="success"
+        meaning="I approve this change control"
+        onSign={(p) => sign("APPROVED", p)}
+      />
+      <SignatureButton
+        label="Reject"
+        size="sm"
+        variant="danger"
+        requireComment
+        meaning="I reject this change control"
+        onSign={(p) => sign("REJECTED", p)}
+      />
     </div>
   );
 }
