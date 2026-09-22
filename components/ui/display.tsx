@@ -36,10 +36,47 @@ export function StatCard({
   );
 }
 
-export function PageHeader({ title, description, actions }: { title: string; description?: string; actions?: React.ReactNode }) {
+export function PageHeader({
+  title,
+  description,
+  actions,
+  eyebrow,
+  image,
+}: {
+  title: string;
+  description?: string;
+  actions?: React.ReactNode;
+  eyebrow?: string;
+  image?: string;
+}) {
+  if (image) {
+    return (
+      <div className="relative overflow-hidden rounded-2xl border border-[var(--border-soft)] bg-white shadow-[var(--shadow-sm)]">
+        <div className="relative flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+          <div className="relative z-10 max-w-xl">
+            {eyebrow ? (
+              <p className="mb-2.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-brand-600">
+                <span className="h-3.5 w-1 rounded-full bg-brand-600" />
+                {eyebrow}
+              </p>
+            ) : null}
+            <h1 className="text-xl font-bold tracking-tight text-[#1a1d1a] sm:text-2xl">{title}</h1>
+            {description ? <p className="mt-2 text-sm leading-relaxed text-slate-500">{description}</p> : null}
+            {actions ? <div className="mt-4 flex flex-wrap items-center gap-2">{actions}</div> : null}
+          </div>
+          <div className="relative h-28 w-full shrink-0 overflow-hidden rounded-xl sm:h-32 sm:w-56">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={image} alt="" className="h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <div>
+        {eyebrow ? <p className="mb-1 text-[11px] font-bold uppercase tracking-wider text-brand-600">{eyebrow}</p> : null}
         <h1 className="text-xl font-bold tracking-tight text-[#1a1d1a]">{title}</h1>
         {description ? <p className="mt-1 text-sm text-slate-500">{description}</p> : null}
       </div>

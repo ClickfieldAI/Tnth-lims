@@ -27,8 +27,10 @@ export default async function InstrumentsPage() {
   return (
     <div className="space-y-5">
       <PageHeader
+        eyebrow="Operations"
         title="Instrument Management"
         description="HPLC, GC and supporting analytical systems with calibration scheduling and maintenance history."
+        image="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=1000&q=80&auto=format&fit=crop"
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

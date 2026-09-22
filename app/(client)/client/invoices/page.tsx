@@ -22,7 +22,12 @@ export default async function ClientInvoicesPage() {
 
   return (
     <div className="space-y-5">
-      <PageHeader title="Invoices" description="Testing fees and payment status for your account." />
+      <PageHeader
+        eyebrow="Billing"
+        title="Invoices"
+        description="Testing fees and payment status for your account."
+        image="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=1000&q=80&auto=format&fit=crop"
+      />
 
       <div className="grid gap-4 sm:grid-cols-3">
         <StatCard label="Total invoiced" value={formatCurrency(invoices.reduce((a, i) => a + i.amount, 0))} tone="indigo" />

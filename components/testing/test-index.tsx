@@ -13,6 +13,7 @@ export function TestIndex({
   resultLabel,
   specLabel,
   icon,
+  image,
 }: {
   title: string;
   description: string;
@@ -20,6 +21,7 @@ export function TestIndex({
   resultLabel?: string;
   specLabel?: string;
   icon?: React.ReactNode;
+  image?: string;
 }) {
   const pass = rows.filter((r) => r.resultStatus === "PASS").length;
   const fail = rows.filter((r) => r.resultStatus === "FAIL").length;
@@ -27,7 +29,7 @@ export function TestIndex({
 
   return (
     <div className="space-y-5">
-      <PageHeader title={title} description={description} />
+      <PageHeader eyebrow="Testing" title={title} description={description} image={image} />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Total tests" value={rows.length} icon={icon} tone="indigo" />

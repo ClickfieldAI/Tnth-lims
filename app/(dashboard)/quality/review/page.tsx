@@ -30,8 +30,10 @@ export default async function QaReviewPage() {
   return (
     <div className="space-y-5">
       <PageHeader
+        eyebrow="Quality"
         title="QA Review Queue"
         description="Documentation review and disposition decisions before release — the quality gate of the laboratory."
+        image="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1000&q=80&auto=format&fit=crop"
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

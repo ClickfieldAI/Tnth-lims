@@ -3,7 +3,8 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { getCurrentUser } from "@/lib/session";
 import { INDUSTRIES } from "@/lib/industries";
-import { HubTopbar } from "@/components/layout/hub-topbar";
+import { TopNav } from "@/components/layout/topnav";
+import { Hero } from "@/components/layout/hero";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Service Lines" };
@@ -14,37 +15,47 @@ export default async function HomePage() {
   if (user.role === "CLIENT") redirect("/client");
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50">
-      <HubTopbar
+    <div className="min-h-screen bg-[var(--background)]">
+      <TopNav
+        role={user.role}
         user={{ firstName: user.firstName, lastName: user.lastName, role: user.role }}
       />
-      <main className="mx-auto w-full max-w-[1680px] flex-1 px-8 py-10">
-        <div className="mb-8 flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-brand-600 text-lg font-bold text-white">
-            Φ
-          </div>
-          <div>
-            <h1 className="text-xl font-bold tracking-tight text-slate-900">TNTH LIMS — Our Services</h1>
-            <p className="text-sm text-slate-500">Select an industry to view its testing services.</p>
-          </div>
-        </div>
+      <main className="mx-auto w-full max-w-[1680px] flex-1 px-6 py-8 sm:px-8">
+        <Hero
+          eyebrow="TNTH Services"
+          title="What can we test for you?"
+          subtitle="Select a laboratory service line to view its testing capabilities and register a sample."
+          image="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=1200&q=80&auto=format&fit=crop"
+          className="mb-8"
+        />
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
           {INDUSTRIES.map((ind) => {
             const Icon = ind.icon;
             return (
               <Link key={ind.slug} href={`/industries/${ind.slug}`}>
-                <div className="group flex h-full flex-col rounded-md border border-slate-200/80 bg-white p-5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_8px_24px_rgba(79,70,229,0.12)]">
-                  <div className="flex items-start justify-between">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-500/10 text-brand-600">
-                      <Icon className="h-5 w-5" />
+                <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-[var(--border-soft)] bg-white shadow-[var(--shadow-xs)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[var(--shadow-md)]">
+                  <div className="relative h-32 w-full overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={ind.image}
+                      alt=""
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
+                    <span className="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-lg bg-white/90 text-brand-600 shadow-sm backdrop-blur">
+                      <Icon className="h-4.5 w-4.5" />
                     </span>
-                    <ArrowUpRight className="h-4 w-4 text-slate-300 transition group-hover:text-brand-500" />
                   </div>
-                  <h3 className="mt-3 text-sm font-semibold tracking-tight text-slate-900">{ind.name}</h3>
-                  <p className="mt-1 line-clamp-2 flex-1 text-xs leading-relaxed text-slate-500">{ind.tagline}</p>
-                  <div className="mt-4 border-t border-slate-100 pt-3 text-[11px] font-medium text-brand-600">
-                    {ind.subcategories.length} services
+                  <div className="flex flex-1 flex-col p-5">
+                    <div className="flex items-start justify-between gap-2">
+                      <h3 className="text-sm font-semibold tracking-tight text-[#1a1d1a]">{ind.name}</h3>
+                      <ArrowUpRight className="h-4 w-4 shrink-0 text-slate-300 transition group-hover:text-brand-500" />
+                    </div>
+                    <p className="mt-1.5 line-clamp-2 flex-1 text-xs leading-relaxed text-slate-500">{ind.tagline}</p>
+                    <div className="mt-4 border-t border-[var(--border-soft)] pt-3 text-[11px] font-semibold text-brand-600">
+                      {ind.subcategories.length} services · Open division
+                    </div>
                   </div>
                 </div>
               </Link>

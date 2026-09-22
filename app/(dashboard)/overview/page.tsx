@@ -8,7 +8,8 @@ import {
   getDashboardKpis, getMonthlySampleVolume, getTestTypeDistribution,
   getPassFailTrend, getAnalystWorkload, getInstrumentUtilization,
 } from "@/lib/data";
-import { StatCard, PageHeader } from "@/components/ui/display";
+import { StatCard } from "@/components/ui/display";
+import { Hero } from "@/components/layout/hero";
 import { Card, CardHeader } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
 import {
@@ -46,9 +47,11 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader
+      <Hero
+        eyebrow="Executive Overview"
         title={`Welcome back, ${user?.firstName ?? "Analyst"}`}
-        description="Executive overview of laboratory operations, quality and turnaround performance."
+        subtitle="Laboratory operations, quality and turnaround performance at a glance."
+        image="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=1200&q=80&auto=format&fit=crop"
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

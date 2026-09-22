@@ -35,8 +35,10 @@ export default async function AdminPage() {
   return (
     <div className="space-y-5">
       <PageHeader
+        eyebrow="Administration"
         title="Administration"
         description="Users, role-based access control and workflow configuration for the laboratory."
+        image="https://images.unsplash.com/photo-1523289333742-be1143f6b766?w=1000&q=80&auto=format&fit=crop"
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

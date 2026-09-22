@@ -28,8 +28,10 @@ export default async function ClientHomePage() {
   return (
     <div className="space-y-6">
       <PageHeader
+        eyebrow="Client Portal"
         title={`Welcome, ${user?.firstName}`}
         description="Track your testing progress, download approved reports and manage invoices."
+        image="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=1000&q=80&auto=format&fit=crop"
         actions={
           <Link href="/client/samples/new" className="inline-flex items-center gap-2 rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">
             <Plus className="h-4 w-4" /> Submit a sample

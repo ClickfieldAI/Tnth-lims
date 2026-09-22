@@ -24,8 +24,10 @@ export default async function DeviationsPage() {
   return (
     <div className="space-y-5">
       <PageHeader
+        eyebrow="Quality"
         title="Deviation Management"
         description="Planned and unplanned departures from approved procedures — investigation through closure."
+        image="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1000&q=80&auto=format&fit=crop"
         actions={<NewDeviationButton />}
       />
 

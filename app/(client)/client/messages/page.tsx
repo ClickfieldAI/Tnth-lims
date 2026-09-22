@@ -18,7 +18,12 @@ export default async function ClientMessagesPage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-5">
-      <PageHeader title="Messages" description="Communicate directly with the laboratory about your samples." />
+      <PageHeader
+        eyebrow="Support"
+        title="Messages"
+        description="Communicate directly with the laboratory about your samples."
+        image="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1000&q=80&auto=format&fit=crop"
+      />
 
       <Card>
         <CardHeader title="Conversation" subtitle={`${messages.length} message${messages.length === 1 ? "" : "s"}`} />

@@ -1,8 +1,4 @@
-"use client";
-
-import { useState } from "react";
-import { Sidebar, MobileSidebar } from "./sidebar";
-import { Topbar } from "./topbar";
+import { TopNav } from "./topnav";
 import type { RoleCode } from "@/lib/roles";
 
 export function Shell({
@@ -14,17 +10,10 @@ export function Shell({
   user?: { firstName: string; lastName: string; role: string } | null;
   children: React.ReactNode;
 }) {
-  const [open, setOpen] = useState(false);
   return (
-    <div className="flex min-h-screen">
-      <Sidebar role={role} />
-      {open ? <MobileSidebar role={role} onClose={() => setOpen(false)} /> : null}
-      <div className="flex flex-1 flex-col bg-transparent">
-        <Topbar user={user} onMenu={() => setOpen(true)} />
-        <main key="main" className="flex-1 px-5 py-6 max-w-[1500px] mx-auto w-full">
-          {children}
-        </main>
-      </div>
+    <div className="min-h-screen bg-[var(--background)]">
+      <TopNav role={role} user={user} />
+      <main className="mx-auto w-full max-w-[1500px] px-5 py-6">{children}</main>
     </div>
   );
 }

@@ -24,6 +24,7 @@ export interface Industry {
   clientIndustry: string;
   icon: LucideIcon;
   tagline: string;
+  image: string;
   subcategories: Subcategory[];
 }
 
@@ -34,6 +35,7 @@ export const INDUSTRIES: Industry[] = [
     clientIndustry: "Pharmaceuticals",
     icon: Pill,
     tagline: "Pharmacopoeial testing based on USP, BP, EP or IP for raw materials and finished products.",
+    image: "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=1000&q=80&auto=format&fit=crop",
     subcategories: [
       { slug: "raw-material-analysis", name: "Raw Material Analysis", description: "Identification, purity and quality testing of active pharmaceutical ingredients and excipients before formulation.", techniques: ["HPLC", "GC", "FTIR", "UV/Visible Spectroscopy", "Karl Fischer Titration"], testType: "HPLC" },
       { slug: "finished-products", name: "Finished Products", description: "Assay, dissolution and specification testing of the final dosage form prior to batch release.", techniques: ["HPLC Assay", "Dissolution (USP I/II)", "Disintegration Testing", "Content Uniformity"], testType: "ASSAY" },
@@ -52,6 +54,7 @@ export const INDUSTRIES: Industry[] = [
     clientIndustry: "Food Testing",
     icon: Apple,
     tagline: "NABL-accredited food testing for product launch, label approvals and export shipments.",
+    image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1000&q=80&auto=format&fit=crop",
     subcategories: [
       { slug: "vitamin-analysis", name: "Vitamin Analysis", description: "Measures water-soluble (Vitamin C, B-complex) and fat-soluble (A, D, E, K) vitamin content.", techniques: ["HPLC", "UV-Vis Spectroscopy", "LC-MS/MS"], testType: "HPLC" },
       { slug: "nutritional-labeling", name: "Nutritional Labeling", description: "Verifies food label declarations for FSSAI and export compliance — fats, proteins, carbohydrates, calories.", techniques: ["Water Content", "Total Protein", "Total Mineral Content", "Fat Content", "Fiber Content"], testType: "ASSAY" },
@@ -72,6 +75,7 @@ export const INDUSTRIES: Industry[] = [
     clientIndustry: "Water & Environment",
     icon: Droplets,
     tagline: "NABL-standard testing across drinking, process, waste and environmental water matrices.",
+    image: "https://images.unsplash.com/photo-1616118132534-381148898bb4?w=1000&q=80&auto=format&fit=crop",
     subcategories: [
       { slug: "water-analysis", name: "Water Analysis", description: "Testing of packaged drinking water, natural mineral water, and surface/ground water per IS standards.", techniques: ["IS 14543 (Packaged Drinking Water)", "IS 10500 (Surface/Ground Water)", "IS 13428 (Mineral Water)"], testType: "MICROBIOLOGY" },
       { slug: "process-water-analysis", name: "Process Water Analysis", description: "Grade-specific testing for biomedical, electronics, food and industrial process water.", techniques: ["ASTM D5196", "ASTM D5127", "IS 4251", "Trace Metal Analysis"], testType: "IMPURITY" },
@@ -86,6 +90,7 @@ export const INDUSTRIES: Industry[] = [
     clientIndustry: "Personal Care & Cosmetics",
     icon: Sparkles,
     tagline: "COS-23 & FORM-37 licensed testing ensuring cosmetic products are safe, effective and label-compliant.",
+    image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=1000&q=80&auto=format&fit=crop",
     subcategories: [
       { slug: "skin-care", name: "Skin Care", description: "Testing of skin creams, gels, powders and face packs against BIS product standards.", techniques: ["IS 6608 (Skin Cream)", "IS 18429 (Skin Gel)", "IS 3959 (Skin Powder)", "IS 15153 (Face Pack)"], testType: "ASSAY" },
       { slug: "hair-care", name: "Hair Care", description: "Testing of hair oils, shampoos, hair dyes and hair creams for compliance and safety.", techniques: ["IS 7123 (Hair Oil)", "IS 7884 (Shampoo)", "IS 8481 (Oxidation Hair Dye)", "IS 7679 (Hair Cream)"], testType: "ASSAY" },
@@ -103,6 +108,7 @@ export const INDUSTRIES: Industry[] = [
     clientIndustry: "Ayush Testing",
     icon: Leaf,
     tagline: "FORM-48 approved testing for Ayurvedic, Siddha and Unani drugs and raw materials.",
+    image: "https://images.unsplash.com/photo-1512069772995-ec65ed45afd6?w=1000&q=80&auto=format&fit=crop",
     subcategories: [
       { slug: "stability-studies", name: "Stability Studies", description: "Determines how temperature, humidity and light affect AYUSH product safety, efficacy and shelf life.", techniques: ["Long-Term Stability", "Accelerated Stability"], testType: "STABILITY" },
       { slug: "hptlc-fingerprinting", name: "HPTLC Fingerprinting & Quantification", description: "Identification and quantification of marker compounds; checks for adulteration and purity.", techniques: ["HPTLC", "Marker Compound Quantification"], testType: "HPLC" },
@@ -122,6 +128,7 @@ export const INDUSTRIES: Industry[] = [
     clientIndustry: "Agriculture",
     icon: Wheat,
     tagline: "NABL-accredited soil, water, plant and manure analysis for farmers and agribusinesses.",
+    image: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1000&q=80&auto=format&fit=crop",
     subcategories: [
       { slug: "soil-testing", name: "Soil Testing", description: "Comprehensive soil nutrient profiling and pH balance analysis to optimize crop yield and fertilizer use.", techniques: ["Nutrient Profiling", "pH Balance Analysis"], testType: "IMPURITY" },
       { slug: "nematode-testing", name: "Nematode Testing", description: "Detection of harmful nematodes in soil to prevent crop damage and yield loss.", techniques: ["Microscopic Identification", "Soil Extraction"], testType: "MICROBIOLOGY" },
@@ -137,6 +144,7 @@ export const INDUSTRIES: Industry[] = [
     clientIndustry: "Polymer Testing",
     icon: Recycle,
     tagline: "Physical, thermal, rheological and optical characterization of polymers and plastics.",
+    image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1000&q=80&auto=format&fit=crop",
     subcategories: [
       { slug: "physical-mechanical", name: "Physical & Mechanical Characterization", description: "Measures the mechanical strength and hardness properties of polymer materials.", techniques: ["Tensile Testing", "Compression Testing", "Hardness Testing", "Flex Modulus", "Young's Modulus"], testType: "STABILITY" },
       { slug: "thermal-characterization", name: "Thermal Characterization", description: "Evaluates thermal transitions, decomposition and melt behaviour of polymers.", techniques: ["DSC", "TGA", "Melt Flow Indexer (MFI)"], testType: "STABILITY" },

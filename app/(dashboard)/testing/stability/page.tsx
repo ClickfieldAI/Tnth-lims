@@ -20,8 +20,10 @@ export default async function StabilityPage() {
   return (
     <div className="space-y-5">
       <PageHeader
+        eyebrow="Testing"
         title="Stability Studies"
         description="Long-term, accelerated and intermediate protocols with automated pull scheduling and alerts."
+        image="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=1000&q=80&auto=format&fit=crop"
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

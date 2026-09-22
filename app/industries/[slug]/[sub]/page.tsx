@@ -4,7 +4,7 @@ import { ArrowLeft, FlaskConical, Plus } from "lucide-react";
 import { getCurrentUser } from "@/lib/session";
 import { getSubcategory } from "@/lib/industries";
 import { prisma } from "@/lib/prisma";
-import { HubTopbar } from "@/components/layout/hub-topbar";
+import { TopNav } from "@/components/layout/topnav";
 import { StatCard } from "@/components/ui/display";
 import { StatusBadge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
@@ -39,9 +39,9 @@ export default async function SubcategoryPage({ params }: { params: Promise<{ sl
   const failCount = tests.filter((t) => t.resultStatus === "FAIL" || t.result === "FAIL").length;
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50">
-      <HubTopbar user={{ firstName: user.firstName, lastName: user.lastName, role: user.role }} />
-      <main className="mx-auto w-full max-w-[1680px] flex-1 px-8 py-10">
+    <div className="min-h-screen bg-[var(--background)]">
+      <TopNav role={user.role} user={{ firstName: user.firstName, lastName: user.lastName, role: user.role }} />
+      <main className="mx-auto w-full max-w-[1680px] flex-1 px-6 py-8 sm:px-8">
         <Link href={`/industries/${industry.slug}`} className="mb-6 inline-flex items-center gap-1 text-xs font-medium text-slate-500 hover:text-slate-800">
           <ArrowLeft className="h-3.5 w-3.5" /> {industry.name}
         </Link>

@@ -33,8 +33,10 @@ export default async function BatchReleasePage() {
   return (
     <div className="space-y-5">
       <PageHeader
+        eyebrow="Operations"
         title="Batch Release Management"
         description="Testing completed → analyst approval → QA review → batch release. Full specification compliance before disposition."
+        image="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1000&q=80&auto=format&fit=crop"
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
