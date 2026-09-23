@@ -1,35 +1,69 @@
-import { PrismaClient } from "@prisma/client";
-
 /**
- * Production-safe Prisma client singleton.
+ * In-memory mock data client — drop-in replacement for the real Prisma
+ * client used everywhere else in the app (`import { prisma } from
+ * "@/lib/prisma"`). No database, no network round-trip, no Supabase.
  *
- * Serverless platforms (Vercel) keep functions warm across invocations, and
- * every cold start executes this module. Caching the client on `globalThis`
- * in ALL environments guarantees:
- *  - one Prisma connection pool per lambda instance (no connection storms
- *    against PostgreSQL / Supabase pooler),
- *  - no client re-instantiation between warm invocations.
+ * Why: for demos / offline use, a hosted Postgres adds real cross-region
+ * latency to every single page navigation. This keeps the exact same
+ * `prisma.model.method(args)` call shape (see lib/mock/engine.ts) so none
+ * of the ~40 call sites across actions/ and app/ needed to change — only
+ * this file's export changed from a real PrismaClient to the mock.
  *
- * The generated client binds to the datasource declared in
- * prisma/schema.prisma (PostgreSQL in production). For zero-setup local
- * development a SQLite variant can be generated with `npm run db:local`.
+ * Data mutations (create/update/delete) persist for the lifetime of the
+ * server process (same as any in-memory store) and reset on redeploy/cold
+ * start — expected and fine for a demo; there is no real database to lose.
  */
+import { makeModel, type DB } from "./mock/engine";
+import { buildSeedDb } from "./mock/seed-data";
 
-const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
+const MODELS = [
+  "permission", "role", "permissionRole", "user",
+  "client", "invoice", "product", "batch", "sample",
+  "chainOfCustody", "storageEvent", "test",
+  "assayResult", "dissolutionResult", "impurityResult", "microbiologyResult",
+  "stabilityStudy", "stabilityTimepoint",
+  "instrument", "calibrationRecord", "maintenanceLog",
+  "deviation", "capa", "changeControl",
+  "document", "downloadRecord", "testReport",
+  "approval", "auditLog", "message",
+] as const;
 
-function createPrismaClient(): PrismaClient {
-  return new PrismaClient({
-    log:
-      process.env.NODE_ENV === "production"
-        ? ["error"]
-        : ["error", "warn"],
-  });
+// Every model exposes the same method set (see lib/mock/engine.ts), so the
+// client is typed as "each model name -> that shape" rather than against
+// Prisma's generated (and now absent) schema types. Query results are still
+// concrete object types (not `any`), so callers get normal array-callback
+// inference (.filter/.map param types) without needing annotations.
+type ModelClient = ReturnType<typeof makeModel>;
+type MockPrismaClient = Record<(typeof MODELS)[number], ModelClient> & {
+  $transaction: <T>(fn: (tx: MockPrismaClient) => Promise<T>) => Promise<T>;
+  $disconnect: () => Promise<void>;
+};
+
+function createMockClient(db: DB): MockPrismaClient {
+  const client = {} as MockPrismaClient;
+  // Cast through `unknown` (not directly to Record<string, ModelClient>) —
+  // $transaction/$disconnect intentionally don't match ModelClient's shape,
+  // so a direct cast would be flagged as a non-overlapping conversion.
+  const mutable = client as unknown as Record<string, unknown>;
+  for (const model of MODELS) {
+    mutable[model] = makeModel(db, model);
+  }
+  // No real transactions needed — everything is synchronous, in-process
+  // JS object mutation, so just run the callback against the same client.
+  mutable.$transaction = async (fn: (tx: MockPrismaClient) => Promise<unknown>) => fn(client);
+  mutable.$disconnect = async () => {};
+  return client;
 }
 
-export const prisma = globalForPrisma.prisma ?? createPrismaClient();
+const globalForMock = globalThis as unknown as { __mockDb?: DB; __mockPrisma?: MockPrismaClient };
 
-if (process.env.NODE_ENV === "production") {
-  globalForPrisma.prisma = prisma;
-}
+// Cache both the raw data AND the client on globalThis so hot reload (dev)
+// and warm serverless invocations (prod) reuse the same in-memory state
+// instead of re-seeding on every request.
+const db = globalForMock.__mockDb ?? buildSeedDb();
+export const prisma = globalForMock.__mockPrisma ?? createMockClient(db);
+
+globalForMock.__mockDb = db;
+globalForMock.__mockPrisma = prisma;
 
 export default prisma;

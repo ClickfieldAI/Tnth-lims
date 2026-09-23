@@ -74,7 +74,7 @@ export default async function WorksheetPage({ params }: { params: Promise<{ id: 
             testId={test.id}
             type={test.type}
             status={test.status}
-            instruments={instruments}
+            instruments={instruments as { id: string; code: string; name: string }[]}
             assay={test.assayResult ? {
               expectedLow: test.assayResult.expectedLow,
               expectedHigh: test.assayResult.expectedHigh,
