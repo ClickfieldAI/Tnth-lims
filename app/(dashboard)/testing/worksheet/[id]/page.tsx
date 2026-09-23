@@ -15,25 +15,26 @@ export const metadata = { title: "Test worksheet" };
 export default async function WorksheetPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const user = await getCurrentUser();
-  const test = await prisma.test.findUnique({
-    where: { id },
-    include: {
-      sample: { include: { client: true } },
-      assignedTo: true,
-      approvedBy: true,
-      instrument: true,
-      assayResult: true,
-      dissolution: true,
-      impurityResult: true,
-      microbiology: true,
-    },
-  });
+  const [test, instruments] = await Promise.all([
+    prisma.test.findUnique({
+      where: { id },
+      include: {
+        sample: { include: { client: true } },
+        assignedTo: true,
+        approvedBy: true,
+        instrument: true,
+        assayResult: true,
+        dissolution: true,
+        impurityResult: true,
+        microbiology: true,
+      },
+    }),
+    prisma.instrument.findMany({
+      where: { status: { in: ["AVAILABLE", "IN_USE"] } },
+      select: { id: true, code: true, name: true },
+    }),
+  ]);
   if (!test) notFound();
-
-  const instruments = await prisma.instrument.findMany({
-    where: { status: { in: ["AVAILABLE", "IN_USE"] } },
-    select: { id: true, code: true, name: true },
-  });
 
   const canReview = user?.role === "QA" || user?.role === "MANAGER" || user?.role === "ADMIN";
 

@@ -23,14 +23,16 @@ export default async function AdminPage() {
     );
   }
 
-  const users = await prisma.user.findMany({
-    orderBy: { createdAt: "asc" },
-    include: { role: true, client: true },
-  });
-  const roles = await prisma.role.findMany({
-    include: { permissions: { include: { permission: true } }, _count: { select: { users: true } } },
-    orderBy: { name: "asc" },
-  });
+  const [users, roles] = await Promise.all([
+    prisma.user.findMany({
+      orderBy: { createdAt: "asc" },
+      include: { role: true, client: true },
+    }),
+    prisma.role.findMany({
+      include: { permissions: { include: { permission: true } }, _count: { select: { users: true } } },
+      orderBy: { name: "asc" },
+    }),
+  ]);
 
   return (
     <div className="space-y-5">

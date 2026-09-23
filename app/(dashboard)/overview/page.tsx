@@ -23,27 +23,25 @@ export const metadata = { title: "Dashboard" };
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
-  const [kpis, volume, types, trend, workload, utilization] = await Promise.all([
+  const [kpis, volume, types, trend, workload, utilization, recentSamples, upcomingStability] = await Promise.all([
     getDashboardKpis(),
     getMonthlySampleVolume(6),
     getTestTypeDistribution(),
     getPassFailTrend(6),
     getAnalystWorkload(),
     getInstrumentUtilization(),
+    prisma.sample.findMany({
+      orderBy: { receivedDate: "desc" },
+      take: 8,
+      include: { client: true },
+    }),
+    prisma.stabilityTimepoint.findMany({
+      where: { status: { in: ["DUE", "SCHEDULED"] } },
+      orderBy: { dueDate: "asc" },
+      take: 5,
+      include: { study: { include: { product: true } } },
+    }),
   ]);
-
-  const recentSamples = await prisma.sample.findMany({
-    orderBy: { receivedDate: "desc" },
-    take: 8,
-    include: { client: true },
-  });
-
-  const upcomingStability = await prisma.stabilityTimepoint.findMany({
-    where: { status: { in: ["DUE", "SCHEDULED"] } },
-    orderBy: { dueDate: "asc" },
-    take: 5,
-    include: { study: { include: { product: true } } },
-  });
 
   return (
     <div className="space-y-6">

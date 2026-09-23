@@ -10,16 +10,17 @@ import { CapaActions } from "./capa-actions";
 export const metadata = { title: "CAPA" };
 
 export default async function CapaPage() {
-  const capas = await prisma.capa.findMany({
-    orderBy: { createdAt: "desc" },
-    include: { owner: true, relatedDeviation: true },
-    take: 100,
-  });
-
-  const ownerRows = await prisma.user.findMany({
-    where: { isActive: true, role: { name: { in: ["ANALYST", "MICRO", "QA", "MANAGER"] } } },
-    select: { id: true, firstName: true, lastName: true },
-  });
+  const [capas, ownerRows] = await Promise.all([
+    prisma.capa.findMany({
+      orderBy: { createdAt: "desc" },
+      include: { owner: true, relatedDeviation: true },
+      take: 100,
+    }),
+    prisma.user.findMany({
+      where: { isActive: true, role: { name: { in: ["ANALYST", "MICRO", "QA", "MANAGER"] } } },
+      select: { id: true, firstName: true, lastName: true },
+    }),
+  ]);
   const owners = ownerRows.map((o) => ({ id: o.id, name: `${o.firstName} ${o.lastName}` }));
 
   const open = capas.filter((c) => c.status === "OPEN").length;

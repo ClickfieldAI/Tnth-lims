@@ -16,22 +16,24 @@ const FLOW = ["RECEIVED", "LOGGED", "ASSIGNED", "TESTING", "REVIEW", "APPROVED",
 
 export default async function SampleDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const sample = await prisma.sample.findUnique({
-    where: { id },
-    include: {
-      client: true, product: true, batch: true,
-      assignedTo: true, createdBy: true,
-      tests: { include: { assignedTo: true, instrument: true } },
-      custodyRecords: { orderBy: { at: "asc" } },
-    },
-  });
+  const [sample, analysts] = await Promise.all([
+    prisma.sample.findUnique({
+      where: { id },
+      include: {
+        client: true, product: true, batch: true,
+        assignedTo: true, createdBy: true,
+        tests: { include: { assignedTo: true, instrument: true } },
+        custodyRecords: { orderBy: { at: "asc" } },
+      },
+    }),
+    prisma.user.findMany({
+      where: { role: { name: { in: ["ANALYST", "MICRO"] } }, isActive: true },
+      select: { id: true, firstName: true, lastName: true },
+    }),
+  ]);
   if (!sample) notFound();
 
   const stageIdx = FLOW.indexOf(sample.status);
-  const analysts = await prisma.user.findMany({
-    where: { role: { name: { in: ["ANALYST", "MICRO"] } }, isActive: true },
-    select: { id: true, firstName: true, lastName: true },
-  });
 
   return (
     <div className="space-y-5">

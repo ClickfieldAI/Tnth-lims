@@ -14,14 +14,16 @@ export default async function NewSamplePage({
   const { industry: industrySlug, sub: subSlug } = await searchParams;
   const found = industrySlug && subSlug ? getSubcategory(industrySlug, subSlug) : null;
 
-  const clients = await prisma.client.findMany({
-    where: {
-      isActive: true,
-      ...(found ? { industry: found.industry.clientIndustry } : {}),
-    },
-    orderBy: { name: "asc" },
-  });
-  const products = await prisma.product.findMany({ orderBy: { name: "asc" } });
+  const [clients, products] = await Promise.all([
+    prisma.client.findMany({
+      where: {
+        isActive: true,
+        ...(found ? { industry: found.industry.clientIndustry } : {}),
+      },
+      orderBy: { name: "asc" },
+    }),
+    prisma.product.findMany({ orderBy: { name: "asc" } }),
+  ]);
 
   return (
     <div className="mx-auto max-w-4xl space-y-5">

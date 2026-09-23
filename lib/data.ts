@@ -12,7 +12,7 @@ export interface DashboardKpis {
 }
 
 export async function getDashboardKpis(): Promise<DashboardKpis> {
-  const [totalSamples, underTesting, completedTests, pendingApprovals, failedTests, stabilityRunning, batchReleasePending] =
+  const [totalSamples, underTesting, completedTests, pendingApprovals, failedTests, stabilityRunning, batchReleasePending, released] =
     await Promise.all([
       prisma.sample.count(),
       prisma.sample.count({ where: { status: { in: ["TESTING", "ASSIGNED"] } } }),
@@ -21,13 +21,12 @@ export async function getDashboardKpis(): Promise<DashboardKpis> {
       prisma.test.count({ where: { resultStatus: "FAIL" } }),
       prisma.stabilityStudy.count({ where: { status: "ACTIVE" } }),
       prisma.batch.count({ where: { releaseStatus: { in: ["TESTING", "PENDING"] } } }),
+      prisma.sample.findMany({
+        where: { status: { in: ["APPROVED", "RELEASED"] } },
+        select: { receivedDate: true, updatedAt: true },
+        take: 200,
+      }),
     ]);
-
-  const released = await prisma.sample.findMany({
-    where: { status: { in: ["APPROVED", "RELEASED"] } },
-    select: { receivedDate: true, updatedAt: true },
-    take: 200,
-  });
   const avgTurnaroundDays = released.length
     ? Math.round(
         released.reduce(

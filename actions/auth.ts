@@ -41,13 +41,15 @@ export async function loginUser(formData: FormData): Promise<AuthResult> {
     clientId: user.clientId,
   });
 
-  await prisma.user.update({ where: { id: user.id }, data: { lastLoginAt: new Date() } });
-  await logAudit(user.id, {
-    action: "USER_LOGIN",
-    module: "AUTH",
-    entityType: "User",
-    entityId: user.id,
-  });
+  await Promise.all([
+    prisma.user.update({ where: { id: user.id }, data: { lastLoginAt: new Date() } }),
+    logAudit(user.id, {
+      action: "USER_LOGIN",
+      module: "AUTH",
+      entityType: "User",
+      entityId: user.id,
+    }),
+  ]);
 
   revalidatePath("/", "layout");
   redirect("/");
