@@ -28,7 +28,7 @@ export default async function ChangeControlPage() {
         eyebrow="Quality"
         title="Change Control"
         description="Managed changes to methods, processes, equipment and software with impact assessment."
-        image="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1000&q=80&auto=format&fit=crop"
+        image="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=640&q=65&auto=format&fit=crop"
         actions={<NewChangeControlButton />}
       />
 

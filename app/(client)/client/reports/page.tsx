@@ -27,7 +27,7 @@ export default async function ClientReportsPage() {
         eyebrow="Reports"
         title="Approved Reports & CoAs"
         description="Only QA-approved reports are visible here — download signed PDF copies at any time."
-        image="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1000&q=80&auto=format&fit=crop"
+        image="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=640&q=65&auto=format&fit=crop"
       />
 
       <DataTable>

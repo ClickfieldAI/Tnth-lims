@@ -51,7 +51,7 @@ export default async function DashboardPage() {
         eyebrow="Executive Overview"
         title={`Welcome back, ${user?.firstName ?? "Analyst"}`}
         subtitle="Laboratory operations, quality and turnaround performance at a glance."
-        image="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=1200&q=80&auto=format&fit=crop"
+        image="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=640&q=65&auto=format&fit=crop"
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

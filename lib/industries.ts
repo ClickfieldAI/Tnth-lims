@@ -36,7 +36,7 @@ export const INDUSTRIES: Industry[] = [
     clientIndustry: "Pharmaceuticals",
     icon: Pill,
     tagline: "Pharmacopoeial testing based on USP, BP, EP or IP for raw materials and finished products.",
-    image: "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=1000&q=80&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=640&q=65&auto=format&fit=crop",
     group: "Life Sciences",
     subcategories: [
       { slug: "raw-material-analysis", name: "Raw Material Analysis", description: "Identification, purity and quality testing of active pharmaceutical ingredients and excipients before formulation.", techniques: ["HPLC", "GC", "FTIR", "UV/Visible Spectroscopy", "Karl Fischer Titration"], testType: "HPLC" },
@@ -56,7 +56,7 @@ export const INDUSTRIES: Industry[] = [
     clientIndustry: "Food Testing",
     icon: Apple,
     tagline: "NABL-accredited food testing for product launch, label approvals and export shipments.",
-    image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1000&q=80&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=640&q=65&auto=format&fit=crop",
     group: "Consumer & Environmental",
     subcategories: [
       { slug: "vitamin-analysis", name: "Vitamin Analysis", description: "Measures water-soluble (Vitamin C, B-complex) and fat-soluble (A, D, E, K) vitamin content.", techniques: ["HPLC", "UV-Vis Spectroscopy", "LC-MS/MS"], testType: "HPLC" },
@@ -78,7 +78,7 @@ export const INDUSTRIES: Industry[] = [
     clientIndustry: "Water & Environment",
     icon: Droplets,
     tagline: "NABL-standard testing across drinking, process, waste and environmental water matrices.",
-    image: "https://images.unsplash.com/photo-1616118132534-381148898bb4?w=1000&q=80&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1616118132534-381148898bb4?w=640&q=65&auto=format&fit=crop",
     group: "Consumer & Environmental",
     subcategories: [
       { slug: "water-analysis", name: "Water Analysis", description: "Testing of packaged drinking water, natural mineral water, and surface/ground water per IS standards.", techniques: ["IS 14543 (Packaged Drinking Water)", "IS 10500 (Surface/Ground Water)", "IS 13428 (Mineral Water)"], testType: "MICROBIOLOGY" },
@@ -94,7 +94,7 @@ export const INDUSTRIES: Industry[] = [
     clientIndustry: "Personal Care & Cosmetics",
     icon: Sparkles,
     tagline: "COS-23 & FORM-37 licensed testing ensuring cosmetic products are safe, effective and label-compliant.",
-    image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=1000&q=80&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=640&q=65&auto=format&fit=crop",
     group: "Consumer & Environmental",
     subcategories: [
       { slug: "skin-care", name: "Skin Care", description: "Testing of skin creams, gels, powders and face packs against BIS product standards.", techniques: ["IS 6608 (Skin Cream)", "IS 18429 (Skin Gel)", "IS 3959 (Skin Powder)", "IS 15153 (Face Pack)"], testType: "ASSAY" },
@@ -113,7 +113,7 @@ export const INDUSTRIES: Industry[] = [
     clientIndustry: "Ayush Testing",
     icon: Leaf,
     tagline: "FORM-48 approved testing for Ayurvedic, Siddha and Unani drugs and raw materials.",
-    image: "https://images.unsplash.com/photo-1512069772995-ec65ed45afd6?w=1000&q=80&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1512069772995-ec65ed45afd6?w=640&q=65&auto=format&fit=crop",
     group: "Life Sciences",
     subcategories: [
       { slug: "stability-studies", name: "Stability Studies", description: "Determines how temperature, humidity and light affect AYUSH product safety, efficacy and shelf life.", techniques: ["Long-Term Stability", "Accelerated Stability"], testType: "STABILITY" },
@@ -134,7 +134,7 @@ export const INDUSTRIES: Industry[] = [
     clientIndustry: "Agriculture",
     icon: Wheat,
     tagline: "NABL-accredited soil, water, plant and manure analysis for farmers and agribusinesses.",
-    image: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1000&q=80&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=640&q=65&auto=format&fit=crop",
     group: "Industrial & Agricultural",
     subcategories: [
       { slug: "soil-testing", name: "Soil Testing", description: "Comprehensive soil nutrient profiling and pH balance analysis to optimize crop yield and fertilizer use.", techniques: ["Nutrient Profiling", "pH Balance Analysis"], testType: "IMPURITY" },
@@ -151,7 +151,7 @@ export const INDUSTRIES: Industry[] = [
     clientIndustry: "Polymer Testing",
     icon: Recycle,
     tagline: "Physical, thermal, rheological and optical characterization of polymers and plastics.",
-    image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1000&q=80&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=640&q=65&auto=format&fit=crop",
     group: "Industrial & Agricultural",
     subcategories: [
       { slug: "physical-mechanical", name: "Physical & Mechanical Characterization", description: "Measures the mechanical strength and hardness properties of polymer materials.", techniques: ["Tensile Testing", "Compression Testing", "Hardness Testing", "Flex Modulus", "Young's Modulus"], testType: "STABILITY" },

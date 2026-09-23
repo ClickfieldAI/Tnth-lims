@@ -24,7 +24,7 @@ export default async function ClientsPage() {
         eyebrow="Business"
         title="Client Companies"
         description="Pharmaceutical manufacturers and sponsors submitting samples for GMP-compliant testing."
-        image="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1000&q=80&auto=format&fit=crop"
+        image="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=640&q=65&auto=format&fit=crop"
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

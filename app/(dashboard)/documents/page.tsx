@@ -33,7 +33,7 @@ export default async function DocumentsPage() {
         eyebrow="Business"
         title="Document Management"
         description="Controlled SOPs, test methods, validation packages and certificates with version control and digital approval."
-        image="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1000&q=80&auto=format&fit=crop"
+        image="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=640&q=65&auto=format&fit=crop"
         actions={<NewDocumentButton />}
       />
 

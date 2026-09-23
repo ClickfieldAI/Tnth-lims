@@ -39,7 +39,7 @@ export default async function SamplesPage({
         eyebrow="Operations"
         title="Sample Management"
         description="Complete lifecycle — registration, assignment, testing and release with full chain of custody."
-        image="https://images.unsplash.com/photo-1579165466741-7f35e4755660?w=1000&q=80&auto=format&fit=crop"
+        image="https://images.unsplash.com/photo-1579165466741-7f35e4755660?w=640&q=65&auto=format&fit=crop"
         actions={
           !isClient ? (
             <Link

@@ -26,7 +26,7 @@ export default async function ClientInvoicesPage() {
         eyebrow="Billing"
         title="Invoices"
         description="Testing fees and payment status for your account."
-        image="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=1000&q=80&auto=format&fit=crop"
+        image="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=640&q=65&auto=format&fit=crop"
       />
 
       <div className="grid gap-4 sm:grid-cols-3">

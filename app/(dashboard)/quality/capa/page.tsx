@@ -32,7 +32,7 @@ export default async function CapaPage() {
         eyebrow="Quality"
         title="CAPA — Corrective & Preventive Actions"
         description="Actions arising from deviations, audits and risk assessments with owner accountability and due dates."
-        image="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1000&q=80&auto=format&fit=crop"
+        image="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=640&q=65&auto=format&fit=crop"
         actions={<NewCapaButton owners={owners} />}
       />
 

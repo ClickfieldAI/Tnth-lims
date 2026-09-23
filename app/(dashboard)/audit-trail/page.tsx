@@ -31,7 +31,7 @@ export default async function AuditTrailPage() {
         eyebrow="Compliance"
         title="Audit Trail"
         description="Immutable record of every consequential action — who did what, when, and what changed (21 CFR Part 11 aligned)."
-        image="https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=1000&q=80&auto=format&fit=crop"
+        image="https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=640&q=65&auto=format&fit=crop"
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

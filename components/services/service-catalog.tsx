@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Search, ArrowUpRight, Pill, Apple, Droplets, Sparkles, Leaf, Wheat, Recycle, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -100,8 +101,14 @@ export function ServiceCatalog({ groups }: { groups: { group: string; industries
                       </div>
                     </div>
                     <div className="relative hidden w-[38%] shrink-0 sm:block">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={ind.image} alt="" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                      <Image
+                        src={ind.image}
+                        alt=""
+                        fill
+                        sizes="220px"
+                        loading="lazy"
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
                     </div>
                   </Link>
                 );

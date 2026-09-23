@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 /**
@@ -48,8 +49,7 @@ export function Hero({
 
       {image ? (
         <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[42%] sm:block">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={image} alt="" className="h-full w-full object-cover" />
+          <Image src={image} alt="" fill sizes="500px" className="object-cover" priority={false} />
           <div className="absolute inset-0 bg-gradient-to-r from-white via-white/60 to-transparent" />
         </div>
       ) : null}

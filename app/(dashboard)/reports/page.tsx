@@ -30,7 +30,7 @@ export default async function ReportsPage() {
         eyebrow="Business"
         title="Reporting"
         description="Controlled test reports and Certificates of Analysis with digital signatures and approval history."
-        image="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1000&q=80&auto=format&fit=crop"
+        image="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=640&q=65&auto=format&fit=crop"
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

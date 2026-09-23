@@ -13,7 +13,7 @@ export default async function HplcGcPage() {
       rows={[...hplc, ...gc]}
       icon={<Activity className="h-4 w-4" />}
       resultLabel="Sequence result"
-      image="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=1000&q=80&auto=format&fit=crop"
+      image="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=640&q=65&auto=format&fit=crop"
     />
   );
 }

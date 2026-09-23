@@ -25,7 +25,7 @@ export default async function ClientSamplesPage() {
         eyebrow="My Account"
         title="My Samples"
         description="Every sample you have submitted, with live testing status."
-        image="https://images.unsplash.com/photo-1579165466741-7f35e4755660?w=1000&q=80&auto=format&fit=crop"
+        image="https://images.unsplash.com/photo-1579165466741-7f35e4755660?w=640&q=65&auto=format&fit=crop"
         actions={
           <Link href="/client/samples/new" className="inline-flex items-center gap-2 rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">
             Submit a sample

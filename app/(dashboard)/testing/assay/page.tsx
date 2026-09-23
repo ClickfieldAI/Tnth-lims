@@ -12,7 +12,7 @@ export default async function AssayPage() {
       description="Quantitative determination of active pharmaceutical ingredient against label claim (USP <791>)."
       rows={rows}
       icon={<Beaker className="h-4 w-4" />}
-      image="https://images.unsplash.com/photo-1579165466741-7f35e4755660?w=1000&q=80&auto=format&fit=crop"
+      image="https://images.unsplash.com/photo-1579165466741-7f35e4755660?w=640&q=65&auto=format&fit=crop"
     />
   );
 }

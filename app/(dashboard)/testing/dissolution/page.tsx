@@ -12,7 +12,7 @@ export default async function DissolutionPage() {
       description="Drug release profiling per USP <711> with apparatus, medium, RPM and temperature control."
       rows={rows}
       icon={<Timer className="h-4 w-4" />}
-      image="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=1000&q=80&auto=format&fit=crop"
+      image="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=640&q=65&auto=format&fit=crop"
     />
   );
 }

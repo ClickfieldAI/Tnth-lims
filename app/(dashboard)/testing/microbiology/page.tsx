@@ -13,7 +13,7 @@ export default async function MicrobiologyPage() {
       rows={rows}
       icon={<Bug className="h-4 w-4" />}
       resultLabel="Colony count"
-      image="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=1000&q=80&auto=format&fit=crop"
+      image="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=640&q=65&auto=format&fit=crop"
     />
   );
 }

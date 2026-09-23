@@ -35,7 +35,7 @@ export default async function HomePage() {
           eyebrow="TNTH Services"
           title="What can we test for you?"
           subtitle="Select a laboratory service division to view its testing capabilities and register a sample."
-          image="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=1200&q=80&auto=format&fit=crop"
+          image="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=640&q=65&auto=format&fit=crop"
         />
 
         <ServiceCatalog groups={groups} />
