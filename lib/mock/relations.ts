@@ -33,7 +33,11 @@ export const RELATIONS: Record<string, Record<string, RelationDef>> = {
     products: { type: "toMany", model: "product", fk: "clientId" },
     invoices: { type: "toMany", model: "invoice", fk: "clientId" },
     messages: { type: "toMany", model: "message", fk: "clientId" },
+    contacts: { type: "toMany", model: "customerContact", fk: "customerId" },
+    documents: { type: "toMany", model: "customerDocument", fk: "customerId" },
   },
+  customerContact: { customer: { type: "toOne", model: "client", fk: "customerId" } },
+  customerDocument: { customer: { type: "toOne", model: "client", fk: "customerId" } },
   invoice: {
     client: { type: "toOne", model: "client", fk: "clientId" },
     samples: { type: "toMany", model: "sample", fk: "invoiceId" },

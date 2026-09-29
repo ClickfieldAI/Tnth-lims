@@ -78,7 +78,7 @@ export const NAV: NavGroup[] = [
     items: [
       { label: "Reports", href: "/reports", icon: FileText, roles: ["ADMIN", "MANAGER", "QA", "ANALYST", "MICRO"] },
       { label: "Documents", href: "/documents", icon: FolderKanban, roles: ["ADMIN", "MANAGER", "QA", "ANALYST"] },
-      { label: "Clients", href: "/clients", icon: Building2, roles: ["ADMIN", "MANAGER", "QA"] },
+      { label: "Customer Master", href: "/clients", icon: Building2, roles: ["ADMIN", "MANAGER", "QA"] },
       { label: "Administration", href: "/admin", icon: Settings, roles: ["ADMIN"] },
     ],
   },

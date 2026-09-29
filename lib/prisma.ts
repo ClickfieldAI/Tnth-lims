@@ -18,7 +18,7 @@ import { buildSeedDb } from "./mock/seed-data";
 
 const MODELS = [
   "permission", "role", "permissionRole", "user",
-  "client", "invoice", "product", "batch", "sample",
+  "client", "customerContact", "customerDocument", "invoice", "product", "batch", "sample",
   "chainOfCustody", "storageEvent", "test",
   "assayResult", "dissolutionResult", "impurityResult", "microbiologyResult",
   "stabilityStudy", "stabilityTimepoint",

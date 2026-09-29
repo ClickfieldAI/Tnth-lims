@@ -23,7 +23,7 @@ const PERM_CODES: string[] = [
 
 const ROLE_PERMS: [string, string[]][] = [
   ["ADMIN", PERM_CODES],
-  ["MANAGER", ["dashboard.view", "analytics.view", "samples.view", "samples.assign", "tests.view", "tests.review", "stability.view", "instruments.view", "qa.view", "documents.view", "reports.generate", "batch.release", "invoices.view", "clients.view"]],
+  ["MANAGER", ["dashboard.view", "analytics.view", "samples.view", "samples.assign", "tests.view", "tests.review", "stability.view", "instruments.view", "qa.view", "documents.view", "reports.generate", "batch.release", "invoices.view", "clients.view", "clients.manage"]],
   ["QA", ["dashboard.view", "samples.view", "tests.view", "tests.approve", "stability.view", "instruments.view", "qa.view", "qa.manage", "documents.view", "documents.manage", "reports.generate", "reports.approve", "batch.release", "audit.view", "clients.view"]],
   ["ANALYST", ["dashboard.view", "samples.view", "samples.create", "tests.view", "tests.execute", "stability.view", "instruments.view", "qa.view", "documents.view", "invoices.view"]],
   ["MICRO", ["dashboard.view", "samples.view", "tests.view", "tests.execute", "stability.view", "instruments.view", "qa.view", "documents.view"]],
@@ -70,7 +70,7 @@ const METHODS: Record<string, string> = {
 export function buildSeedDb(): DB {
   const db: DB = {
     permission: [], role: [], permissionRole: [], user: [],
-    client: [], invoice: [], product: [], batch: [], sample: [],
+    client: [], customerContact: [], customerDocument: [], invoice: [], product: [], batch: [], sample: [],
     chainOfCustody: [], storageEvent: [], test: [],
     assayResult: [], dissolutionResult: [], impurityResult: [], microbiologyResult: [],
     stabilityStudy: [], stabilityTimepoint: [],
@@ -138,12 +138,36 @@ export function buildSeedDb(): DB {
     ["CL-008", "Chennai Polymers & Plastics", "Polymer Testing", "Chennai", "Naveen Kumar", ""],
   ];
   const clientId: Record<string, string> = {};
+  // Customer Master profile data (Module 1). Codes follow CUST-YYYY-NNNNN.
+  const CUST_EXTRA: Record<string, { type: string; gst: string; pan: string; phone: string; active: boolean; age: number }> = {
+    "CL-001": { type: "Company", gst: "33AABCS1234F1Z5", pan: "AABCS1234F", phone: "+919841000001", active: true, age: 400 },
+    "CL-002": { type: "Company", gst: "33AAACK5678G1Z2", pan: "AAACK5678G", phone: "+919841000002", active: true, age: 300 },
+    "CL-003": { type: "Company", gst: "", pan: "", phone: "+919841000003", active: true, age: 200 },
+    "CL-004": { type: "Government", gst: "", pan: "", phone: "+919841000004", active: true, age: 150 },
+    "CL-005": { type: "Company", gst: "33AAECS9012H1Z8", pan: "AAECS9012H", phone: "+919841000005", active: false, age: 90 },
+    "CL-006": { type: "Company", gst: "", pan: "", phone: "+919841000006", active: true, age: 40 },
+    "CL-007": { type: "Company", gst: "33AAGCG3456J1Z1", pan: "AAGCG3456J", phone: "+919841000007", active: true, age: 5 },
+    "CL-008": { type: "Individual", gst: "", pan: "", phone: "+919841000008", active: true, age: 2 },
+  };
+  let custSeq = 0;
   for (const [code, name, industry, city, contact, email] of CLIENTS) {
     const id = genId("client");
+    const x = CUST_EXTRA[code];
+    custSeq += 1;
+    const created = ago(x.age);
+    const mail = email || `${contact.split(" ")[0].toLowerCase()}@${name.split(" ")[0].toLowerCase()}.example`;
+    const addr = { line1: `${custSeq * 12}, Industrial Estate Road`, line2: "", city, district: city, state: "Tamil Nadu", pin: "600032", country: "India" };
     db.client.push({
-      id, code, name, industry, address: null, city, country: "India",
-      contactPerson: contact, email: email || null, phone: null, isActive: true,
-      createdAt: now, updatedAt: now,
+      id, code: `CUST-${created.getFullYear()}-${String(custSeq).padStart(5, "0")}`, name, industry, address: null, city, country: "India",
+      contactPerson: contact, email: mail, phone: x.phone, isActive: x.active,
+      createdAt: created, updatedAt: created,
+      customerType: x.type, tradeName: "", designation: "", alternatePhone: "", website: "",
+      normalizedName: name.toLowerCase().replace(/\b(pvt|private|ltd|limited|llp|inc|co|company)\b\.?/g, "").replace(/[^a-z0-9]/g, ""),
+      billing: addr, reportingSameAsBilling: true, reporting: { ...addr, contactPerson: "", email: "", phone: "" },
+      gstStatus: x.gst ? "Registered" : "Unregistered", gstNumber: x.gst, panNumber: x.pan,
+      billingTerms: "", poRequired: false, poReference: "", taxNotes: "",
+      preferredComm: "Email", preferredDelivery: "Email", handlingInstructions: "", testingRequirements: "", reportingInstructions: "", notes: "",
+      createdById: null, updatedById: null,
     });
     clientId[code] = id;
   }
