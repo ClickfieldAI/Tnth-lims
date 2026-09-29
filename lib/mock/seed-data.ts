@@ -74,6 +74,7 @@ export function buildSeedDb(): DB {
     enquiry: [], enquiryProduct: [], enquiryTestRequest: [],
     quotation: [], quotationItem: [], quotationHistory: [],
     trf: [], trfSample: [], trfTestRequest: [], trfDocument: [], trfAuthorization: [], trfReviewHistory: [],
+    sampleReceipt: [],
     invoice: [], product: [], batch: [], sample: [],
     chainOfCustody: [], storageEvent: [], test: [],
     assayResult: [], dissolutionResult: [], impurityResult: [], microbiologyResult: [],
@@ -673,13 +674,14 @@ function seedTrfs(
     id: trfId, trfCode: `TRF-${createdAt.getFullYear()}-00001`, customerId: clientId[acceptedCustomerCode],
     quotationId: acceptedQuotationId, quotationRevisionSnapshot: 1, poNumber: "PO-VRIDHI-8841",
     acceptedChargesSnapshot: 4500, paymentTermsSnapshot: "Net 15",
-    status: "UNDER_REVIEW", priority: "Normal", requestedDueDate: ahead(10), agreedTurnaroundDays: 7,
+    status: "ACCEPTED", priority: "Normal", requestedDueDate: ahead(10), agreedTurnaroundDays: 7,
     specialDeadlineInstructions: "", storageCondition: "Ambient", storageTemperature: "",
     specialHandlingInstructions: "Keep dry, avoid direct sunlight", lightSensitive: false, moistureSensitive: true,
     otherStorageNotes: "", reportRecipient: "Kavitha Muthu", reportEmail: "kavitha@vridhi.example",
     reportingUnits: "Metric (SI)", reportLanguage: "English", conformityStatementRequested: true,
     applicableSpecification: "Codex Alimentarius CXS 198-1995", reportingInstructions: "",
     submittedAt: ago(14), submittedById: managerId, holdReason: null, rejectionReason: null, clarificationComments: null,
+    receiptStatus: "PENDING", receiptConfirmedAt: null, receiptConfirmedById: null,
     createdById: managerId, updatedById: managerId, createdAt, updatedAt: ago(14),
   });
   const sampleId = genId("trfSample");
@@ -706,5 +708,6 @@ function seedTrfs(
   db.trfReviewHistory.push(
     { id: genId("trfReviewHistory"), trfId, action: "SUBMITTED", actorId: managerId, comment: null, fromStatus: "DRAFT", toStatus: "SUBMITTED", createdAt: ago(14) },
     { id: genId("trfReviewHistory"), trfId, action: "REVIEW_STARTED", actorId: managerId, comment: null, fromStatus: "SUBMITTED", toStatus: "UNDER_REVIEW", createdAt: ago(13) },
+    { id: genId("trfReviewHistory"), trfId, action: "ACCEPTED", actorId: managerId, comment: null, fromStatus: "UNDER_REVIEW", toStatus: "ACCEPTED", createdAt: ago(12) },
   );
 }

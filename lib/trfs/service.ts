@@ -162,6 +162,7 @@ export async function createTrfDraft(actor: Actor, input: Pick<TrfInput, "custom
       reportRecipient: "", reportEmail: "", reportingUnits: "", reportLanguage: "English",
       conformityStatementRequested: false, applicableSpecification: "", reportingInstructions: "",
       submittedAt: null, submittedById: null, holdReason: null, rejectionReason: null, clarificationComments: null,
+      receiptStatus: "PENDING", receiptConfirmedAt: null, receiptConfirmedById: null,
       createdById: actor.id, updatedById: actor.id, createdAt: now, updatedAt: now,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any,

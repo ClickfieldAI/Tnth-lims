@@ -81,10 +81,18 @@ export const RELATIONS: Record<string, Record<string, RelationDef>> = {
     documents: { type: "toMany", model: "trfDocument", fk: "trfId" },
     reviewHistory: { type: "toMany", model: "trfReviewHistory", fk: "trfId" },
     authorization: { type: "toOne", model: "trfAuthorization", fk: "id" }, // resolved specially (reverse 1:1)
+    receipts: { type: "toMany", model: "sampleReceipt", fk: "trfId" },
+    receiptConfirmedBy: { type: "toOne", model: "user", fk: "receiptConfirmedById" },
   },
   trfSample: {
     trf: { type: "toOne", model: "trf", fk: "trfId" },
     tests: { type: "toMany", model: "trfTestRequest", fk: "trfSampleId" },
+    receipt: { type: "toOne", model: "sampleReceipt", fk: "id" }, // resolved specially (reverse 1:1)
+  },
+  sampleReceipt: {
+    trf: { type: "toOne", model: "trf", fk: "trfId" },
+    sample: { type: "toOne", model: "trfSample", fk: "trfSampleId" },
+    receivedBy: { type: "toOne", model: "user", fk: "receivedById" },
   },
   trfTestRequest: {
     sample: { type: "toOne", model: "trfSample", fk: "trfSampleId" },
@@ -211,6 +219,9 @@ export const RELATIONS: Record<string, Record<string, RelationDef>> = {
 export const REVERSE_ONE_TO_ONE: Record<string, Record<string, { model: string; fk: string }>> = {
   trf: {
     authorization: { model: "trfAuthorization", fk: "trfId" },
+  },
+  trfSample: {
+    receipt: { model: "sampleReceipt", fk: "trfSampleId" },
   },
   test: {
     assayResult: { model: "assayResult", fk: "testId" },
