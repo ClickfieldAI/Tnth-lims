@@ -72,6 +72,35 @@ export const RELATIONS: Record<string, Record<string, RelationDef>> = {
     client: { type: "toOne", model: "client", fk: "clientId" },
     samples: { type: "toMany", model: "sample", fk: "invoiceId" },
   },
+  trf: {
+    customer: { type: "toOne", model: "client", fk: "customerId" },
+    quotation: { type: "toOne", model: "quotation", fk: "quotationId" },
+    createdBy: { type: "toOne", model: "user", fk: "createdById" },
+    submittedBy: { type: "toOne", model: "user", fk: "submittedById" },
+    samples: { type: "toMany", model: "trfSample", fk: "trfId" },
+    documents: { type: "toMany", model: "trfDocument", fk: "trfId" },
+    reviewHistory: { type: "toMany", model: "trfReviewHistory", fk: "trfId" },
+    authorization: { type: "toOne", model: "trfAuthorization", fk: "id" }, // resolved specially (reverse 1:1)
+  },
+  trfSample: {
+    trf: { type: "toOne", model: "trf", fk: "trfId" },
+    tests: { type: "toMany", model: "trfTestRequest", fk: "trfSampleId" },
+  },
+  trfTestRequest: {
+    sample: { type: "toOne", model: "trfSample", fk: "trfSampleId" },
+  },
+  trfDocument: {
+    trf: { type: "toOne", model: "trf", fk: "trfId" },
+    uploadedBy: { type: "toOne", model: "user", fk: "uploadedById" },
+  },
+  trfAuthorization: {
+    trf: { type: "toOne", model: "trf", fk: "trfId" },
+    signedTrfDocument: { type: "toOne", model: "trfDocument", fk: "signedTrfDocumentId" },
+  },
+  trfReviewHistory: {
+    trf: { type: "toOne", model: "trf", fk: "trfId" },
+    actor: { type: "toOne", model: "user", fk: "actorId" },
+  },
   product: {
     client: { type: "toOne", model: "client", fk: "clientId" },
     batches: { type: "toMany", model: "batch", fk: "productId" },
@@ -180,6 +209,9 @@ export const RELATIONS: Record<string, Record<string, RelationDef>> = {
 // model, e.g. AssayResult.testId), not a forward FK on this row — resolved
 // by scanning rather than by `row[fk]`.
 export const REVERSE_ONE_TO_ONE: Record<string, Record<string, { model: string; fk: string }>> = {
+  trf: {
+    authorization: { model: "trfAuthorization", fk: "trfId" },
+  },
   test: {
     assayResult: { model: "assayResult", fk: "testId" },
     dissolution: { model: "dissolutionResult", fk: "testId" },

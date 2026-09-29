@@ -19,6 +19,7 @@ import {
   FileText,
   FolderKanban,
   ReceiptText,
+  ClipboardList,
   Building2,
   Settings,
   Bot,
@@ -48,6 +49,7 @@ export const NAV: NavGroup[] = [
   {
     group: "Operations",
     items: [
+      { label: "Test Request Forms (TRF)", href: "/trfs", icon: ClipboardList, roles: ["ADMIN", "MANAGER", "QA", "ANALYST", "MICRO"] },
       { label: "Samples", href: "/samples", icon: FlaskConical, roles: ["ADMIN", "MANAGER", "QA", "ANALYST", "MICRO"] },
       { label: "Instruments", href: "/instruments", icon: Microscope, roles: ["ADMIN", "MANAGER", "QA", "ANALYST", "MICRO"] },
       { label: "Batch Release", href: "/batch-release", icon: Ship, roles: ["ADMIN", "MANAGER", "QA"] },

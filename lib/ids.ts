@@ -65,4 +65,8 @@ export function nextQuotationCode(seq: number) {
   return `QUO-${new Date().getFullYear()}-${pad(seq, 5)}`;
 }
 
+export function nextTrfCode(seq: number) {
+  return `TRF-${new Date().getFullYear()}-${pad(seq, 5)}`;
+}
+
 // Sequence helpers are used by server actions that pass an explicit next value.

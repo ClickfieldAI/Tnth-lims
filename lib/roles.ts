@@ -171,4 +171,6 @@ export const STATUS_META: Record<string, { label: string; tone: string }> = {
   SENT: { label: "Sent", tone: "indigo" },
   CUSTOMER_REJECTED: { label: "Customer Rejected", tone: "red" },
   SUPERSEDED: { label: "Superseded", tone: "zinc" },
+  // Module 3 — TRF statuses
+  ON_HOLD: { label: "On Hold", tone: "amber" },
 };

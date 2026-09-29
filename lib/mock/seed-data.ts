@@ -73,6 +73,7 @@ export function buildSeedDb(): DB {
     client: [], customerContact: [], customerDocument: [],
     enquiry: [], enquiryProduct: [], enquiryTestRequest: [],
     quotation: [], quotationItem: [], quotationHistory: [],
+    trf: [], trfSample: [], trfTestRequest: [], trfDocument: [], trfAuthorization: [], trfReviewHistory: [],
     invoice: [], product: [], batch: [], sample: [],
     chainOfCustody: [], storageEvent: [], test: [],
     assayResult: [], dissolutionResult: [], impurityResult: [], microbiologyResult: [],
@@ -517,7 +518,10 @@ export function buildSeedDb(): DB {
   }
 
   // ---- Enquiries & Quotations (Module 2 demo data) ----
-  seedEnquiriesAndQuotations(db, { managerId, adminId, clientId });
+  const eq = seedEnquiriesAndQuotations(db, { managerId, adminId, clientId });
+
+  // ---- TRFs (Module 3 demo data) ----
+  seedTrfs(db, { managerId, adminId, clientId, ...eq });
 
   return db;
 }
@@ -654,5 +658,53 @@ function seedEnquiriesAndQuotations(
         estimatedTurnaroundDays: 7, createdAt: qDate, updatedAt: qDate,
       });
     }
+    return { acceptedQuotationId: qId, acceptedEnquiryId: enq3.id, acceptedCustomerCode: "CL-006" };
   }
+}
+
+function seedTrfs(
+  db: DB,
+  ids: { managerId: string; adminId: string; clientId: Record<string, string>; acceptedQuotationId: string; acceptedCustomerCode: string },
+) {
+  const { managerId, clientId, acceptedQuotationId, acceptedCustomerCode } = ids;
+  const createdAt = ago(15);
+  const trfId = genId("trf");
+  db.trf.push({
+    id: trfId, trfCode: `TRF-${createdAt.getFullYear()}-00001`, customerId: clientId[acceptedCustomerCode],
+    quotationId: acceptedQuotationId, quotationRevisionSnapshot: 1, poNumber: "PO-VRIDHI-8841",
+    acceptedChargesSnapshot: 4500, paymentTermsSnapshot: "Net 15",
+    status: "UNDER_REVIEW", priority: "Normal", requestedDueDate: ahead(10), agreedTurnaroundDays: 7,
+    specialDeadlineInstructions: "", storageCondition: "Ambient", storageTemperature: "",
+    specialHandlingInstructions: "Keep dry, avoid direct sunlight", lightSensitive: false, moistureSensitive: true,
+    otherStorageNotes: "", reportRecipient: "Kavitha Muthu", reportEmail: "kavitha@vridhi.example",
+    reportingUnits: "Metric (SI)", reportLanguage: "English", conformityStatementRequested: true,
+    applicableSpecification: "Codex Alimentarius CXS 198-1995", reportingInstructions: "",
+    submittedAt: ago(14), submittedById: managerId, holdReason: null, rejectionReason: null, clarificationComments: null,
+    createdById: managerId, updatedById: managerId, createdAt, updatedAt: ago(14),
+  });
+  const sampleId = genId("trfSample");
+  db.trfSample.push({
+    id: sampleId, trfId, sampleName: "Basmati Rice — Lot A", productCategory: "Grains", brandName: "Vridhi Gold",
+    batchNumber: "VR-2026-A1", customerSampleRef: "SMP-001", quantity: 2, quantityUnit: "kg", containers: 2,
+    packagingType: "Sealed food-grade pouch", manufacturer: "Vridhi Agro Exports", manufacturingDate: ago(40),
+    expiryDate: ahead(300), declaredComposition: "100% Basmati rice", labelClaim: "Premium export grade",
+    productDescription: "Export-grade basmati rice for pesticide residue screening.",
+    sampledBy: "Customer", samplingDate: ago(16), samplingLocation: "Vridhi Agro Exports, Salem", samplingProcedure: "",
+    createdAt, updatedAt: createdAt,
+  });
+  db.trfTestRequest.push({
+    id: genId("trfTestRequest"), trfSampleId: sampleId, serviceId: "contaminants-residues", customRequest: false, customServiceName: null,
+    requestedParameter: "Multi-residue pesticide panel", preferredMethod: "GC-MS", specification: "FSSAI limits",
+    testingPurpose: "Export compliance", requiredQuantity: "500 g", customerRequirements: "", subcontractingPreference: "",
+    createdAt, updatedAt: createdAt,
+  });
+  db.trfAuthorization.push({
+    id: genId("trfAuthorization"), trfId, status: "AUTHORIZED", authorizedPersonName: "Kavitha Muthu",
+    authorizedPersonDesignation: "Quality Manager", authorizationDate: ago(15), authorizationMethod: "Signed TRF Upload",
+    signedTrfDocumentId: null, notes: "", createdAt, updatedAt: createdAt,
+  });
+  db.trfReviewHistory.push(
+    { id: genId("trfReviewHistory"), trfId, action: "SUBMITTED", actorId: managerId, comment: null, fromStatus: "DRAFT", toStatus: "SUBMITTED", createdAt: ago(14) },
+    { id: genId("trfReviewHistory"), trfId, action: "REVIEW_STARTED", actorId: managerId, comment: null, fromStatus: "SUBMITTED", toStatus: "UNDER_REVIEW", createdAt: ago(13) },
+  );
 }
