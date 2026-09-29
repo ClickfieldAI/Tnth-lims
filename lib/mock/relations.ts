@@ -38,6 +38,36 @@ export const RELATIONS: Record<string, Record<string, RelationDef>> = {
   },
   customerContact: { customer: { type: "toOne", model: "client", fk: "customerId" } },
   customerDocument: { customer: { type: "toOne", model: "client", fk: "customerId" } },
+  enquiry: {
+    customer: { type: "toOne", model: "client", fk: "customerId" },
+    assignedManager: { type: "toOne", model: "user", fk: "assignedManagerId" },
+    products: { type: "toMany", model: "enquiryProduct", fk: "enquiryId" },
+    quotations: { type: "toMany", model: "quotation", fk: "enquiryId" },
+  },
+  enquiryProduct: {
+    enquiry: { type: "toOne", model: "enquiry", fk: "enquiryId" },
+    tests: { type: "toMany", model: "enquiryTestRequest", fk: "enquiryProductId" },
+  },
+  enquiryTestRequest: {
+    product: { type: "toOne", model: "enquiryProduct", fk: "enquiryProductId" },
+  },
+  quotation: {
+    enquiry: { type: "toOne", model: "enquiry", fk: "enquiryId" },
+    customer: { type: "toOne", model: "client", fk: "customerId" },
+    items: { type: "toMany", model: "quotationItem", fk: "quotationId" },
+    history: { type: "toMany", model: "quotationHistory", fk: "quotationId" },
+    preparedBy: { type: "toOne", model: "user", fk: "preparedById" },
+    approvedBy: { type: "toOne", model: "user", fk: "approvedById" },
+    previousVersion: { type: "toOne", model: "quotation", fk: "previousVersionId" },
+  },
+  quotationItem: {
+    quotation: { type: "toOne", model: "quotation", fk: "quotationId" },
+    testRequest: { type: "toOne", model: "enquiryTestRequest", fk: "testRequestId" },
+  },
+  quotationHistory: {
+    quotation: { type: "toOne", model: "quotation", fk: "quotationId" },
+    createdBy: { type: "toOne", model: "user", fk: "createdById" },
+  },
   invoice: {
     client: { type: "toOne", model: "client", fk: "clientId" },
     samples: { type: "toMany", model: "sample", fk: "invoiceId" },

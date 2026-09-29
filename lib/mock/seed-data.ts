@@ -70,7 +70,10 @@ const METHODS: Record<string, string> = {
 export function buildSeedDb(): DB {
   const db: DB = {
     permission: [], role: [], permissionRole: [], user: [],
-    client: [], customerContact: [], customerDocument: [], invoice: [], product: [], batch: [], sample: [],
+    client: [], customerContact: [], customerDocument: [],
+    enquiry: [], enquiryProduct: [], enquiryTestRequest: [],
+    quotation: [], quotationItem: [], quotationHistory: [],
+    invoice: [], product: [], batch: [], sample: [],
     chainOfCustody: [], storageEvent: [], test: [],
     assayResult: [], dissolutionResult: [], impurityResult: [], microbiologyResult: [],
     stabilityStudy: [], stabilityTimepoint: [],
@@ -513,5 +516,143 @@ export function buildSeedDb(): DB {
     });
   }
 
+  // ---- Enquiries & Quotations (Module 2 demo data) ----
+  seedEnquiriesAndQuotations(db, { managerId, adminId, clientId });
+
   return db;
+}
+
+function seedEnquiriesAndQuotations(
+  db: DB,
+  ids: { managerId: string; adminId: string; clientId: Record<string, string> },
+) {
+  const { managerId, adminId, clientId } = ids;
+
+  function enquiry(opts: {
+    customerCode: string; status: string; ageDays: number;
+    priority?: string; source?: string;
+    products: { name: string; category: string; sampleType: string; tests: { serviceId: string; requestedTest: string; qty: number }[] }[];
+  }) {
+    const createdAt = ago(opts.ageDays);
+    const id = genId("enquiry");
+    db.enquiry.push({
+      id, enquiryCode: `ENQ-${createdAt.getFullYear()}-${String(db.enquiry.length + 1).padStart(5, "0")}`,
+      customerId: clientId[opts.customerCode], enquiryDate: createdAt,
+      enquirySource: opts.source ?? "Email", assignedManagerId: managerId,
+      priority: opts.priority ?? "Normal", status: opts.status,
+      requestedTurnaroundDays: 7,
+      purposeOfTesting: "Routine product release testing", regulatoryRequirements: "FSSAI",
+      requiredReportingFormat: "PDF Certificate of Analysis", requiredAccreditation: "NABL",
+      reportDeliveryMethod: "Email", customerNotes: "",
+      createdById: managerId, updatedById: managerId, createdAt, updatedAt: createdAt,
+    });
+    for (const p of opts.products) {
+      const productId = genId("enquiryProduct");
+      db.enquiryProduct.push({
+        id: productId, enquiryId: id, productName: p.name, productCategory: p.category,
+        productDescription: "", batchNumber: "", sampleType: p.sampleType, sampleMatrix: "",
+        quantity: 2, quantityUnit: "kg", packagingDetails: "Sealed food-grade pouch",
+        storageRequirements: "Store at 4-8°C", specialHandlingInstructions: "",
+        requestedTestingDate: null, notes: "", createdAt, updatedAt: createdAt,
+      });
+      for (const t of p.tests) {
+        db.enquiryTestRequest.push({
+          id: genId("enquiryTestRequest"), enquiryProductId: productId,
+          serviceId: t.serviceId, customRequest: false, customServiceName: null,
+          requestedTest: t.requestedTest, requestedMethod: null, specification: "",
+          requestedQuantity: t.qty, specialRequirements: "", estimatedTurnaroundDays: 7,
+          createdAt, updatedAt: createdAt,
+        });
+      }
+    }
+    return { id, createdAt };
+  }
+
+  // 1. A brand-new enquiry with no quotation yet.
+  enquiry({
+    customerCode: "CL-002", status: "NEW", ageDays: 2,
+    products: [{ name: "Turmeric Powder (spice export lot)", category: "Spices", sampleType: "Powder", tests: [
+      { serviceId: "contaminants-residues", requestedTest: "Pesticide residue screen", qty: 1 },
+      { serviceId: "microbial-analysis", requestedTest: "Total plate count", qty: 1 },
+    ] }],
+  });
+
+  // 2. An enquiry with a quotation sent, awaiting customer decision.
+  const enq2 = enquiry({
+    customerCode: "CL-002", status: "QUOTATION_SENT", ageDays: 10, priority: "High",
+    products: [{ name: "Packaged Fruit Juice — Export Lot", category: "Beverages", sampleType: "Liquid", tests: [
+      { serviceId: "vitamin-analysis", requestedTest: "Vitamin C content", qty: 1 },
+      { serviceId: "nutritional-labeling", requestedTest: "Total sugar & calorie declaration", qty: 1 },
+    ] }],
+  });
+  {
+    const items = [
+      { productReference: "Packaged Fruit Juice — Export Lot", serviceName: "Vitamin Analysis", method: "HPLC", quantity: 1, unitPrice: 2500, discount: 0 },
+      { productReference: "Packaged Fruit Juice — Export Lot", serviceName: "Nutritional Labeling", method: "Total Mineral Content", quantity: 1, unitPrice: 3200, discount: 200 },
+    ];
+    const subtotal = items.reduce((a, i) => a + i.quantity * i.unitPrice, 0);
+    const discountTotal = items.reduce((a, i) => a + i.discount, 0);
+    const taxable = subtotal - discountTotal;
+    const taxTotal = Math.round(taxable * 0.18);
+    const grand = taxable + taxTotal;
+    const qDate = ago(9);
+    const qId = genId("quotation");
+    db.quotation.push({
+      id: qId, quotationCode: `QUO-${qDate.getFullYear()}-00001`, enquiryId: enq2.id, customerId: clientId["CL-002"],
+      quotationDate: qDate, validUntil: ahead(20), revisionNumber: 1, previousVersionId: null,
+      status: "SENT", subtotal, discountTotal, taxableAmount: taxable, taxTotal, grandTotal: grand,
+      currency: "INR", paymentTerms: "50% advance, balance on report delivery", advancePaymentRequired: true, poRequired: false,
+      billingNotes: "", preparedById: managerId, approvedById: adminId, approvedAt: ago(7), sentAt: ago(6),
+      acceptanceStatus: "PENDING", acceptanceDate: null, acceptedById: null, poNumber: null, acceptanceNotes: null, rejectionReason: null,
+      revisionReason: null, createdAt: qDate, updatedAt: ago(6),
+    });
+    for (const it of items) {
+      db.quotationItem.push({
+        id: genId("quotationItem"), quotationId: qId, testRequestId: null,
+        productReference: it.productReference, serviceName: it.serviceName, method: it.method,
+        quantity: it.quantity, unitPrice: it.unitPrice, discount: it.discount, taxCategory: "GST 18%",
+        taxAmount: Math.round((it.quantity * it.unitPrice - it.discount) * 0.18), lineTotal: it.quantity * it.unitPrice - it.discount + Math.round((it.quantity * it.unitPrice - it.discount) * 0.18),
+        estimatedTurnaroundDays: 7, createdAt: qDate, updatedAt: qDate,
+      });
+    }
+  }
+
+  // 3. A fully accepted enquiry/quotation — the kind of record Module 3 (TRF) will pick up.
+  const enq3 = enquiry({
+    customerCode: "CL-006", status: "ACCEPTED", ageDays: 25, priority: "Normal",
+    products: [{ name: "Basmati Rice — Pesticide Residue", category: "Grains", sampleType: "Grain", tests: [
+      { serviceId: "contaminants-residues", requestedTest: "Multi-residue pesticide panel", qty: 1 },
+    ] }],
+  });
+  {
+    const items = [
+      { productReference: "Basmati Rice — Pesticide Residue", serviceName: "Contaminants & Residues", method: "GC-MS", quantity: 1, unitPrice: 4500, discount: 0 },
+    ];
+    const subtotal = items.reduce((a, i) => a + i.quantity * i.unitPrice, 0);
+    const discountTotal = 0;
+    const taxable = subtotal - discountTotal;
+    const taxTotal = Math.round(taxable * 0.18);
+    const grand = taxable + taxTotal;
+    const qDate = ago(24);
+    const qId = genId("quotation");
+    db.quotation.push({
+      id: qId, quotationCode: `QUO-${qDate.getFullYear()}-00002`, enquiryId: enq3.id, customerId: clientId["CL-006"],
+      quotationDate: qDate, validUntil: ahead(5), revisionNumber: 1, previousVersionId: null,
+      status: "ACCEPTED", subtotal, discountTotal, taxableAmount: taxable, taxTotal, grandTotal: grand,
+      currency: "INR", paymentTerms: "Net 15", advancePaymentRequired: false, poRequired: true,
+      billingNotes: "", preparedById: managerId, approvedById: adminId, approvedAt: ago(22), sentAt: ago(21),
+      acceptanceStatus: "ACCEPTED", acceptanceDate: ago(18), acceptedById: managerId, poNumber: "PO-VRIDHI-8841",
+      acceptanceNotes: "Confirmed by phone, PO to follow by email.", rejectionReason: null,
+      revisionReason: null, createdAt: qDate, updatedAt: ago(18),
+    });
+    for (const it of items) {
+      db.quotationItem.push({
+        id: genId("quotationItem"), quotationId: qId, testRequestId: null,
+        productReference: it.productReference, serviceName: it.serviceName, method: it.method,
+        quantity: it.quantity, unitPrice: it.unitPrice, discount: it.discount, taxCategory: "GST 18%",
+        taxAmount: Math.round((it.quantity * it.unitPrice - it.discount) * 0.18), lineTotal: it.quantity * it.unitPrice - it.discount + Math.round((it.quantity * it.unitPrice - it.discount) * 0.18),
+        estimatedTurnaroundDays: 7, createdAt: qDate, updatedAt: qDate,
+      });
+    }
+  }
 }

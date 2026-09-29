@@ -162,4 +162,13 @@ export const STATUS_META: Record<string, { label: string; tone: string }> = {
   PAID: { label: "Paid", tone: "green" },
   UNPAID: { label: "Unpaid", tone: "amber" },
   REJECTED: { label: "Rejected", tone: "red" },
+  // Module 2 — Enquiry & Quotation statuses
+  NEW: { label: "New", tone: "blue" },
+  ACCEPTED: { label: "Accepted", tone: "green" },
+  QUOTATION_IN_PROGRESS: { label: "Quotation In Progress", tone: "amber" },
+  QUOTATION_SENT: { label: "Quotation Sent", tone: "indigo" },
+  PENDING_APPROVAL: { label: "Pending Approval", tone: "amber" },
+  SENT: { label: "Sent", tone: "indigo" },
+  CUSTOMER_REJECTED: { label: "Customer Rejected", tone: "red" },
+  SUPERSEDED: { label: "Superseded", tone: "zinc" },
 };

@@ -57,4 +57,12 @@ export function nextInstrumentCode(seq: number) {
   return `INS-${pad(seq, 4)}`;
 }
 
+export function nextEnquiryCode(seq: number) {
+  return `ENQ-${new Date().getFullYear()}-${pad(seq, 5)}`;
+}
+
+export function nextQuotationCode(seq: number) {
+  return `QUO-${new Date().getFullYear()}-${pad(seq, 5)}`;
+}
+
 // Sequence helpers are used by server actions that pass an explicit next value.
