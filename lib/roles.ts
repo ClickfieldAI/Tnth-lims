@@ -194,4 +194,13 @@ export const STATUS_META: Record<string, { label: string; tone: string }> = {
   RETURNED: { label: "Returned", tone: "amber" },
   GENERATED: { label: "Generated", tone: "blue" },
   SENT_FOR_QA: { label: "Sent for QA", tone: "violet" },
+  // Module 13 — Authorized Approval & Release (RELEASED/PENDING/RETURNED reuse existing keys)
+  // Module 14 — Customer Delivery (PENDING reuses existing key)
+  DELIVERED: { label: "Delivered", tone: "green" },
+  FAILED: { label: "Failed", tone: "red" },
+  // Module 15 — Retention & Disposal (EXPIRED reuses existing key for DUE_FOR_DISPOSAL styling separately below)
+  RETAINED: { label: "Retained", tone: "blue" },
+  DUE_FOR_DISPOSAL: { label: "Due for Disposal", tone: "amber" },
+  DISPOSED: { label: "Disposed", tone: "zinc" },
+  EXTENDED: { label: "Extended", tone: "indigo" },
 };

@@ -112,6 +112,7 @@ export const RELATIONS: Record<string, Record<string, RelationDef>> = {
     customer: { type: "toOne", model: "client", fk: "customerId" },
     registeredBy: { type: "toOne", model: "user", fk: "registeredById" },
     cancelledBy: { type: "toOne", model: "user", fk: "cancelledById" },
+    retention: { type: "toOne", model: "retentionRecord", fk: "id" }, // resolved specially (reverse 1:1)
   },
   testAllocation: {
     trfTestRequest: { type: "toOne", model: "trfTestRequest", fk: "trfTestRequestId" },
@@ -150,6 +151,8 @@ export const RELATIONS: Record<string, Record<string, RelationDef>> = {
     items: { type: "toMany", model: "draftReportItem", fk: "draftReportId" },
     previousVersion: { type: "toOne", model: "draftReport", fk: "previousVersionId" },
     qaReview: { type: "toOne", model: "qaReview", fk: "id" }, // resolved specially (reverse 1:1)
+    release: { type: "toOne", model: "reportRelease", fk: "id" }, // resolved specially (reverse 1:1)
+    deliveries: { type: "toMany", model: "reportDelivery", fk: "draftReportId" },
   },
   draftReportItem: {
     draftReport: { type: "toOne", model: "draftReport", fk: "draftReportId" },
@@ -158,6 +161,21 @@ export const RELATIONS: Record<string, Record<string, RelationDef>> = {
   qaReview: {
     draftReport: { type: "toOne", model: "draftReport", fk: "draftReportId" },
     reviewer: { type: "toOne", model: "user", fk: "reviewerId" },
+  },
+  reportRelease: {
+    draftReport: { type: "toOne", model: "draftReport", fk: "draftReportId" },
+    releasedBy: { type: "toOne", model: "user", fk: "releasedById" },
+  },
+  reportDelivery: {
+    draftReport: { type: "toOne", model: "draftReport", fk: "draftReportId" },
+    customer: { type: "toOne", model: "client", fk: "customerId" },
+    deliveredBy: { type: "toOne", model: "user", fk: "deliveredById" },
+  },
+  retentionRecord: {
+    sampleRegistration: { type: "toOne", model: "sampleRegistration", fk: "sampleRegistrationId" },
+    trf: { type: "toOne", model: "trf", fk: "trfId" },
+    customer: { type: "toOne", model: "client", fk: "customerId" },
+    disposedBy: { type: "toOne", model: "user", fk: "disposedById" },
   },
   trfTestRequest: {
     sample: { type: "toOne", model: "trfSample", fk: "trfSampleId" },
@@ -303,6 +321,10 @@ export const REVERSE_ONE_TO_ONE: Record<string, Record<string, { model: string; 
   },
   draftReport: {
     qaReview: { model: "qaReview", fk: "draftReportId" },
+    release: { model: "reportRelease", fk: "draftReportId" },
+  },
+  sampleRegistration: {
+    retention: { model: "retentionRecord", fk: "sampleRegistrationId" },
   },
   test: {
     assayResult: { model: "assayResult", fk: "testId" },
