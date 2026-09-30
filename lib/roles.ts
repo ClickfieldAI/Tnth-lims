@@ -178,4 +178,8 @@ export const STATUS_META: Record<string, { label: string; tone: string }> = {
   RECEIVED_WITH_DISCREPANCY: { label: "Received (Discrepancy)", tone: "red" },
   // Module 5 — Technical Review statuses (UNDER_REVIEW/ACCEPTED/ON_HOLD/REJECTED reuse existing keys above)
   CLARIFICATION_REQUESTED: { label: "Clarification Requested", tone: "violet" },
+  // Module 6 — Sample Registration statuses (REJECTED reused for CANCELLED tone)
+  PENDING_REGISTRATION: { label: "Pending Registration", tone: "zinc" },
+  REGISTERED: { label: "Registered", tone: "green" },
+  CANCELLED: { label: "Cancelled", tone: "red" },
 };

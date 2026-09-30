@@ -69,4 +69,8 @@ export function nextTrfCode(seq: number) {
   return `TRF-${new Date().getFullYear()}-${pad(seq, 5)}`;
 }
 
+// Module 6 (Sample Registration) reuses the existing nextSampleCode()
+// generator above (SPL-YYYY-00001) — that convention already exists in this
+// codebase, so a separate generator isn't introduced.
+
 // Sequence helpers are used by server actions that pass an explicit next value.

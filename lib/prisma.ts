@@ -31,6 +31,7 @@ const MODELS = [
   "trf", "trfSample", "trfTestRequest", "trfDocument", "trfAuthorization", "trfReviewHistory",
   "sampleReceipt",
   "technicalReview", "technicalReviewHistory",
+  "sampleRegistration",
 ] as const;
 
 // Every model exposes the same method set (see lib/mock/engine.ts), so the

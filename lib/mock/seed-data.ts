@@ -76,6 +76,7 @@ export function buildSeedDb(): DB {
     trf: [], trfSample: [], trfTestRequest: [], trfDocument: [], trfAuthorization: [], trfReviewHistory: [],
     sampleReceipt: [],
     technicalReview: [], technicalReviewHistory: [],
+    sampleRegistration: [],
     invoice: [], product: [], batch: [], sample: [],
     chainOfCustody: [], storageEvent: [], test: [],
     assayResult: [], dissolutionResult: [], impurityResult: [], microbiologyResult: [],

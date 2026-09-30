@@ -89,6 +89,7 @@ export const RELATIONS: Record<string, Record<string, RelationDef>> = {
     tests: { type: "toMany", model: "trfTestRequest", fk: "trfSampleId" },
     receipt: { type: "toOne", model: "sampleReceipt", fk: "id" }, // resolved specially (reverse 1:1)
     technicalReview: { type: "toOne", model: "technicalReview", fk: "id" }, // resolved specially (reverse 1:1)
+    registration: { type: "toOne", model: "sampleRegistration", fk: "id" }, // resolved specially (reverse 1:1)
   },
   sampleReceipt: {
     trf: { type: "toOne", model: "trf", fk: "trfId" },
@@ -104,6 +105,13 @@ export const RELATIONS: Record<string, Record<string, RelationDef>> = {
   technicalReviewHistory: {
     review: { type: "toOne", model: "technicalReview", fk: "technicalReviewId" },
     actor: { type: "toOne", model: "user", fk: "actorId" },
+  },
+  sampleRegistration: {
+    trf: { type: "toOne", model: "trf", fk: "trfId" },
+    trfSample: { type: "toOne", model: "trfSample", fk: "trfSampleId" },
+    customer: { type: "toOne", model: "client", fk: "customerId" },
+    registeredBy: { type: "toOne", model: "user", fk: "registeredById" },
+    cancelledBy: { type: "toOne", model: "user", fk: "cancelledById" },
   },
   trfTestRequest: {
     sample: { type: "toOne", model: "trfSample", fk: "trfSampleId" },
@@ -234,6 +242,7 @@ export const REVERSE_ONE_TO_ONE: Record<string, Record<string, { model: string; 
   trfSample: {
     receipt: { model: "sampleReceipt", fk: "trfSampleId" },
     technicalReview: { model: "technicalReview", fk: "trfSampleId" },
+    registration: { model: "sampleRegistration", fk: "trfSampleId" },
   },
   test: {
     assayResult: { model: "assayResult", fk: "testId" },
