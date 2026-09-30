@@ -148,6 +148,15 @@ export async function completeResult(actor: Actor, testAllocationId: string) {
   const now = new Date();
   await prisma.testResult.update({ where: { id: a.result.id }, data: { status: "COMPLETED", completedAt: now, updatedAt: now } });
   await logAudit(actor.id, { action: "TEST_COMPLETED", module: "testing", entityType: "testResult", entityId: a.result.id, oldValue: { status: a.result.status }, newValue: { status: "COMPLETED" } });
+
+  // If this result was previously returned by a technical reviewer, re-completing
+  // it after the fix puts it back into the verification queue as PENDING.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const verification = await prisma.technicalVerification.findFirst({ where: { testResultId: a.result.id } }) as any;
+  if (verification && verification.status === "RETURNED") {
+    await prisma.technicalVerification.update({ where: { id: verification.id }, data: { status: "PENDING", returnReason: null, updatedAt: now } });
+  }
+
   return { ok: true as const };
 }
 
@@ -173,6 +182,17 @@ export async function correctResult(actor: Actor, testAllocationId: string, inpu
     } as any,
   });
   await logAudit(actor.id, { action: "RESULT_CORRECTED", module: "testing", entityType: "testResult", entityId: a.result.id, oldValue: oldSnapshot, newValue: { resultValue: input.resultValue, reason: correctionReason } });
+
+  // A verified result is locked from normal editing; correcting it through
+  // this authorized path reopens technical verification for that result,
+  // rather than silently leaving a stale VERIFIED decision in place.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const verification = await prisma.technicalVerification.findFirst({ where: { testResultId: a.result.id } }) as any;
+  if (verification && verification.status === "VERIFIED") {
+    await prisma.technicalVerification.update({ where: { id: verification.id }, data: { status: "PENDING", updatedAt: new Date() } });
+    await logAudit(actor.id, { action: "VERIFICATION_REOPENED_FOR_CORRECTION", module: "technical-verification", entityType: "technicalVerification", entityId: verification.id, oldValue: { status: "VERIFIED" }, newValue: { status: "PENDING", reason: correctionReason } });
+  }
+
   return { ok: true as const };
 }
 

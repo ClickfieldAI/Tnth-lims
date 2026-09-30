@@ -136,6 +136,28 @@ export const RELATIONS: Record<string, Record<string, RelationDef>> = {
     worksheet: { type: "toOne", model: "worksheet", fk: "worksheetId" },
     analyst: { type: "toOne", model: "user", fk: "analystId" },
     instrumentUsed: { type: "toOne", model: "instrument", fk: "instrumentUsedId" },
+    verification: { type: "toOne", model: "technicalVerification", fk: "id" }, // resolved specially (reverse 1:1)
+  },
+  technicalVerification: {
+    testResult: { type: "toOne", model: "testResult", fk: "testResultId" },
+    reviewer: { type: "toOne", model: "user", fk: "reviewerId" },
+  },
+  draftReport: {
+    sampleRegistration: { type: "toOne", model: "sampleRegistration", fk: "sampleRegistrationId" },
+    trf: { type: "toOne", model: "trf", fk: "trfId" },
+    customer: { type: "toOne", model: "client", fk: "customerId" },
+    preparedBy: { type: "toOne", model: "user", fk: "preparedById" },
+    items: { type: "toMany", model: "draftReportItem", fk: "draftReportId" },
+    previousVersion: { type: "toOne", model: "draftReport", fk: "previousVersionId" },
+    qaReview: { type: "toOne", model: "qaReview", fk: "id" }, // resolved specially (reverse 1:1)
+  },
+  draftReportItem: {
+    draftReport: { type: "toOne", model: "draftReport", fk: "draftReportId" },
+    testAllocation: { type: "toOne", model: "testAllocation", fk: "testAllocationId" },
+  },
+  qaReview: {
+    draftReport: { type: "toOne", model: "draftReport", fk: "draftReportId" },
+    reviewer: { type: "toOne", model: "user", fk: "reviewerId" },
   },
   trfTestRequest: {
     sample: { type: "toOne", model: "trfSample", fk: "trfSampleId" },
@@ -275,6 +297,12 @@ export const REVERSE_ONE_TO_ONE: Record<string, Record<string, { model: string; 
   testAllocation: {
     worksheetItem: { model: "worksheetItem", fk: "testAllocationId" },
     result: { model: "testResult", fk: "testAllocationId" },
+  },
+  testResult: {
+    verification: { model: "technicalVerification", fk: "testResultId" },
+  },
+  draftReport: {
+    qaReview: { model: "qaReview", fk: "draftReportId" },
   },
   test: {
     assayResult: { model: "assayResult", fk: "testId" },

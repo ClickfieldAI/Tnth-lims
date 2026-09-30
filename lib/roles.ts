@@ -189,4 +189,9 @@ export const STATUS_META: Record<string, { label: string; tone: string }> = {
   PREPARED: { label: "Prepared", tone: "blue" },
   // Module 9 — Testing & Result Entry (IN_PROGRESS/COMPLETED reuse existing keys)
   NOT_STARTED: { label: "Not Started", tone: "zinc" },
+  // Modules 10-12 — Technical Verification / Draft Report / QA Review
+  // (PENDING/VERIFIED/DRAFT/APPROVED reuse existing keys above)
+  RETURNED: { label: "Returned", tone: "amber" },
+  GENERATED: { label: "Generated", tone: "blue" },
+  SENT_FOR_QA: { label: "Sent for QA", tone: "violet" },
 };
