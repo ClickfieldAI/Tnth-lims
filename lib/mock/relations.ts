@@ -113,8 +113,33 @@ export const RELATIONS: Record<string, Record<string, RelationDef>> = {
     registeredBy: { type: "toOne", model: "user", fk: "registeredById" },
     cancelledBy: { type: "toOne", model: "user", fk: "cancelledById" },
   },
+  testAllocation: {
+    trfTestRequest: { type: "toOne", model: "trfTestRequest", fk: "trfTestRequestId" },
+    analyst: { type: "toOne", model: "user", fk: "analystId" },
+    instrument: { type: "toOne", model: "instrument", fk: "instrumentId" },
+    allocatedBy: { type: "toOne", model: "user", fk: "allocatedById" },
+    worksheetItem: { type: "toOne", model: "worksheetItem", fk: "id" }, // resolved specially (reverse 1:1)
+    result: { type: "toOne", model: "testResult", fk: "id" }, // resolved specially (reverse 1:1)
+  },
+  worksheet: {
+    analyst: { type: "toOne", model: "user", fk: "analystId" },
+    instrument: { type: "toOne", model: "instrument", fk: "instrumentId" },
+    createdBy: { type: "toOne", model: "user", fk: "createdById" },
+    items: { type: "toMany", model: "worksheetItem", fk: "worksheetId" },
+  },
+  worksheetItem: {
+    worksheet: { type: "toOne", model: "worksheet", fk: "worksheetId" },
+    testAllocation: { type: "toOne", model: "testAllocation", fk: "testAllocationId" },
+  },
+  testResult: {
+    testAllocation: { type: "toOne", model: "testAllocation", fk: "testAllocationId" },
+    worksheet: { type: "toOne", model: "worksheet", fk: "worksheetId" },
+    analyst: { type: "toOne", model: "user", fk: "analystId" },
+    instrumentUsed: { type: "toOne", model: "instrument", fk: "instrumentUsedId" },
+  },
   trfTestRequest: {
     sample: { type: "toOne", model: "trfSample", fk: "trfSampleId" },
+    allocation: { type: "toOne", model: "testAllocation", fk: "id" }, // resolved specially (reverse 1:1)
   },
   trfDocument: {
     trf: { type: "toOne", model: "trf", fk: "trfId" },
@@ -243,6 +268,13 @@ export const REVERSE_ONE_TO_ONE: Record<string, Record<string, { model: string; 
     receipt: { model: "sampleReceipt", fk: "trfSampleId" },
     technicalReview: { model: "technicalReview", fk: "trfSampleId" },
     registration: { model: "sampleRegistration", fk: "trfSampleId" },
+  },
+  trfTestRequest: {
+    allocation: { model: "testAllocation", fk: "trfTestRequestId" },
+  },
+  testAllocation: {
+    worksheetItem: { model: "worksheetItem", fk: "testAllocationId" },
+    result: { model: "testResult", fk: "testAllocationId" },
   },
   test: {
     assayResult: { model: "assayResult", fk: "testId" },

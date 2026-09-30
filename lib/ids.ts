@@ -73,4 +73,8 @@ export function nextTrfCode(seq: number) {
 // generator above (SPL-YYYY-00001) — that convention already exists in this
 // codebase, so a separate generator isn't introduced.
 
+export function nextWorksheetCode(seq: number) {
+  return `WS-${new Date().getFullYear()}-${pad(seq, 4)}`;
+}
+
 // Sequence helpers are used by server actions that pass an explicit next value.

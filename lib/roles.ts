@@ -182,4 +182,11 @@ export const STATUS_META: Record<string, { label: string; tone: string }> = {
   PENDING_REGISTRATION: { label: "Pending Registration", tone: "zinc" },
   REGISTERED: { label: "Registered", tone: "green" },
   CANCELLED: { label: "Cancelled", tone: "red" },
+  // Module 7 — Test Allocation
+  ALLOCATED: { label: "Allocated", tone: "green" },
+  PARTIALLY_ALLOCATED: { label: "Partially Allocated", tone: "amber" },
+  // Module 8 — Worksheet Preparation (ASSIGNED reuses the existing key above)
+  PREPARED: { label: "Prepared", tone: "blue" },
+  // Module 9 — Testing & Result Entry (IN_PROGRESS/COMPLETED reuse existing keys)
+  NOT_STARTED: { label: "Not Started", tone: "zinc" },
 };
