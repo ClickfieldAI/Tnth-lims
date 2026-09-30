@@ -176,4 +176,6 @@ export const STATUS_META: Record<string, { label: string; tone: string }> = {
   // Module 4 — Sample Receipt statuses (RECEIVED/PENDING reuse existing keys above)
   PARTIAL: { label: "Partially Received", tone: "amber" },
   RECEIVED_WITH_DISCREPANCY: { label: "Received (Discrepancy)", tone: "red" },
+  // Module 5 — Technical Review statuses (UNDER_REVIEW/ACCEPTED/ON_HOLD/REJECTED reuse existing keys above)
+  CLARIFICATION_REQUESTED: { label: "Clarification Requested", tone: "violet" },
 };

@@ -21,6 +21,7 @@ import {
   ReceiptText,
   ClipboardList,
   PackageCheck,
+  SearchCheck,
   Building2,
   Settings,
   Bot,
@@ -52,6 +53,7 @@ export const NAV: NavGroup[] = [
     items: [
       { label: "Test Request Forms (TRF)", href: "/trfs", icon: ClipboardList, roles: ["ADMIN", "MANAGER", "QA", "ANALYST", "MICRO"] },
       { label: "Sample Receipt", href: "/receipts", icon: PackageCheck, roles: ["ADMIN", "MANAGER", "QA", "ANALYST", "MICRO"] },
+      { label: "Technical Review", href: "/technical-review", icon: SearchCheck, roles: ["ADMIN", "MANAGER", "QA", "ANALYST", "MICRO"] },
       { label: "Samples", href: "/samples", icon: FlaskConical, roles: ["ADMIN", "MANAGER", "QA", "ANALYST", "MICRO"] },
       { label: "Instruments", href: "/instruments", icon: Microscope, roles: ["ADMIN", "MANAGER", "QA", "ANALYST", "MICRO"] },
       { label: "Batch Release", href: "/batch-release", icon: Ship, roles: ["ADMIN", "MANAGER", "QA"] },
