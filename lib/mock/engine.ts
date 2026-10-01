@@ -25,6 +25,21 @@ export function genId(model: string): string {
   return `${model}_${idCounters[model]}`;
 }
 
+// Called after loading persisted data into a fresh process (see
+// lib/mock/persistence.ts) so newly generated ids continue after the
+// highest id already in storage, instead of restarting from 1 and
+// colliding with existing rows.
+export function resyncIdCounters(db: DB): void {
+  for (const [model, rows] of Object.entries(db)) {
+    let max = idCounters[model] ?? 0;
+    for (const row of rows) {
+      const m = /^[^_]+_(\d+)$/.exec(String(row?.id ?? ""));
+      if (m) max = Math.max(max, Number(m[1]));
+    }
+    idCounters[model] = max;
+  }
+}
+
 function isPlainObject(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null && !(v instanceof Date) && !Array.isArray(v);
 }

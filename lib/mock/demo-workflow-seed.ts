@@ -195,12 +195,22 @@ export async function seedDemoWorkflow() {
   // Left at SENT_FOR_QA — awaiting a QA decision.
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const globalForDemoSeed = globalThis as unknown as { __demoSeeded?: boolean };
 
+/**
+ * Runs the demo workflow seed at most once per persisted dataset. Without a
+ * persistence backend configured (local dev, vitest), `demoSeedNeeded`
+ * always resolves true, so this behaves exactly as before — fresh demo data
+ * every process start. With persistence configured (Vercel + Redis), it
+ * only resolves true the very first time this dataset is ever created, so
+ * redeploys/cold starts that restore existing data don't re-run the
+ * journeys and pile up duplicates.
+ */
 export async function ensureDemoSeeded() {
   if (globalForDemoSeed.__demoSeeded) return;
   globalForDemoSeed.__demoSeeded = true;
+  const { demoSeedNeeded } = await import("@/lib/prisma");
+  if (!(await demoSeedNeeded)) return;
   try {
     await seedDemoWorkflow();
   } catch (e) {
