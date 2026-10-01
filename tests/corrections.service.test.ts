@@ -185,6 +185,23 @@ describe("full lifecycle", () => {
   });
 });
 
+describe("duplicate prevention", () => {
+  it("rejects a second active correction request while one is already REQUESTED/UNDER_REVIEW/APPROVED", async () => {
+    const { reportId } = await releasedReport();
+    await requestCorrection(analyst, input(reportId));
+    await expect(requestCorrection(analyst, input(reportId))).rejects.toMatchObject({ code: "CONFLICT" });
+  });
+
+  it("allows a new request once the prior one is resolved (REJECTED/COMPLETED)", async () => {
+    const { reportId } = await releasedReport();
+    const first = await requestCorrection(analyst, input(reportId));
+    await startCorrectionReview(qa, first.id);
+    await rejectCorrection(qa, first.id, "Original result confirmed correct");
+    const second = await requestCorrection(analyst, input(reportId));
+    expect(second.ok).toBe(true);
+  });
+});
+
 describe("validation", () => {
   it("requires a reason, and preserves the original/corrected values separately", async () => {
     const { reportId } = await releasedReport();

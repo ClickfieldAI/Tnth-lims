@@ -75,6 +75,13 @@ export async function requestCorrection(actor: Actor, input: RequestCorrectionIn
   if (!report) throw new CorrectionError("NOT_FOUND", "Report not found.");
   if (report.status === "DRAFT") throw new CorrectionError("CONFLICT", "A plain draft can be edited directly — the correction workflow is for reports already verified, QA-reviewed or released.");
 
+  // Prevent duplicate active corrections piling up on the same report —
+  // mirrors the duplicate-active-delivery guard in Module 14.
+  const active = (await prisma.correction.findMany({ where: { draftReportId: report.id } }))
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .some((c: any) => c.status === "REQUESTED" || c.status === "UNDER_REVIEW" || c.status === "APPROVED");
+  if (active) throw new CorrectionError("CONFLICT", "An active correction request already exists for this report — resolve it before requesting another.");
+
   const now = new Date();
   const count = await prisma.correction.count({});
   const code = nextCorrectionCode(count + 1);
