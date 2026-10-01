@@ -98,14 +98,17 @@ export async function seedDemoWorkflow() {
   const micro = await actorFor("micro@tnth.io");
 
   // ---------------------------------------------------------------------
-  // Journey A — Glow Personal Care: full lifecycle through to a completed
-  // correction on a released, delivered report (demonstrates every stage).
+  // Journey A — Sundar Pharma Formulations (CL-001, the same customer the
+  // seeded demo CLIENT account is linked to — see seed-data.ts's
+  // clientUserId assignment — so logging in as client@tnth.io actually
+  // shows this journey's released report): full lifecycle through to a
+  // completed correction on a released, delivered report.
   // ---------------------------------------------------------------------
-  const glowId = await customerIdFor("Glow Personal Care Pvt Ltd");
+  const glowId = await customerIdFor("Sundar Pharma Formulations");
   const quoA = await enquiryToAcceptedQuotation(admin, manager, glowId,
-    { name: "Herbal Sunscreen Lotion SPF 50", category: "Personal Care", tests: [{ serviceId: "quality-analysis", requestedTest: "Physicochemical quality panel" }] }, 6500);
+    { name: "Paracetamol Oral Suspension — Export Batch", category: "Pharmaceuticals", tests: [{ serviceId: "quality-analysis", requestedTest: "Physicochemical quality panel" }] }, 6500);
   const { trfId: trfA, sampleId: sampleA } = await trfWithSample(admin, manager, glowId, quoA,
-    { sampleName: "Herbal Sunscreen Lotion SPF 50 — Batch GL-204", productCategory: "Personal Care", serviceId: "quality-analysis", requestedParameter: "pH & viscosity panel" });
+    { sampleName: "Paracetamol Oral Suspension — Batch SP-204", productCategory: "Pharmaceuticals", serviceId: "quality-analysis", requestedParameter: "pH & viscosity panel" });
   await recordSampleReceipt(admin, trfA, sampleA, { ...emptySampleReceiptInput(), receivedQuantity: 1, receivedQuantityUnit: "kg" });
   await confirmTrfReceipt(admin, trfA);
   await saveAssessment(qa, trfA, sampleA, fullAssessment);
@@ -127,7 +130,7 @@ export async function seedDemoWorkflow() {
   await submitDraftReportForQa(admin, repA.id);
   await approveReport(qa, repA.id);
   await releaseReport(manager, repA.id, "Final QA and authorization complete.");
-  await createDelivery(admin, repA.id, { deliveryMethod: "EMAIL", recipient: "priyanka.raj@glowpersonalcare.example", notes: "Certificate of Analysis — released report" });
+  await createDelivery(admin, repA.id, { deliveryMethod: "EMAIL", recipient: "quality@sundarpharma.example", notes: "Certificate of Analysis — released report" });
 
   const corrA = await requestCorrection(analyst, {
     draftReportId: repA.id, description: "pH value for Batch GL-204",
