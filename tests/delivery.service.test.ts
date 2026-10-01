@@ -184,7 +184,15 @@ describe("RBAC", () => {
     const { reportId } = await releasedReport();
     await expect(createDelivery(analyst, reportId, { deliveryMethod: "EMAIL", recipient: "a@example.com" })).rejects.toMatchObject({ code: "FORBIDDEN" });
     const list = await listDeliveryQueue(analyst, {});
-    expect(list.rows).toBeDefined();
+    expect(list.rows.some((r) => r.id === reportId)).toBe(true);
+  });
+
+  it("shows released reports to ADMIN/MANAGER/QA (no customer scoping for internal roles)", async () => {
+    const { reportId } = await releasedReport();
+    for (const actor of [admin, manager, qa]) {
+      const list = await listDeliveryQueue(actor, {});
+      expect(list.rows.some((r) => r.id === reportId)).toBe(true);
+    }
   });
 });
 

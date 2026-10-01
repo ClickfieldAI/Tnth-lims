@@ -37,7 +37,7 @@ export async function listDeliveryQueue(actor: Actor, params: DeliveryQueueParam
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let rows: any[] = await prisma.draftReport.findMany({
-    where: { customerId: ownCustomer ?? undefined },
+    where: ownCustomer ? { customerId: ownCustomer } : undefined,
     include: { sampleRegistration: true, trf: true, customer: true, release: true, deliveries: { include: { deliveredBy: true } } },
   });
   // Only RELEASED reports are ever eligible for delivery — this is also the
