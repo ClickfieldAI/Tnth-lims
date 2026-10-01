@@ -203,4 +203,6 @@ export const STATUS_META: Record<string, { label: string; tone: string }> = {
   DUE_FOR_DISPOSAL: { label: "Due for Disposal", tone: "amber" },
   DISPOSED: { label: "Disposed", tone: "zinc" },
   EXTENDED: { label: "Extended", tone: "indigo" },
+  // Module 16 — Corrections & Amendments (UNDER_REVIEW/APPROVED/REJECTED/COMPLETED reuse existing keys above)
+  REQUESTED: { label: "Requested", tone: "blue" },
 };

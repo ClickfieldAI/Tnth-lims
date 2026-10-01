@@ -77,4 +77,8 @@ export function nextWorksheetCode(seq: number) {
   return `WS-${new Date().getFullYear()}-${pad(seq, 4)}`;
 }
 
+export function nextCorrectionCode(seq: number) {
+  return `COR-${new Date().getFullYear()}-${pad(seq, 4)}`;
+}
+
 // Sequence helpers are used by server actions that pass an explicit next value.

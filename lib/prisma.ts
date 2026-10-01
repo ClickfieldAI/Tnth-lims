@@ -35,6 +35,7 @@ const MODELS = [
   "testAllocation", "worksheet", "worksheetItem", "testResult",
   "technicalVerification", "draftReport", "draftReportItem", "qaReview",
   "reportRelease", "reportDelivery", "retentionRecord",
+  "correction",
 ] as const;
 
 // Every model exposes the same method set (see lib/mock/engine.ts), so the
