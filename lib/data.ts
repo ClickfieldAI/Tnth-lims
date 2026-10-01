@@ -1,5 +1,40 @@
 import { prisma } from "@/lib/prisma";
 
+export interface FoodTestingPipelineKpis {
+  pendingReceipt: number;
+  testsInProgress: number;
+  pendingVerification: number;
+  qaPending: number;
+  awaitingRelease: number;
+  delivered: number;
+  retentionDue: number;
+}
+
+// Snapshot across the food-testing TRF pipeline (Modules 2-16) — bypasses
+// each module's own RBAC (same as getDashboardKpis below does for the
+// legacy pharma model) since this is an aggregate executive count, not a
+// module queue; every internal role that reaches the dashboard already has
+// at least "view" on each of these modules.
+export async function getFoodTestingPipelineKpis(): Promise<FoodTestingPipelineKpis> {
+  const [pendingReceipt, testsInProgress, pendingVerification, qaPending, sentForQa, delivered, retentionRows] = await Promise.all([
+    prisma.trf.count({ where: { receiptStatus: "PENDING" } }),
+    prisma.testAllocation.count({ where: { status: "ALLOCATED" } }),
+    prisma.technicalVerification.count({ where: { status: "PENDING" } }),
+    prisma.qaReview.count({ where: { status: "PENDING" } }),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    prisma.draftReport.findMany({ where: { status: "SENT_FOR_QA" }, include: { qaReview: true } }) as Promise<any[]>,
+    prisma.reportDelivery.count({ where: { status: "DELIVERED" } }),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    prisma.retentionRecord.findMany({}) as Promise<any[]>,
+  ]);
+
+  const awaitingRelease = sentForQa.filter((r) => r.qaReview?.status === "APPROVED").length;
+  const now = Date.now();
+  const retentionDue = retentionRows.filter((r) => r.status !== "DISPOSED" && new Date(r.retentionExpiryDate).getTime() < now).length;
+
+  return { pendingReceipt, testsInProgress, pendingVerification, qaPending, awaitingRelease, delivered, retentionDue };
+}
+
 export interface DashboardKpis {
   totalSamples: number;
   underTesting: number;

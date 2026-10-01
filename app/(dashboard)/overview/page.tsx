@@ -2,11 +2,13 @@ import Link from "next/link";
 import {
   FlaskConical, Beaker, ClipboardCheck, TriangleAlert,
   CalendarClock, Ship, TimerReset, CheckCircle2, ArrowUpRight,
+  Inbox, Microscope, ShieldCheck, Stamp, Truck, Archive,
 } from "lucide-react";
 import { getCurrentUser } from "@/lib/session";
 import {
   getDashboardKpis, getMonthlySampleVolume, getTestTypeDistribution,
   getPassFailTrend, getAnalystWorkload, getInstrumentUtilization,
+  getFoodTestingPipelineKpis,
 } from "@/lib/data";
 import { StatCard } from "@/components/ui/display";
 import { Hero } from "@/components/layout/hero";
@@ -23,8 +25,9 @@ export const metadata = { title: "Dashboard" };
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
-  const [kpis, volume, types, trend, workload, utilization, recentSamples, upcomingStability] = await Promise.all([
+  const [kpis, pipeline, volume, types, trend, workload, utilization, recentSamples, upcomingStability] = await Promise.all([
     getDashboardKpis(),
+    getFoodTestingPipelineKpis(),
     getMonthlySampleVolume(6),
     getTestTypeDistribution(),
     getPassFailTrend(6),
@@ -62,6 +65,19 @@ export default async function DashboardPage() {
         <StatCard label="Batch release queue" value={kpis.batchReleasePending} icon={<Ship className="h-4 w-4" />} tone="slate" sub="pending disposition" />
         <StatCard label="Avg turnaround time" value={`${kpis.avgTurnaroundDays} d`} icon={<TimerReset className="h-4 w-4" />} tone="indigo" sub="receipt → release" />
       </div>
+
+      <Card>
+        <CardHeader title="Food Testing pipeline" subtitle="Live counts across the TRF → Report → Release → Delivery → Retention workflow" />
+        <div className="grid gap-4 p-4 sm:grid-cols-2 xl:grid-cols-4">
+          <StatCard label="Pending sample receipt" value={pipeline.pendingReceipt} icon={<Inbox className="h-4 w-4" />} tone="amber" sub="TRFs awaiting receipt" />
+          <StatCard label="Tests in progress" value={pipeline.testsInProgress} icon={<Microscope className="h-4 w-4" />} tone="blue" sub="allocated, on the bench" />
+          <StatCard label="Pending verification" value={pipeline.pendingVerification} icon={<ShieldCheck className="h-4 w-4" />} tone="violet" sub="results awaiting technical check" />
+          <StatCard label="QA pending" value={pipeline.qaPending} icon={<ClipboardCheck className="h-4 w-4" />} tone="violet" sub="reports under QA review" />
+          <StatCard label="Awaiting release" value={pipeline.awaitingRelease} icon={<Stamp className="h-4 w-4" />} tone="indigo" sub="QA-approved, not yet released" />
+          <StatCard label="Delivered reports" value={pipeline.delivered} icon={<Truck className="h-4 w-4" />} tone="green" sub="sent to customers" />
+          <StatCard label="Retention due" value={pipeline.retentionDue} icon={<Archive className="h-4 w-4" />} tone="red" sub="past retention expiry" />
+        </div>
+      </Card>
 
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="lg:col-span-2">
