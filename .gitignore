@@ -50,3 +50,12 @@ next-env.d.ts
 # local logs
 *.log
 .env*
+
+# migration scratch artifacts
+.sql/
+.schema-data.json
+.schema-infer.json
+.columns.json
+.rel-dump.json
+.fks.json
+.missing-cols.json

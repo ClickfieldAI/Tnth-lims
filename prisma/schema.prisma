@@ -1,0 +1,1253 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model permission {
+  id String @id @default(cuid())
+  code String?
+  name String?
+  module String?
+  createdAt DateTime? @default(now())
+  roles permissionRole[] @relation("permissionRole_permissionId")
+}
+
+model role {
+  id String @id @default(cuid())
+  name String?
+  description String?
+  isSystem Boolean?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  permissions permissionRole[] @relation("permissionRole_roleId")
+  users user[] @relation("user_roleId")
+}
+
+model permissionRole {
+  roleId String?
+  permissionId String?
+  id String @id @default(cuid())
+  createdAt DateTime? @default(now())
+  role role? @relation("permissionRole_roleId", fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  permission permission? @relation("permissionRole_permissionId", fields: [permissionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model user {
+  id String @id @default(cuid())
+  email String? @unique
+  passwordHash String?
+  firstName String?
+  lastName String?
+  roleId String?
+  title String?
+  phone String?
+  signature String?
+  isActive Boolean?
+  twoFactorEnabled Boolean?
+  clientId String?
+  lastLoginAt DateTime?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  role role? @relation("user_roleId", fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  client client? @relation("user_clientId", fields: [clientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rel_enquiry_assignedManagerId_2 enquiry[] @relation("enquiry_assignedManagerId")
+  rel_quotation_preparedById_4 quotation[] @relation("quotation_preparedById")
+  rel_quotation_approvedById_5 quotation[] @relation("quotation_approvedById")
+  rel_quotationHistory_createdById_8 quotationHistory[] @relation("quotationHistory_createdById")
+  rel_trf_createdById_11 trf[] @relation("trf_createdById")
+  rel_trf_submittedById_12 trf[] @relation("trf_submittedById")
+  rel_trf_receiptConfirmedById_13 trf[] @relation("trf_receiptConfirmedById")
+  rel_sampleReceipt_receivedById_14 sampleReceipt[] @relation("sampleReceipt_receivedById")
+  rel_technicalReview_reviewedById_16 technicalReview[] @relation("technicalReview_reviewedById")
+  rel_technicalReviewHistory_actorId_17 technicalReviewHistory[] @relation("technicalReviewHistory_actorId")
+  rel_sampleRegistration_registeredById_20 sampleRegistration[] @relation("sampleRegistration_registeredById")
+  rel_sampleRegistration_cancelledById_21 sampleRegistration[] @relation("sampleRegistration_cancelledById")
+  rel_testAllocation_analystId_22 testAllocation[] @relation("testAllocation_analystId")
+  rel_testAllocation_allocatedById_24 testAllocation[] @relation("testAllocation_allocatedById")
+  rel_worksheet_analystId_25 worksheet[] @relation("worksheet_analystId")
+  rel_worksheet_createdById_27 worksheet[] @relation("worksheet_createdById")
+  rel_testResult_analystId_29 testResult[] @relation("testResult_analystId")
+  rel_technicalVerification_reviewerId_31 technicalVerification[] @relation("technicalVerification_reviewerId")
+  rel_draftReport_preparedById_35 draftReport[] @relation("draftReport_preparedById")
+  rel_qaReview_reviewerId_38 qaReview[] @relation("qaReview_reviewerId")
+  rel_reportRelease_releasedById_39 reportRelease[] @relation("reportRelease_releasedById")
+  rel_reportDelivery_deliveredById_41 reportDelivery[] @relation("reportDelivery_deliveredById")
+  rel_retentionRecord_disposedById_44 retentionRecord[] @relation("retentionRecord_disposedById")
+  rel_correction_requestedById_47 correction[] @relation("correction_requestedById")
+  rel_correction_reviewedById_48 correction[] @relation("correction_reviewedById")
+  rel_trfDocument_uploadedById_50 trfDocument[] @relation("trfDocument_uploadedById")
+  rel_trfReviewHistory_actorId_52 trfReviewHistory[] @relation("trfReviewHistory_actorId")
+  assignedSamples sample[] @relation("sample_assignedToId")
+  samples sample[] @relation("sample_createdById")
+  rel_test_assignedToId_53 test[] @relation("test_assignedToId")
+  rel_test_approvedById_54 test[] @relation("test_approvedById")
+  rel_deviation_reportedById_55 deviation[] @relation("deviation_reportedById")
+  rel_capa_ownerId_56 capa[] @relation("capa_ownerId")
+  rel_changeControl_approvedById_57 changeControl[] @relation("changeControl_approvedById")
+  rel_document_approvedByUserId_58 document[] @relation("document_approvedByUserId")
+  rel_document_ownerId_59 document[] @relation("document_ownerId")
+  rel_testReport_approvedById_61 testReport[] @relation("testReport_approvedById")
+  rel_approval_approverId_62 approval[] @relation("approval_approverId")
+  rel_auditLog_actorId_63 auditLog[] @relation("auditLog_actorId")
+  rel_message_authorId_64 message[] @relation("message_authorId")
+}
+
+model client {
+  id String @id @default(cuid())
+  code String?
+  name String?
+  industry String?
+  address String?
+  city String?
+  country String?
+  contactPerson String?
+  email String?
+  phone String?
+  isActive Boolean?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  customerType String?
+  tradeName String?
+  designation String?
+  alternatePhone String?
+  website String?
+  normalizedName String?
+  billing Json?
+  reportingSameAsBilling Boolean?
+  reporting Json?
+  gstStatus String?
+  gstNumber String?
+  panNumber String?
+  billingTerms String?
+  poRequired Boolean?
+  poReference String?
+  taxNotes String?
+  preferredComm String?
+  preferredDelivery String?
+  handlingInstructions String?
+  testingRequirements String?
+  reportingInstructions String?
+  notes String?
+  createdById String?
+  updatedById String?
+  users user[] @relation("user_clientId")
+  contacts customerContact[] @relation("customerContact_customerId")
+  documents customerDocument[] @relation("customerDocument_customerId")
+  rel_enquiry_customerId_1 enquiry[] @relation("enquiry_customerId")
+  rel_quotation_customerId_3 quotation[] @relation("quotation_customerId")
+  invoices invoice[] @relation("invoice_clientId")
+  rel_trf_customerId_9 trf[] @relation("trf_customerId")
+  rel_sampleRegistration_customerId_19 sampleRegistration[] @relation("sampleRegistration_customerId")
+  rel_draftReport_customerId_34 draftReport[] @relation("draftReport_customerId")
+  rel_reportDelivery_customerId_40 reportDelivery[] @relation("reportDelivery_customerId")
+  rel_retentionRecord_customerId_43 retentionRecord[] @relation("retentionRecord_customerId")
+  rel_correction_customerId_46 correction[] @relation("correction_customerId")
+  products product[] @relation("product_clientId")
+  samples sample[] @relation("sample_clientId")
+  messages message[] @relation("message_clientId")
+}
+
+model customerContact {
+  customerId String?
+  name String?
+  designation String?
+  email String?
+  phone String?
+  isPrimary Boolean?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  id String @id @default(cuid())
+  customer client? @relation("customerContact_customerId", fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model customerDocument {
+  customerId String?
+  docType String?
+  fileName String?
+  sizeBytes Float?
+  mimeType String?
+  uploadedById String?
+  uploadedAt DateTime?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  id String @id @default(cuid())
+  customer client? @relation("customerDocument_customerId", fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model invoice {
+  id String @id @default(cuid())
+  number String?
+  amount Float?
+  currency String?
+  status String?
+  issuedAt DateTime?
+  dueAt DateTime?
+  clientId String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  client client? @relation("invoice_clientId", fields: [clientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  samples sample[] @relation("sample_invoiceId")
+}
+
+model product {
+  id String @id @default(cuid())
+  code String?
+  name String?
+  description String?
+  dosage String?
+  form String?
+  monograph String?
+  activeIngredient String?
+  clientId String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  client client? @relation("product_clientId", fields: [clientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  batches batch[] @relation("batch_productId")
+  samples sample[] @relation("sample_productId")
+  stabilityStudies stabilityStudy[] @relation("stabilityStudy_productId")
+}
+
+model batch {
+  id String @id @default(cuid())
+  batchNumber String?
+  productId String?
+  mfgDate DateTime?
+  expDate DateTime?
+  quantity Float?
+  releaseStatus String?
+  releasedAt DateTime?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  product product? @relation("batch_productId", fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  samples sample[] @relation("sample_batchId")
+  stabilityStudies stabilityStudy[] @relation("stabilityStudy_batchId")
+  coaReports testReport[] @relation("testReport_batchId")
+}
+
+model sample {
+  id String @id @default(cuid())
+  sampleCode String?
+  barcode String?
+  clientId String?
+  productId String?
+  productName String?
+  batchId String?
+  batchNumber String?
+  mfgDate DateTime?
+  expDate DateTime?
+  quantity Float?
+  unit String?
+  storageCondition String?
+  storageLocation String?
+  receivedDate DateTime?
+  priority String?
+  status String?
+  coOwner String?
+  requestedTests Json?
+  assignedToId String?
+  createdById String?
+  notes String?
+  invoiceId String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  client client? @relation("sample_clientId", fields: [clientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  product product? @relation("sample_productId", fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  batch batch? @relation("sample_batchId", fields: [batchId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  assignedTo user? @relation("sample_assignedToId", fields: [assignedToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdBy user? @relation("sample_createdById", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  invoice invoice? @relation("sample_invoiceId", fields: [invoiceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  custodyRecords chainOfCustody[] @relation("chainOfCustody_sampleId")
+  storageEvents storageEvent[] @relation("storageEvent_sampleId")
+  tests test[] @relation("test_sampleId")
+  deviations deviation[] @relation("deviation_sampleId")
+  attachedDocuments document[] @relation("document_sampleId")
+  testReports testReport[] @relation("testReport_sampleId")
+  messages message[] @relation("message_sampleId")
+}
+
+model chainOfCustody {
+  sampleId String?
+  fromUserId String?
+  toUserId String?
+  action String?
+  locationNote String?
+  note String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  id String @id @default(cuid())
+  sample sample? @relation("chainOfCustody_sampleId", fields: [sampleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model storageEvent {
+  sampleId String?
+  eventType String?
+  note String?
+  location String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  id String @id @default(cuid())
+  sample sample? @relation("storageEvent_sampleId", fields: [sampleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model test {
+  id String @id @default(cuid())
+  requestCode String?
+  sampleId String?
+  type String?
+  testName String?
+  method String?
+  status String?
+  priority String?
+  assignedToId String?
+  instrumentId String?
+  startedAt DateTime?
+  completedAt DateTime?
+  dueDate DateTime?
+  result String?
+  resultStatus String?
+  worksheetData String?
+  attachments Json?
+  reviewedById String?
+  reviewedAt DateTime?
+  approvedById String?
+  approvedAt DateTime?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  sample sample? @relation("test_sampleId", fields: [sampleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  assignedTo user? @relation("test_assignedToId", fields: [assignedToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  instrument instrument? @relation("test_instrumentId", fields: [instrumentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  approvedBy user? @relation("test_approvedById", fields: [approvedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  assayResult assayResult? @relation("assayResult_testId")
+  dissolution dissolutionResult? @relation("dissolutionResult_testId")
+  impurityResult impurityResult? @relation("impurityResult_testId")
+  microbiology microbiologyResult? @relation("microbiologyResult_testId")
+  stabilityTimepoints stabilityTimepoint[] @relation("stabilityTimepoint_testId")
+  deviations deviation[] @relation("deviation_testId")
+  report testReport? @relation("testReport_testId")
+}
+
+model assayResult {
+  id String @id @default(cuid())
+  testId String? @unique
+  apiLabel String?
+  expectedLow Float?
+  expectedHigh Float?
+  resultPercent Float?
+  calculationMethod String?
+  observations String?
+  specPass Boolean?
+  instrumentId String?
+  chromatogram String?
+  status String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  test test? @relation("assayResult_testId", fields: [testId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model dissolutionResult {
+  id String @id @default(cuid())
+  testId String? @unique
+  apparatus String?
+  medium String?
+  rpm Float?
+  temperature Float?
+  timepoints Json?
+  observations String?
+  pass Boolean?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  test test? @relation("dissolutionResult_testId", fields: [testId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model impurityResult {
+  id String @id @default(cuid())
+  testId String? @unique
+  impurityName String?
+  type String?
+  specLimit String?
+  specMax Float?
+  observedValue Float?
+  analyticalMethod String?
+  instrumentId String?
+  status String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  test test? @relation("impurityResult_testId", fields: [testId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model microbiologyResult {
+  id String @id @default(cuid())
+  testId String? @unique
+  testType String?
+  media String?
+  incubationTemp Float?
+  incubationTime Float?
+  colonyCount Float?
+  limitSpec String?
+  pass Boolean?
+  observations String?
+  instrumentId String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  test test? @relation("microbiologyResult_testId", fields: [testId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model stabilityStudy {
+  id String @id @default(cuid())
+  studyId String?
+  protocol String?
+  productId String?
+  batchId String?
+  storageCondition String?
+  intervals Json?
+  startDate DateTime?
+  endDate DateTime?
+  status String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  product product? @relation("stabilityStudy_productId", fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  batch batch? @relation("stabilityStudy_batchId", fields: [batchId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  timepoints stabilityTimepoint[] @relation("stabilityTimepoint_studyId")
+}
+
+model stabilityTimepoint {
+  id String @id @default(cuid())
+  studyId String?
+  interval String?
+  dueDate DateTime?
+  status String?
+  testId String?
+  completedAt DateTime?
+  result String?
+  createdAt DateTime? @default(now())
+  study stabilityStudy? @relation("stabilityTimepoint_studyId", fields: [studyId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  test test? @relation("stabilityTimepoint_testId", fields: [testId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model instrument {
+  id String @id @default(cuid())
+  code String?
+  name String?
+  category String?
+  manufacturer String?
+  model String?
+  serialNumber String?
+  location String?
+  status String?
+  calibrationFrequency Float?
+  lastCalibrated DateTime?
+  nextCalibration DateTime?
+  calibrationStatus String?
+  columnInfo String?
+  notes String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  rel_testAllocation_instrumentId_23 testAllocation[] @relation("testAllocation_instrumentId")
+  rel_worksheet_instrumentId_26 worksheet[] @relation("worksheet_instrumentId")
+  rel_testResult_instrumentUsedId_30 testResult[] @relation("testResult_instrumentUsedId")
+  tests test[] @relation("test_instrumentId")
+  calibrations calibrationRecord[] @relation("calibrationRecord_instrumentId")
+  maintenanceLogs maintenanceLog[] @relation("maintenanceLog_instrumentId")
+}
+
+model calibrationRecord {
+  instrumentId String?
+  performedAt DateTime?
+  dueAt DateTime?
+  result String?
+  note String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  id String @id @default(cuid())
+  instrument instrument? @relation("calibrationRecord_instrumentId", fields: [instrumentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model maintenanceLog {
+  instrumentId String?
+  performedAt DateTime?
+  type String?
+  note String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  id String @id @default(cuid())
+  instrument instrument? @relation("maintenanceLog_instrumentId", fields: [instrumentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model deviation {
+  id String @id @default(cuid())
+  deviationId String?
+  sampleId String?
+  testId String?
+  description String?
+  category String?
+  impactLevel String?
+  rootCause String?
+  correctiveAction String?
+  status String?
+  reportedById String?
+  approvedById String?
+  closedAt DateTime?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  sample sample? @relation("deviation_sampleId", fields: [sampleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  test test? @relation("deviation_testId", fields: [testId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  reportedBy user? @relation("deviation_reportedById", fields: [reportedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  capas capa[] @relation("capa_relatedDeviationId")
+}
+
+model capa {
+  id String @id @default(cuid())
+  capaId String?
+  title String?
+  type String?
+  description String?
+  rootCause String?
+  action String?
+  ownerId String?
+  dueDate DateTime?
+  status String?
+  relatedDeviationId String?
+  effectiveness String?
+  closedById String?
+  closedAt DateTime?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  owner user? @relation("capa_ownerId", fields: [ownerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  relatedDeviation deviation? @relation("capa_relatedDeviationId", fields: [relatedDeviationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model changeControl {
+  id String @id @default(cuid())
+  ccId String?
+  title String?
+  description String?
+  category String?
+  impactAnalysis Json?
+  justification String?
+  proposedBy String?
+  status String?
+  approvedById String?
+  decidedAt DateTime?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  approvedBy user? @relation("changeControl_approvedById", fields: [approvedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model document {
+  id String @id @default(cuid())
+  docCode String?
+  title String?
+  category String?
+  version String?
+  status String?
+  filePath String?
+  mimeType String?
+  fileSize String?
+  signedBy String?
+  approvedByUserId String?
+  approvedAt DateTime?
+  ownerId String?
+  previousVersionId String?
+  sampleId String?
+  reportId String?
+  approverLogic Json?
+  digitalSignature String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  approvedBy user? @relation("document_approvedByUserId", fields: [approvedByUserId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  owner user? @relation("document_ownerId", fields: [ownerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  previousVersion document? @relation("document_previousVersionId", fields: [previousVersionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rel_document_previousVersionId_60 document[] @relation("document_previousVersionId")
+  sample sample? @relation("document_sampleId", fields: [sampleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  report testReport? @relation("document_reportId", fields: [reportId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  downloadHistory downloadRecord[] @relation("downloadRecord_documentId")
+}
+
+model downloadRecord {
+  documentId String?
+  userId String?
+  ip String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  id String @id @default(cuid())
+  document document? @relation("downloadRecord_documentId", fields: [documentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model testReport {
+  id String @id @default(cuid())
+  reportCode String?
+  sampleId String?
+  batchId String?
+  testId String? @unique
+  type String?
+  title String?
+  content Json?
+  pdfPath String?
+  status String?
+  generatedById String?
+  approvedById String?
+  approvedAt DateTime?
+  digitalSignature String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  documents document[] @relation("document_reportId")
+  sample sample? @relation("testReport_sampleId", fields: [sampleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  batch batch? @relation("testReport_batchId", fields: [batchId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  test test? @relation("testReport_testId", fields: [testId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  approvedBy user? @relation("testReport_approvedById", fields: [approvedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model approval {
+  referenceType String?
+  referenceId String?
+  approverId String?
+  action String?
+  meaning String?
+  comment String?
+  recordSnapshot Json?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  id String @id @default(cuid())
+  approver user? @relation("approval_approverId", fields: [approverId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model auditLog {
+  id String @id @default(cuid())
+  actorId String?
+  action String?
+  module String?
+  entityType String?
+  entityId String?
+  oldValue Json?
+  newValue Json?
+  ip String?
+  userAgent String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  actor user? @relation("auditLog_actorId", fields: [actorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model message {
+  clientId String?
+  authorId String?
+  sampleId String?
+  body String?
+  fromClient Boolean?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  id String @id @default(cuid())
+  client client? @relation("message_clientId", fields: [clientId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sample sample? @relation("message_sampleId", fields: [sampleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  author user? @relation("message_authorId", fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model enquiry {
+  id String @id @default(cuid())
+  enquiryCode String?
+  customerId String?
+  enquiryDate DateTime?
+  enquirySource String?
+  assignedManagerId String?
+  priority String?
+  status String?
+  requestedTurnaroundDays Float?
+  purposeOfTesting String?
+  regulatoryRequirements String?
+  requiredReportingFormat String?
+  requiredAccreditation String?
+  reportDeliveryMethod String?
+  customerNotes String?
+  createdById String?
+  updatedById String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  customer client? @relation("enquiry_customerId", fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  assignedManager user? @relation("enquiry_assignedManagerId", fields: [assignedManagerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  products enquiryProduct[] @relation("enquiryProduct_enquiryId")
+  quotations quotation[] @relation("quotation_enquiryId")
+}
+
+model enquiryProduct {
+  id String @id @default(cuid())
+  enquiryId String?
+  productName String?
+  productCategory String?
+  productDescription String?
+  batchNumber String?
+  sampleType String?
+  sampleMatrix String?
+  quantity Float?
+  quantityUnit String?
+  packagingDetails String?
+  storageRequirements String?
+  specialHandlingInstructions String?
+  requestedTestingDate DateTime?
+  notes String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  enquiry enquiry? @relation("enquiryProduct_enquiryId", fields: [enquiryId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tests enquiryTestRequest[] @relation("enquiryTestRequest_enquiryProductId")
+}
+
+model enquiryTestRequest {
+  id String @id @default(cuid())
+  enquiryProductId String?
+  serviceId String?
+  customRequest Boolean?
+  customServiceName String?
+  requestedTest String?
+  requestedMethod String?
+  specification String?
+  requestedQuantity Float?
+  specialRequirements String?
+  estimatedTurnaroundDays Float?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  product enquiryProduct? @relation("enquiryTestRequest_enquiryProductId", fields: [enquiryProductId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rel_quotationItem_testRequestId_7 quotationItem[] @relation("quotationItem_testRequestId")
+}
+
+model quotation {
+  id String @id @default(cuid())
+  quotationCode String?
+  enquiryId String?
+  customerId String?
+  quotationDate DateTime?
+  validUntil DateTime?
+  revisionNumber Float?
+  previousVersionId String?
+  status String?
+  subtotal Float?
+  discountTotal Float?
+  taxableAmount Float?
+  taxTotal Float?
+  grandTotal Float?
+  currency String?
+  paymentTerms String?
+  advancePaymentRequired Boolean?
+  poRequired Boolean?
+  billingNotes String?
+  preparedById String?
+  approvedById String?
+  approvedAt DateTime?
+  sentAt DateTime?
+  acceptanceStatus String?
+  acceptanceDate DateTime?
+  acceptedById String?
+  poNumber String?
+  acceptanceNotes String?
+  rejectionReason String?
+  revisionReason String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  enquiry enquiry? @relation("quotation_enquiryId", fields: [enquiryId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  customer client? @relation("quotation_customerId", fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  preparedBy user? @relation("quotation_preparedById", fields: [preparedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  approvedBy user? @relation("quotation_approvedById", fields: [approvedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  previousVersion quotation? @relation("quotation_previousVersionId", fields: [previousVersionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rel_quotation_previousVersionId_6 quotation[] @relation("quotation_previousVersionId")
+  items quotationItem[] @relation("quotationItem_quotationId")
+  history quotationHistory[] @relation("quotationHistory_quotationId")
+  rel_trf_quotationId_10 trf[] @relation("trf_quotationId")
+}
+
+model quotationItem {
+  id String @id @default(cuid())
+  quotationId String?
+  testRequestId String?
+  productReference String?
+  serviceName String?
+  method String?
+  quantity Float?
+  unitPrice Float?
+  discount Float?
+  taxCategory String?
+  taxAmount Float?
+  lineTotal Float?
+  estimatedTurnaroundDays Float?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  quotation quotation? @relation("quotationItem_quotationId", fields: [quotationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  testRequest enquiryTestRequest? @relation("quotationItem_testRequestId", fields: [testRequestId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model quotationHistory {
+  quotationId String?
+  revisionNumber Float?
+  previousVersionReference String?
+  revisionReason String?
+  snapshot Json?
+  createdById String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  id String @id @default(cuid())
+  quotation quotation? @relation("quotationHistory_quotationId", fields: [quotationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdBy user? @relation("quotationHistory_createdById", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model trf {
+  id String @id @default(cuid())
+  trfCode String?
+  customerId String?
+  quotationId String?
+  quotationRevisionSnapshot Float?
+  poNumber String?
+  acceptedChargesSnapshot Float?
+  paymentTermsSnapshot String?
+  status String?
+  priority String?
+  requestedDueDate DateTime?
+  agreedTurnaroundDays Float?
+  specialDeadlineInstructions String?
+  storageCondition String?
+  storageTemperature String?
+  specialHandlingInstructions String?
+  lightSensitive Boolean?
+  moistureSensitive Boolean?
+  otherStorageNotes String?
+  reportRecipient String?
+  reportEmail String?
+  reportingUnits String?
+  reportLanguage String?
+  conformityStatementRequested Boolean?
+  applicableSpecification String?
+  reportingInstructions String?
+  submittedAt DateTime?
+  submittedById String?
+  holdReason String?
+  rejectionReason String?
+  clarificationComments String?
+  receiptStatus String?
+  receiptConfirmedAt DateTime?
+  receiptConfirmedById String?
+  createdById String?
+  updatedById String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  customer client? @relation("trf_customerId", fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  quotation quotation? @relation("trf_quotationId", fields: [quotationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdBy user? @relation("trf_createdById", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  submittedBy user? @relation("trf_submittedById", fields: [submittedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  receiptConfirmedBy user? @relation("trf_receiptConfirmedById", fields: [receiptConfirmedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  samples trfSample[] @relation("trfSample_trfId")
+  receipts sampleReceipt[] @relation("sampleReceipt_trfId")
+  rel_technicalReview_trfId_15 technicalReview[] @relation("technicalReview_trfId")
+  rel_sampleRegistration_trfId_18 sampleRegistration[] @relation("sampleRegistration_trfId")
+  rel_draftReport_trfId_33 draftReport[] @relation("draftReport_trfId")
+  rel_retentionRecord_trfId_42 retentionRecord[] @relation("retentionRecord_trfId")
+  documents trfDocument[] @relation("trfDocument_trfId")
+  authorization trfAuthorization? @relation("trfAuthorization_trfId")
+  reviewHistory trfReviewHistory[] @relation("trfReviewHistory_trfId")
+}
+
+model trfSample {
+  id String @id @default(cuid())
+  trfId String?
+  sampleName String?
+  productCategory String?
+  brandName String?
+  batchNumber String?
+  customerSampleRef String?
+  quantity Float?
+  quantityUnit String?
+  containers Float?
+  packagingType String?
+  manufacturer String?
+  manufacturingDate DateTime?
+  expiryDate DateTime?
+  declaredComposition String?
+  labelClaim String?
+  productDescription String?
+  sampledBy String?
+  samplingDate DateTime?
+  samplingLocation String?
+  samplingProcedure String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  trf trf? @relation("trfSample_trfId", fields: [trfId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  receipt sampleReceipt? @relation("sampleReceipt_trfSampleId")
+  technicalReview technicalReview? @relation("technicalReview_trfSampleId")
+  registration sampleRegistration? @relation("sampleRegistration_trfSampleId")
+  tests trfTestRequest[] @relation("trfTestRequest_trfSampleId")
+}
+
+model trfTestRequest {
+  id String @id @default(cuid())
+  trfSampleId String?
+  serviceId String?
+  customRequest Boolean?
+  customServiceName String?
+  requestedParameter String?
+  preferredMethod String?
+  specification String?
+  testingPurpose String?
+  requiredQuantity String?
+  customerRequirements String?
+  subcontractingPreference String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  allocation testAllocation? @relation("testAllocation_trfTestRequestId")
+  sample trfSample? @relation("trfTestRequest_trfSampleId", fields: [trfSampleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model trfDocument {
+  trfId String?
+  docType String?
+  fileName String?
+  sizeBytes Float?
+  mimeType String?
+  uploadedById String?
+  uploadedAt DateTime?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  id String @id @default(cuid())
+  trf trf? @relation("trfDocument_trfId", fields: [trfId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  uploadedBy user? @relation("trfDocument_uploadedById", fields: [uploadedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rel_trfAuthorization_signedTrfDocumentId_51 trfAuthorization[] @relation("trfAuthorization_signedTrfDocumentId")
+}
+
+model trfAuthorization {
+  id String @id @default(cuid())
+  trfId String? @unique
+  status String?
+  authorizedPersonName String?
+  authorizedPersonDesignation String?
+  authorizationDate DateTime?
+  authorizationMethod String?
+  signedTrfDocumentId String?
+  notes String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  trf trf? @relation("trfAuthorization_trfId", fields: [trfId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  signedTrfDocument trfDocument? @relation("trfAuthorization_signedTrfDocumentId", fields: [signedTrfDocumentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model trfReviewHistory {
+  id String @id @default(cuid())
+  trfId String?
+  action String?
+  actorId String?
+  comment String?
+  fromStatus String?
+  toStatus String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  trf trf? @relation("trfReviewHistory_trfId", fields: [trfId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  actor user? @relation("trfReviewHistory_actorId", fields: [actorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model sampleReceipt {
+  id String @id @default(cuid())
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  trfId String?
+  trfSampleId String? @unique
+  receivedAt DateTime?
+  receivedQuantity Float?
+  receivedQuantityUnit String?
+  containerCondition String?
+  sealCondition String?
+  temperature String?
+  storageCondition String?
+  storageLocation String?
+  remarks String?
+  hasDiscrepancy Boolean?
+  discrepancyTypes Json?
+  discrepancyRemarks String?
+  receivedById String?
+  trf trf? @relation("sampleReceipt_trfId", fields: [trfId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sample trfSample? @relation("sampleReceipt_trfSampleId", fields: [trfSampleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  receivedBy user? @relation("sampleReceipt_receivedById", fields: [receivedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model technicalReview {
+  id String @id @default(cuid())
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  trfId String?
+  trfSampleId String? @unique
+  status String?
+  labelingSatisfactory String?
+  quantitySufficient String?
+  packagingSatisfactory String?
+  sampleConditionSatisfactory String?
+  testRequestComplete String?
+  assessmentNotes String?
+  holdReason String?
+  rejectionReason String?
+  clarificationComments String?
+  reviewedById String?
+  reviewedAt DateTime?
+  trf trf? @relation("technicalReview_trfId", fields: [trfId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sample trfSample? @relation("technicalReview_trfSampleId", fields: [trfSampleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  reviewedBy user? @relation("technicalReview_reviewedById", fields: [reviewedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  history technicalReviewHistory[] @relation("technicalReviewHistory_technicalReviewId")
+}
+
+model technicalReviewHistory {
+  id String @id @default(cuid())
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  technicalReviewId String?
+  trfId String?
+  action String?
+  actorId String?
+  comment String?
+  fromStatus String?
+  toStatus String?
+  review technicalReview? @relation("technicalReviewHistory_technicalReviewId", fields: [technicalReviewId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  actor user? @relation("technicalReviewHistory_actorId", fields: [actorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model sampleRegistration {
+  id String @id @default(cuid())
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  sampleCode String?
+  trfId String?
+  trfSampleId String? @unique
+  customerId String?
+  registrationStatus String?
+  registeredAt DateTime?
+  registeredById String?
+  storageCondition String?
+  storageLocation String?
+  remarks String?
+  barcodeValue String?
+  cancelledAt DateTime?
+  cancelledById String?
+  cancellationReason String?
+  trf trf? @relation("sampleRegistration_trfId", fields: [trfId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  trfSample trfSample? @relation("sampleRegistration_trfSampleId", fields: [trfSampleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  customer client? @relation("sampleRegistration_customerId", fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  registeredBy user? @relation("sampleRegistration_registeredById", fields: [registeredById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  cancelledBy user? @relation("sampleRegistration_cancelledById", fields: [cancelledById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rel_draftReport_sampleRegistrationId_32 draftReport[] @relation("draftReport_sampleRegistrationId")
+  retention retentionRecord? @relation("retentionRecord_sampleRegistrationId")
+  rel_correction_sampleRegistrationId_45 correction[] @relation("correction_sampleRegistrationId")
+}
+
+model testAllocation {
+  id String @id @default(cuid())
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  trfTestRequestId String? @unique
+  analystId String?
+  instrumentId String?
+  priority String?
+  dueDate DateTime?
+  allocatedById String?
+  allocatedAt DateTime?
+  status String?
+  trfTestRequest trfTestRequest? @relation("testAllocation_trfTestRequestId", fields: [trfTestRequestId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  analyst user? @relation("testAllocation_analystId", fields: [analystId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  instrument instrument? @relation("testAllocation_instrumentId", fields: [instrumentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  allocatedBy user? @relation("testAllocation_allocatedById", fields: [allocatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  worksheetItem worksheetItem? @relation("worksheetItem_testAllocationId")
+  result testResult? @relation("testResult_testAllocationId")
+  rel_draftReportItem_testAllocationId_37 draftReportItem[] @relation("draftReportItem_testAllocationId")
+}
+
+model worksheet {
+  id String @id @default(cuid())
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  worksheetCode String?
+  analystId String?
+  instrumentId String?
+  notes String?
+  dueDate DateTime?
+  status String?
+  createdById String?
+  assignedAt DateTime?
+  analyst user? @relation("worksheet_analystId", fields: [analystId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  instrument instrument? @relation("worksheet_instrumentId", fields: [instrumentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdBy user? @relation("worksheet_createdById", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  items worksheetItem[] @relation("worksheetItem_worksheetId")
+  rel_testResult_worksheetId_28 testResult[] @relation("testResult_worksheetId")
+}
+
+model worksheetItem {
+  id String @id @default(cuid())
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  worksheetId String?
+  testAllocationId String? @unique
+  worksheet worksheet? @relation("worksheetItem_worksheetId", fields: [worksheetId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  testAllocation testAllocation? @relation("worksheetItem_testAllocationId", fields: [testAllocationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model testResult {
+  id String @id @default(cuid())
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  testAllocationId String? @unique
+  worksheetId String?
+  analystId String?
+  resultValue String?
+  unit String?
+  referenceValue String?
+  remarks String?
+  instrumentUsedId String?
+  testDate DateTime?
+  status String?
+  completedAt DateTime?
+  correctionReason String?
+  testAllocation testAllocation? @relation("testResult_testAllocationId", fields: [testAllocationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  worksheet worksheet? @relation("testResult_worksheetId", fields: [worksheetId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  analyst user? @relation("testResult_analystId", fields: [analystId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  instrumentUsed instrument? @relation("testResult_instrumentUsedId", fields: [instrumentUsedId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  verification technicalVerification? @relation("technicalVerification_testResultId")
+}
+
+model technicalVerification {
+  id String @id @default(cuid())
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  testResultId String? @unique
+  status String?
+  reviewerId String?
+  reviewedAt DateTime?
+  comments String?
+  returnReason String?
+  testResult testResult? @relation("technicalVerification_testResultId", fields: [testResultId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  reviewer user? @relation("technicalVerification_reviewerId", fields: [reviewerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model draftReport {
+  id String @id @default(cuid())
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  reportCode String?
+  sampleRegistrationId String?
+  trfId String?
+  customerId String?
+  status String?
+  preparedById String?
+  revisionNumber Float?
+  previousVersionId String?
+  verifiedBy String?
+  authorisedSignatory String?
+  generatedAt DateTime?
+  sampleRegistration sampleRegistration? @relation("draftReport_sampleRegistrationId", fields: [sampleRegistrationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  trf trf? @relation("draftReport_trfId", fields: [trfId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  customer client? @relation("draftReport_customerId", fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  preparedBy user? @relation("draftReport_preparedById", fields: [preparedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  previousVersion draftReport? @relation("draftReport_previousVersionId", fields: [previousVersionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rel_draftReport_previousVersionId_36 draftReport[] @relation("draftReport_previousVersionId")
+  items draftReportItem[] @relation("draftReportItem_draftReportId")
+  qaReview qaReview? @relation("qaReview_draftReportId")
+  release reportRelease? @relation("reportRelease_draftReportId")
+  deliveries reportDelivery[] @relation("reportDelivery_draftReportId")
+  corrections correction[] @relation("correction_draftReportId")
+  rel_correction_newRevisionId_49 correction[] @relation("correction_newRevisionId")
+}
+
+model draftReportItem {
+  id String @id @default(cuid())
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  draftReportId String?
+  testAllocationId String?
+  draftReport draftReport? @relation("draftReportItem_draftReportId", fields: [draftReportId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  testAllocation testAllocation? @relation("draftReportItem_testAllocationId", fields: [testAllocationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model qaReview {
+  id String @id @default(cuid())
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  draftReportId String? @unique
+  status String?
+  reviewerId String?
+  reviewedAt DateTime?
+  comments String?
+  returnReason String?
+  draftReport draftReport? @relation("qaReview_draftReportId", fields: [draftReportId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  reviewer user? @relation("qaReview_reviewerId", fields: [reviewerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model reportRelease {
+  id String @id @default(cuid())
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  draftReportId String? @unique
+  status String?
+  releasedAt DateTime?
+  releasedById String?
+  returnReason String?
+  comments String?
+  draftReport draftReport? @relation("reportRelease_draftReportId", fields: [draftReportId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  releasedBy user? @relation("reportRelease_releasedById", fields: [releasedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model reportDelivery {
+  id String @id @default(cuid())
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  draftReportId String?
+  customerId String?
+  deliveryMethod String?
+  status String?
+  recipient String?
+  deliveredAt DateTime?
+  deliveredById String?
+  notes String?
+  attemptNumber Float?
+  draftReport draftReport? @relation("reportDelivery_draftReportId", fields: [draftReportId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  customer client? @relation("reportDelivery_customerId", fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  deliveredBy user? @relation("reportDelivery_deliveredById", fields: [deliveredById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model retentionRecord {
+  id String @id @default(cuid())
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  sampleRegistrationId String? @unique
+  trfId String?
+  customerId String?
+  storageLocation String?
+  retentionStartDate DateTime?
+  retentionExpiryDate DateTime?
+  status String?
+  disposalDate DateTime?
+  disposalReason String?
+  disposedById String?
+  notes String?
+  sampleRegistration sampleRegistration? @relation("retentionRecord_sampleRegistrationId", fields: [sampleRegistrationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  trf trf? @relation("retentionRecord_trfId", fields: [trfId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  customer client? @relation("retentionRecord_customerId", fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  disposedBy user? @relation("retentionRecord_disposedById", fields: [disposedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model correction {
+  id String @id @default(cuid())
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  correctionCode String?
+  draftReportId String?
+  sampleRegistrationId String?
+  customerId String?
+  description String?
+  originalValue String?
+  correctedValue String?
+  reason String?
+  status String?
+  requestedById String?
+  requestedAt DateTime?
+  reviewedById String?
+  reviewedAt DateTime?
+  decisionComments String?
+  newRevisionId String?
+  draftReport draftReport? @relation("correction_draftReportId", fields: [draftReportId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sampleRegistration sampleRegistration? @relation("correction_sampleRegistrationId", fields: [sampleRegistrationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  customer client? @relation("correction_customerId", fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  requestedBy user? @relation("correction_requestedById", fields: [requestedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  reviewedBy user? @relation("correction_reviewedById", fields: [reviewedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  newRevision draftReport? @relation("correction_newRevisionId", fields: [newRevisionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+

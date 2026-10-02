@@ -11,9 +11,11 @@
     "start": "next start",
     "prod": "next build && next start -p 4440",
     "lint": "eslint",
-    "test": "vitest run"
+    "test": "vitest run",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@prisma/client": "6.19.3",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.10",
     "bcryptjs": "^3.0.3",
@@ -23,6 +25,7 @@
     "jspdf-autotable": "^5.0.8",
     "lucide-react": "^1.33.0",
     "next": "16.3.8",
+    "prisma": "6.19.3",
     "qrcode": "^1.5.4",
     "react": "19.2.8",
     "react-dom": "19.2.8",
