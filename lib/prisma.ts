@@ -134,11 +134,13 @@ function ensureHydrated(): Promise<boolean> {
 }
 
 // How long (ms) a freshly loaded snapshot is trusted before the next read
-// re-pulls from the store. Short enough that a write made by another
-// serverless instance becomes visible almost immediately; long enough that
-// the burst of queries in a single page render shares one load instead of
-// fetching from Redis on every call.
-const SYNC_TTL_MS = 750;
+// re-pulls from the store. Long enough that all the queries of a single page
+// render (which runs well under this) share ONE refresh instead of each
+// paying a Redis round-trip — on serverless every round-trip is ~0.5–1s, so a
+// short window made pages with several sequential queries compound into many
+// seconds. Short enough that a write made by another instance becomes visible
+// within a couple of seconds (it then self-heals on the next navigation).
+const SYNC_TTL_MS = 3000;
 let lastSyncedAt = 0;
 let inFlightSync: Promise<void> | null = null;
 
@@ -154,18 +156,24 @@ let inFlightSync: Promise<void> | null = null;
 async function syncFromStore(): Promise<void> {
   await ensureHydrated();
   if (!isPersistenceConfigured()) return;
+  // Join a refresh already in progress so concurrent queries all see fresh data.
+  if (inFlightSync) return inFlightSync;
+  // Inside the trusted window: serve the in-memory copy, no round-trip.
   if (Date.now() - lastSyncedAt < SYNC_TTL_MS) return;
-  if (!inFlightSync) {
-    inFlightSync = (async () => {
-      try {
-        const loaded = await loadDb();
-        if (loaded) replaceDbInPlace(loaded);
-        lastSyncedAt = Date.now();
-      } finally {
-        inFlightSync = null;
-      }
-    })();
-  }
+  // Stamp the window optimistically BEFORE the await, so the burst of queries
+  // that fire while this one load is in flight skip straight to the in-memory
+  // copy instead of each launching their own fetch (the compounding that made
+  // pages take many seconds). The stamp is refreshed again on completion.
+  lastSyncedAt = Date.now();
+  inFlightSync = (async () => {
+    try {
+      const loaded = await loadDb();
+      if (loaded) replaceDbInPlace(loaded);
+      lastSyncedAt = Date.now();
+    } finally {
+      inFlightSync = null;
+    }
+  })();
   return inFlightSync;
 }
 

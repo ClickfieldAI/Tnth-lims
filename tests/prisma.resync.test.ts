@@ -55,7 +55,7 @@ describe("prisma mock re-syncs from the store (cross-instance freshness)", () =>
     expect(await prisma.user.findMany()).toHaveLength(1);
 
     // After the window lapses, the next read re-pulls and sees the new user.
-    vi.setSystemTime(Date.now() + 751);
+    vi.setSystemTime(Date.now() + 3001);
     expect(await prisma.user.findMany()).toHaveLength(2);
   });
 });
