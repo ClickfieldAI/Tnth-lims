@@ -36,6 +36,7 @@ import {
   Building2,
   Settings,
   Bot,
+  Sparkles,
   type LucideIcon,
 } from "lucide-react";
 
@@ -110,6 +111,7 @@ export const NAV: NavGroup[] = [
       { label: "Customer Master", href: "/clients", icon: Building2, roles: ["ADMIN", "MANAGER", "QA"] },
       { label: "Enquiries & Quotations", href: "/enquiries", icon: ReceiptText, roles: ["ADMIN", "MANAGER", "QA"] },
       { label: "Administration", href: "/admin", icon: Settings, roles: ["ADMIN"] },
+      { label: "Product Roadmap", href: "/roadmap", icon: Sparkles, roles: ["ADMIN", "MANAGER", "QA"] },
     ],
   },
 ];
